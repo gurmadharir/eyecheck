@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../backend/shared/view-upload.php';
 
+require_once __DIR__ . '/../backend/shared/diagnosis-utils.php';
+$diagData = formatDiagnosis($data['diagnosis_result']);
+
 $page = "past-uploads";
 ?>
 <!DOCTYPE html>
@@ -49,17 +52,16 @@ $page = "past-uploads";
 
       <div class="image-view-container">
         <div class="image-wrapper">
-          <img src="../<?= htmlspecialchars($data['image_path']) ?>" alt="Uploaded Eye Image" />
+        <img src="../<?= htmlspecialchars($data['image_path']) ?>"
+             alt="Uploaded Eye Image"
+             style="display: block; max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); border: none;" />
         </div>
 
         <div class="details">
-          <?php
-            $diagnosis = strtolower($data['diagnosis_result']);
-            $diagClass = $diagnosis === 'conjunctivitis' ? 'positive' : ($diagnosis === 'negative' ? 'negative' : '');
-          ?>
           <p><strong>🔬 Diagnosis:</strong>
-            <span class="<?= $diagClass ?>"><?= ucfirst($data['diagnosis_result']) ?></span>
+            <span style="<?= htmlspecialchars($diagData['style']) ?>"><?= htmlspecialchars($diagData['label']) ?></span>
           </p>
+
           <p><strong>📅 Uploaded:</strong> <?= date('F j, Y', strtotime($data['created_at'])) ?></p>
         </div>
 
