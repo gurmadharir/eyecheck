@@ -54,7 +54,7 @@ try {
     $stmt = $pdo->prepare("SELECT pu.diagnosis_result, COUNT(*) FROM patient_uploads pu JOIN patients p ON pu.patient_id = p.id $userFilter GROUP BY pu.diagnosis_result");
     $stmt->execute($params);
     $map = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-    $detectionResults = [(int)($map['Positive'] ?? 0), (int)($map['Negative'] ?? 0)];
+    $detectionResults = [(int)($map['Conjunctivitis'] ?? 0), (int)($map['NonConjunctivitis'] ?? 0)];
 
     // === Gender distribution chart ===
     $stmt = $pdo->prepare("SELECT p.gender, COUNT(*) FROM patients p $userFilter GROUP BY p.gender");
@@ -79,8 +79,8 @@ try {
 
     // === Trend chart ===
     $stmt = $pdo->prepare("SELECT DATE(pu.created_at) as date, 
-        SUM(pu.diagnosis_result = 'Positive') as positive, 
-        SUM(pu.diagnosis_result = 'Negative') as negative 
+        SUM(pu.diagnosis_result = 'Conjunctivitis') as conjunctivitis, 
+        SUM(pu.diagnosis_result = 'NonConjunctivitis') as non_conjunctivitis 
         FROM patient_uploads pu 
         JOIN patients p ON pu.patient_id = p.id 
         $userFilter GROUP BY DATE(pu.created_at) ORDER BY date ASC");
@@ -199,7 +199,7 @@ try {
         SELECT pu.patient_id
         FROM patient_uploads pu
         JOIN patients p ON pu.patient_id = p.id
-        WHERE pu.diagnosis_result = 'Positive' AND p.user_id IS NOT NULL
+        WHERE pu.diagnosis_result = 'Conjunctivitis' AND p.user_id IS NOT NULL
         GROUP BY pu.patient_id
         HAVING COUNT(*) >= 3
       ");
@@ -244,13 +244,13 @@ try {
       $stmt = $pdo->query("
         SELECT 
           u.full_name AS name,
-          SUM(pu.diagnosis_result = 'Positive') AS positive,
-          SUM(pu.diagnosis_result = 'Negative') AS negative
+          SUM(pu.diagnosis_result = 'Conjunctivitis') AS conjunctivitis,
+          SUM(pu.diagnosis_result = 'NonConjunctivitis') AS non_conjunctivitis
         FROM patient_uploads pu
         JOIN users u ON pu.uploaded_by = u.id
         WHERE u.role = 'healthcare'
         GROUP BY pu.uploaded_by
-        ORDER BY positive DESC
+        ORDER BY conjunctivitis DESC
       ");
       $workerSummary = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -312,10 +312,10 @@ try {
     $stmt->execute([$patient_id]);
     $map = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-    $positive = (int)($map['Positive'] ?? 0);
-    $negative = (int)($map['Negative'] ?? 0);
+    $positive = (int)($map['Conjunctivitis'] ?? 0);
+    $negative = (int)($map['NonConjunctivitis'] ?? 0);
     $detectionResults = [$positive, $negative];
-    $ratioData = ['Positive' => $positive, 'Negative' => $negative];
+    $ratioData = ['Conjunctivitis' => $positive, 'NonConjunctivitis' => $negative];
 
 
     echo json_encode([
