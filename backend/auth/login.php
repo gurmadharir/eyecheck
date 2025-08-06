@@ -31,14 +31,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // ✅ Clear conflicting session cookies
+    // ✅ Destroy any existing sessions before setting new one
+    foreach ($allowedRoles as $r) {
+        $cookie = "eyecheck_$r";
+        if (isset($_COOKIE[$cookie])) {
+            // Expire old cookie
+            setcookie($cookie, '', time() - 3600, '/');
+            // Kill session file
+            session_name($cookie);
+            session_start();
+            session_destroy();
+        }
+    }
+
+    // ✅ Also remove generic PHPSESSID if exists
     if (isset($_COOKIE['PHPSESSID'])) {
         setcookie('PHPSESSID', '', time() - 3600, '/');
-    }
-    foreach ($allowedRoles as $r) {
-        if ($r !== $role) {
-            setcookie("eyecheck_$r", '', time() - 3600, "/");
-        }
     }
 
     // ✅ Set session name and cookie params BEFORE session_start()
