@@ -1,17 +1,9 @@
 <?php
 if (!isset($patient)) return;
 
-$diag = strtolower($patient['diagnosis_result'] ?? '');
-$diagClass = $diag === 'conjunctivitis' ? 'positive'
-            : ($diag === 'negative' ? 'negative' : '');
-
-$diagLabel = match ($diag) {
-  'conjunctivitis', 'positive' => 'Conjunctivitis',
-  'negative' => 'No Conjunctivitis',
-  default => ucfirst($patient['diagnosis_result'] ?? 'Pending')
-};
-
-
+require_once __DIR__ . '/../backend/shared/diagnosis-utils.php';
+$diagData = formatDiagnosis($patient['diagnosis_result']);
+$cleanDiag = strtolower(str_replace([' ', '_', '-'], '', $patient['diagnosis_result'] ?? ''));
 ?>
 <div class="report-modal" id="reportModal">
   <div class="report-wrapper">
@@ -31,16 +23,20 @@ $diagLabel = match ($diag) {
           </p>
         </div>
       </div>
+
       <hr />
-      <h2 class="report-title" style="display: flex; justify-content: space-between; align-items: center; text-align: left; flex-wrap: wrap;">
+      <h2 class="report-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <span>📋 DIAGNOSTIC REPORT</span>
         <span style="font-size: 14px; color: #666; font-weight: normal;">
           <?= date('F j, Y – g:i A') ?>
         </span>
       </h2>
-      <div style="text-align:center; margin: 20px 0px;">
-        <img src="/eyecheck/<?= htmlspecialchars($data['image_path']) ?>" alt="Uploaded Eye Image" style="max-width: 100%; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
+
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="/eyecheck/<?= htmlspecialchars($data['image_path']) ?>" alt="Uploaded Eye Image"
+             style="width: 100%; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
       </div>
+
       <table class="report-table">
         <tr><th>👤 Name</th><td><?= htmlspecialchars($patient['name']) ?></td></tr>
         <tr><th>📍 Address</th><td><?= htmlspecialchars($patient['town']) ?></td></tr>
@@ -52,22 +48,18 @@ $diagLabel = match ($diag) {
         </tr>
         <tr>
           <th>🔬 Diagnosis</th>
-          <td>
-            <strong style="<?= $diag === 'positive' ? 'color: #e53935;' : ($diag === 'negative' ? 'color: #43a047;' : '') ?>">
-              <?= htmlspecialchars($diagLabel) ?>
-            </strong>
-          </td>
+          <td><span style="<?= $diagData['style'] ?>"><?= htmlspecialchars($diagData['label']) ?></span></td>
         </tr>
       </table>
 
       <div class="consultation">
         <strong>💡 CONSULTATION:</strong>
         <p>
-          <?php if ($diag === 'conjunctivitis'): ?>
+          <?php if ($cleanDiag === 'conjunctivitis'): ?>
             🧪 Diagnosis: Conjunctivitis.<br>
             💊 Treatment: Recommend antibiotic eye drops and hygiene.<br>
             🗓️ Follow-up: Required if no improvement.
-          <?php elseif ($diag === 'negative'): ?>
+          <?php elseif ($cleanDiag === 'nonconjunctivitis'): ?>
             ✅ Result: No conjunctivitis detected.<br>
             😊 No treatment needed. Monitor for symptoms.
           <?php else: ?>
