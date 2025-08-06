@@ -55,7 +55,7 @@ $rawResult = trim($_POST['diagnosis_result'] ?? '');
 $cleanedResult = preg_replace('/[\x{1F600}-\x{1F6FF}\x{2600}-\x{26FF}\x{2700}-\x{27BF}]/u', '', $rawResult);
 $cleanedResult = trim($cleanedResult);
 
-if (!in_array($cleanedResult, ['Conjunctivitis', 'Non Conjunctivitis'])) {
+if (!in_array($cleanedResult, ['Conjunctivitis', 'NonConjunctivitis'])) {
     jsonResponse(false, 'Invalid diagnosis result. Upload rejected.');
 }
 
