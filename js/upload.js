@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveBtn = form.querySelector('button[type="submit"]');
   const diagnosisInput = document.getElementById("diagnosisResult");
   const toast = document.getElementById("toast");
+  const roleInput = document.querySelector('input[name="role"]');
 
   imageInput.addEventListener("change", () => {
     const file = imageInput.files[0];
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         resultBox.textContent = rawResult;
         diagnosisInput.value = cleaned;
 
-        if (!["Conjunctivitis", "Non-Conjunctivitis"].includes(cleaned)) {
+        if (!["Conjunctivitis", "NonConjunctivitis"].includes(cleaned)) {
           saveBtn.disabled = true;
           showToast("Invalid prediction. Please try a clear eye image.", "error");
         } else {
@@ -58,11 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const diagnosis = diagnosisInput.value.trim();
-    if (!["Conjunctivitis", "Non-Conjunctivitis"].includes(diagnosis)) {
+    const raw = diagnosisInput.value.trim();
+    const diagnosis = cleanText(raw);
+    if (!["Conjunctivitis", "NonConjunctivitis"].includes(diagnosis)) {
       showToast("Invalid diagnosis result. Upload rejected.", "error");
       return;
     }
+
 
     const formData = new FormData(form);
     saveBtn.disabled = true;
@@ -77,6 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const type = data.success ? "success" : "error";
         showToast(data.message || "Saved successfully", type);
         saveBtn.disabled = false;
+
+        if (data.success) {
+          setTimeout(() => {
+            const role = roleInput?.value?.trim() || "";
+            if (role === "patient") {
+              window.location.href = "/eyecheck/patient/past-uploads.php";
+            } else if (role === "healthcare") {
+              window.location.href = "/eyecheck/healthcare/patients.php";
+            }
+          }, 1000); // wait 1s to show toast
+        }
       })
       .catch((err) => {
         console.error("💥 Upload Error:", err);
@@ -120,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return str
       .normalize("NFKD")
       .replace(/[\p{Emoji_Presentation}\p{Emoji}\uFE0F\u200D\u2060]/gu, "")
-      .replace(/[^a-zA-Z\-]/g, "")
+      .replace(/[^a-zA-Z]/g, "")
       .trim();
   }
 });
