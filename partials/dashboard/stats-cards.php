@@ -13,7 +13,7 @@ $role = $role ?? ($_SESSION['role'] ?? 'guest');
         <div class="stat-card">
           <p style="margin: 0; font-weight: bold; display: flex; align-items: center;">
             Positivity Rate
-            <span title="Shows the percentage of uploaded images classified as 'Positive'" 
+              <span title="Shows the percentage of uploaded images classified as 'Conjunctivitis'" 
                   style="margin-left: 6px; cursor: help; font-size: 14px; color: #bbb;">ℹ️</span>
           </p>
           <span id="statDetectRate" style="font-size: 1.5rem; font-weight: bold;">0%</span>
