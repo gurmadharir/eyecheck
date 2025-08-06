@@ -28,9 +28,26 @@ document.addEventListener("DOMContentLoaded", function () {
         if (el) el.textContent = val ?? "-";
       };
 
-      const s = data.summary || {};
-      const a = data.adminCards || {};
-      const trendData = role === "patient" ? data.uploadTrend : data.trend;
+    const s = data.summary || {};
+    const a = data.adminCards || {};
+    const trendData = role === "patient" ? data.uploadTrend : data.trend;
+
+    if (role === "patient") {
+      set("statTotal", s.total_uploads);
+      set("statAverageAge", s.warnings_sent);
+
+      const latestEl = document.getElementById("statLatest");
+      if (latestEl && s.upload_freq) {
+        latestEl.innerHTML = `<span style="font-size:18px; font-weight:500;">${s.upload_freq}</span>`;
+      }
+
+      const diagnosisEl = document.getElementById("statRegions");
+      if (diagnosisEl && s.latest_diagnosis) {
+        const [date, time] = s.latest_diagnosis.split(" ");
+        diagnosisEl.innerHTML = `<span style="font-weight:bold;">${date}</span><span style="font-size:10px;"> ${time}</span>`;
+      }
+    }
+
 
       // === Trend Chart ===
       if (!trendData?.length) renderNoData("trendWrapper", "No trend data.");
@@ -50,14 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
               : [
                   {
                     label: "Conjunctivitis",
-                    data: trendData.map(d => d.positive),
+                    data: trendData.map(d => d.conjunctivitis),
                     borderColor: "#e53935",
                     fill: true,
                     tension: 0.3
                   },
                   {
-                    label: "Negative",
-                    data: trendData.map(d => d.negative),
+                    label: "NonConjunctivitis",
+                    data: trendData.map(d => d.non_conjunctivitis),
                     borderColor: "#43a047",
                     fill: true,
                     tension: 0.3
@@ -165,8 +182,8 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {
               labels: data.workerSummary.map(w => w.name),
               datasets: [
-                { label: "Conjunctivitis", data: data.workerSummary.map(w => w.positive), backgroundColor: "#e53935" },
-                { label: "Negative", data: data.workerSummary.map(w => w.negative), backgroundColor: "#43a047" }
+                { label: "Conjunctivitis", data: data.workerSummary.map(w => w.conjunctivitis), backgroundColor: "#e53935" },
+                { label: "NonConjunctivitis", data: data.workerSummary.map(w => w.non_conjunctivitis), backgroundColor: "#43a047" }
               ]
             },
             options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
@@ -369,23 +386,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
       // === Patient Summary ===
-      if (role === "patient") {
-        set("statTotal", s.total_uploads);
-        set("statAverageAge", s.warnings_sent);
-        const el = document.getElementById("statLatest");
-        if (el && s.upload_freq) {
-          el.innerHTML = `<span style="font-size:18px; font-weight:500;">${s.upload_freq}</span>`;
-        }
-
-        const diagEl = document.getElementById("statRegions");
-        if (diagEl && s.latest_diagnosis) {
-          const [d, t] = s.latest_diagnosis.split(" ");
-          diagEl.innerHTML = `<span style="font-weight:bold;">${d}</span><span style="font-size:10px;"> ${t}</span>`;
-        }
-      }
-
-      // === Ratio Distribution Chart (Patient only) ===
-      if (!data.ratioData || (data.ratioData.Positive + data.ratioData.Negative === 0)) {
+      if (
+        !data.ratioData ||
+        ((data.ratioData["Conjunctivitis"] || 0) + (data.ratioData["NonConjunctivitis"] || 0) === 0)
+      ) {
         renderNoData("ratioWrapper", "No ratio data available.");
       } else {
         const rData = data.ratioData;
@@ -394,7 +398,10 @@ document.addEventListener("DOMContentLoaded", function () {
           data: {
             labels: ["Conjunctivitis", "Non Conjunctivitis"],
             datasets: [{
-              data: [rData.Positive, rData.Negative],
+              data: [
+                rData["Conjunctivitis"] || 0,
+                rData["NonConjunctivitis"] || 0
+              ],
               backgroundColor: ["#ef5350", "#43a047"]
             }]
           },
@@ -414,7 +421,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       }
-
 
       // === Shared Charts ===
       if (role !== "patient") {
