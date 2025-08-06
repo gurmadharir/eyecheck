@@ -1,0 +1,298 @@
+.edit-profile-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0px 20px;
+  margin-top: 30px;
+}
+
+.edit-profile-card {
+  background: var(--card-bg, #fff);
+  border-radius: 16px;
+  padding: 30px 25px;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: background 0.3s ease;
+}
+
+/* Editable Inputs */
+.profile-input {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  background-color: transparent;
+  color: #333;
+  transition: background 0.3s ease;
+}
+
+.profile-input:hover,
+.profile-input:focus {
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  outline: none;
+}
+
+.profile-input.username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 20px;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--primary-color, #00796b);
+}
+
+.profile-image .upload-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--primary-color, #00796b);
+  border-radius: 50%;
+  padding: 9px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transform: translate(35%, -35%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.upload-photo-btn {
+  background: #ff4d4f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  transition: background 0.3s;
+}
+
+.upload-photo-btn:hover {
+  background: #d9363e;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  background: #f4f7fa;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.upload-hint b {
+  font-weight: 600;
+  color: #333;
+}
+
+.member-since {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.member-since b {
+  font-weight: 600;
+}
+
+/* Dark Mode */
+body.dark .edit-profile-card {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+body.dark .profile-input {
+  background-color: transparent;
+  color: #fff;
+  border-color: #444;
+}
+
+body.dark .profile-input:hover,
+body.dark .profile-input:focus {
+  background-color: #2a2a2a;
+}
+
+body.dark .profile-image img {
+  border-color: #26a69a;
+}
+
+body.dark .upload-hint {
+  background: #2a2a2a;
+  color: #ccc;
+}
+
+body.dark .upload-hint b,
+body.dark .member-since b {
+  color: #fff;
+}
+
+body.dark .member-since {
+  color: #bbb;
+}
+
+body.dark .upload-photo-btn {
+  background: #ff6b6b;
+  color: #111;
+}
+
+
+
+
+/* CHANGE PASSWORD PAGE CSS */
+.change-password-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 60px;
+  gap: 60px;
+}
+
+.illustration img {
+  max-width: 320px;
+  width: 100%;
+}
+
+.form-area {
+  max-width: 380px;
+  width: 100%;
+}
+
+.form-area h2 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: var(--text-color, #222);
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 14px 10px 35px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  background-color: transparent;
+  color: #333;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color, #00796b);
+  background-color: #f0f0f0;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #00796b;
+}
+
+.error-msg {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.btn-outline {
+  padding: 10px 18px;
+  border: 1px solid #ccc;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary {
+  padding: 10px 18px;
+  background-color: var(--primary-color, #00796b);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #005f56;
+}
+
+.password-icon {
+  width: 260px;
+  height: 260px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+  transition: filter 0.3s ease;
+}
+
+
+/* Dark mode: simulate white */
+body.dark .password-icon {
+  filter: brightness(0) invert(1);
+}
+
+
+
+/* Dark Mode */
+body.dark .form-area h2 {
+  color: #fff;
+}
+
+body.dark .input-group input {
+  background-color: #2a2a2a;
+  border-color: #444;
+  color: #eee;
+}
+
+body.dark .input-group input:focus {
+  background-color: #333;
+  border-color: #26a69a;
+}
+
+body.dark .btn-outline {
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark .error-msg {
+  color: #ff6b6b;
+}

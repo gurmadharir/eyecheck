@@ -1,0 +1,253 @@
+/* ========= Image Preview Section ========= */
+.image-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.image-wrapper {
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid #ccc;
+}
+
+.details {
+  font-size: 1rem;
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.details p {
+  margin: 10px 0;
+}
+
+.preview-btn {
+  padding: 12px 20px;
+  background-color: var(--primary-color, #00796b);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.preview-btn:hover {
+  background-color: #005f56;
+}
+
+/* ========= Modal Report ========= */
+.report-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+  z-index: 2000;
+}
+
+.report-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.report-preview {
+  background: white;
+  padding: 40px;
+  width: 90%;
+  max-width: 700px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  max-height: 90vh;
+  color: #001c2b;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.close-report-btn {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  font-size: 1.8rem;
+  color: #fff;
+  background: #00796b;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2100;
+}
+
+/* ========= Report Content ========= */
+.report-brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-logo {
+  text-align: center;
+}
+
+.report-logo img {
+  width: 60px;
+  margin-bottom: 5px;
+  filter: none;
+}
+
+.report-logo h1 {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #0a2b49;
+}
+
+.report-contact {
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.report-title {
+  margin-top: 30px;
+  text-align: center;
+  color: #0a2b49;
+  font-size: 1.4rem;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+.report-table th,
+.report-table td {
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.report-table th {
+  text-align: left;
+  font-weight: bold;
+  width: 160px;
+}
+
+.consultation {
+  margin-top: 30px;
+  font-size: 0.95rem;
+}
+
+.consultation strong {
+  color: #0a2b49;
+}
+
+.signature-block {
+  margin-top: 60px;
+  text-align: right;
+}
+
+.signed {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 1.6rem;
+  color: #0a2b49;
+  margin-bottom: 5px;
+}
+
+.footer-note {
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* ========= Buttons ========= */
+.print-btn {
+  width: 100%;
+  background: var(--primary-color, #a303b5);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.print-btn:hover {
+  opacity: 0.9;
+}
+
+/* ========= Diagnosis Styles ========= */
+.positive {
+  color: #e53935;
+  font-weight: bold;
+}
+
+.negative {
+  color: #43a047;
+  font-weight: bold;
+}
+
+/* ========= Responsive ========= */
+@media (max-width: 768px) {
+  .image-view-container {
+    padding: 15px;
+  }
+
+  .report-table th {
+    width: auto;
+  }
+
+  .preview-btn,
+  .print-btn {
+    width: 100%;
+  }
+}
+
+/* ========= Dark Mode ========= */
+body.dark .report-preview {
+  background: #1e1e1e;
+  color: #ddd;
+}
+
+body.dark .report-logo h1,
+body.dark .report-title,
+body.dark .consultation strong,
+body.dark .signed {
+  color: #26a69a;
+}
+
+body.dark .report-table th,
+body.dark .report-table td {
+  background: #2c2c2c;
+  color: #eee;
+}
+
+body.dark .footer-note {
+  color: #aaa;
+}
+
+body.dark .report-logo img {
+  filter: brightness(0) invert(1);
+}

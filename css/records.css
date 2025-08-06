@@ -1,0 +1,589 @@
+
+.reports-wrapper {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+.table-card {
+  background: var(--card-bg, white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+  transition: background 0.3s;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.table-card h3 {
+  font-size: 1.4em;
+  margin: 0;
+  text-align: left;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.search-box i {
+  color: #888;
+}
+
+.filter-wrapper {
+  position: relative;
+}
+
+.filter-wrapper:hover .filter-dropdown-tooltip {
+   /* show on hover */
+  display: flex;
+}
+
+
+.filter-btn {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.filter-btn:hover {
+  background-color: #006459;
+}
+
+.filter-dropdown-tooltip {
+  display: none;  /* initially hidden */
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #d0f8f3;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  width: 190px;
+  font-size: 0.85rem;
+  position: absolute;
+  top: 120%;
+  right: 0;
+}
+
+
+.filter-dropdown-tooltip label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.filter-dropdown-tooltip label i {
+  color: #00796b;
+}
+
+.filter-dropdown-tooltip select {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+}
+
+/* Table */
+table {
+  width: 100%;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  table-layout: fixed;
+}
+
+thead th {
+  background-color: var(--primary-color, #00796b);
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Specific column sizing */
+td:nth-child(1) {
+  width: 20px;
+  padding-right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td:nth-child(2),
+td:nth-child(4),
+td:nth-child(5) {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+td:nth-child(3) {
+  width: 70px;
+}
+
+td:nth-child(6),
+td:nth-child(7),
+td:nth-child(8),
+td:nth-child(9) {
+  width: 1%;
+  white-space: nowrap;
+}
+
+tbody tr {
+  height: 40px;
+}
+
+tr:hover {
+  background-color: var(--hover-bg, #f9f9f9);
+}
+
+.positive {
+  color: #e53935;
+  font-weight: bold;
+}
+
+.negative {
+  color: #43a047;
+  font-weight: bold;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px;
+  text-decoration: none;
+  line-height: 1;
+
+}
+
+.action-btn i {
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+
+.action-btn:hover {
+  color: var(--primary-color, #00796b);
+}
+
+/* Dark Mode */
+body.dark .table-card {
+  background: var(--card-bg, #1f1f1f);
+}
+
+body.dark thead th {
+  background-color: var(--primary-color, #26a69a);
+}
+
+body.dark tr:hover {
+  background-color: var(--hover-bg, #1a1a1a);
+}
+
+body.dark tbody td {
+  border-color: #333;
+}
+
+body.dark .filter-dropdown-tooltip {
+  background: #1e1e1e;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+body.dark .filter-dropdown-tooltip select {
+  background: #2c2c2c;
+  color: #eee;
+  border-color: #555;
+}
+
+body.dark .filter-btn {
+  background-color: #26a69a;
+  color: #111;
+}
+
+body.dark .filter-btn:hover {
+  background-color: #1de9b6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .table-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-dropdown-tooltip {
+    right: auto;
+    left: 0;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  td {
+    padding-left: 50%;
+    position: relative;
+    text-align: left;
+  }
+
+  td::before {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-weight: bold;
+    content: attr(data-label);
+  }
+}
+
+/* Modal overlay */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-modal-overlay.active {
+  display: flex;
+}
+
+/* Modal box */
+.delete-modal {
+  background: var(--card-bg, #fff);
+  padding: 40px;
+  border-radius: 14px;
+  width: 25%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.delete-icon {
+  font-size: 2.8rem;
+  color: #e53935;
+  margin-bottom: 15px;
+}
+
+.delete-modal h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.delete-modal p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.delete-modal .buttons {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.delete-modal .buttons button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-btn {
+  background-color: #e53935;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+/* Toast styles */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #e53935;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 1100;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background-color: #28a745; /* Green */
+}
+
+.toast.danger,
+.toast.error {
+  background-color: #dc3545; /* Red */
+}
+
+/* Optional: blur background when modal is open */
+body.modal-open .main-content {
+  filter: blur(3px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Dark mode adjustments */
+body.dark .delete-modal {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+body.dark .delete-modal p {
+  color: #ccc;
+}
+
+body.dark .toast {
+  background-color: #ff6b6b;
+  color: #111;
+}
+
+
+/* Pagination */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination a {
+  padding: 8px 14px;
+  background: #eee;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+  transition: 0.3s;
+}
+
+.pagination a:hover {
+  background: #ddd;
+}
+
+.pagination a.active {
+  border-radius: 50%;
+  background: #00796b;
+  color: #fff;
+}
+
+.pagination a.disabled {
+  background: #f5f5f5;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.pagination .dots {
+  padding: 5px;
+  font-weight: bold;
+}
+
+.goto-wrapper {
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.goto-wrapper input {
+  padding: 5px 10px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  width: 60px;
+  text-align: center;
+}
+
+/* Blurred delete icon for restricted admins */
+.disabled-delete-btn {
+  opacity: 0.7;
+  cursor: not-allowed;
+  color:  #7b7c7c;
+}
+
+.delete-modal-overlay:not(.active) {
+  display: none !important;
+  pointer-events: none !important;
+  opacity: 0;
+}
+
+
+/* Logs model */
+/* Dark theme full-screen modal */
+#userLogsModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content styled to match dark theme */
+#userLogsModal .modal-content {
+  background: #1f1f1f;
+  color: #fff;
+  width: 96%;
+  max-width: 1400px;
+  height: 90vh;
+  border-radius: 10px;
+  padding: 30px 20px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Close button */
+#userLogsModal .close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#userLogsModal .close:hover {
+  color: #e74c3c;
+}
+
+/* Table inside modal */
+#userLogsModal table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#userLogsModal th,
+#userLogsModal td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+  font-size: 15px;
+  color: #ddd;
+}
+
+#userLogsModal th {
+  background: #13c1ac;
+  color: #fff;
+  font-weight: bold;
+}
+
+#userLogsTitle {
+  color: #ccc;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Blur everything behind modal */
+body.modal-open .main-content,
+body.modal-open .sidebar,
+body.modal-open .topbar {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.role-users-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0px;
+}
+
+.role-user-btn {
+  background: #2a2a2a;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #444;
+  transition: background 0.2s;
+}
+
+.role-user-btn:hover {
+  background: #444;
+}

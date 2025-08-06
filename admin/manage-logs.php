@@ -1,0 +1,118 @@
+<?php
+require_once '../backend/helpers/auth-check.php';
+requireRole('admin');
+$page = 'logs';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Logs | Admin</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/records.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" href="/favicon.ico" />
+</head>
+<body>
+<div class="dashboard-wrapper">
+  <?php include '../partials/sidebar.php'; ?>
+  <div class="main-content">
+    <?php include '../partials/topbar.php'; ?>
+
+    <div class="reports-wrapper">
+      <div class="table-card">
+        <div class="table-controls">
+          <h3 id="pageTitle">System Logs</h3>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="logSearch" placeholder="Search..." />
+
+            <div class="filter-wrapper">
+              <button class="filter-btn"><i class="fas fa-filter"></i></button>
+              <div class="filter-dropdown-tooltip" id="filterDropdown">
+                <label for="roleFilter"><i class="fas fa-user-tag"></i> Role:</label>
+                <select id="roleFilter">
+                  <option value="">All</option>
+                  <option value="admin">Admin</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="patient">Patient</option>
+                </select>
+
+                <div id="roleUsersList" class="role-users-list"></div>
+                
+                <label for="actionFilter"><i class="fas fa-bolt"></i> Action:</label>
+                <select id="actionFilter">
+                  <option value="">All</option>
+                  <option value="LOGIN">Login</option>
+                  <option value="LOGOUT">Logout</option>
+                  <option value="UPLOAD_IMAGE">Upload</option>
+                  <option value="DELETE_UPLOAD">Delete Upload</option>
+                  <option value="SEND_WARNING">Send Warning</option>
+                  <option value="UPDATE_PROFILE">Update Profile</option>
+                </select>
+
+                <label for="dateSort"><i class="fas fa-calendar-alt"></i> Sort:</label>
+                <select id="dateSort">
+                  <option value="latest">Latest First</option>
+                  <option value="oldest">Oldest First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <thead id="tableHeadRow">
+            <tr>
+              <th>#</th>
+              <th>Timestamp</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Action</th>
+              <th>Target</th>
+              <th>Description</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody id="records-table-body"></tbody>
+        </table>
+
+        <div id="pagination" class="pagination" style="margin-top: 20px; text-align: center;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔍 Modal for user-specific logs -->
+<div id="userLogsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeUserLogs">&times;</span>
+    <h3 id="userLogsTitle">User Logs</h3>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 5%;">#</th>
+          <th style="width: 15%;">Timestamp</th>
+          <th style="width: 15%;">Action</th>
+          <th style="width: 35%;">Description</th>
+          <th style="width: 10%;">IP</th>
+        </tr>
+      </thead>
+      <tbody id="userLogsBody"></tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Toast -->
+<div id="toast" class="toast success">
+  <i class="fas fa-circle-check"></i>
+  <span id="toastMessage">Action completed!</span>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/admin/logs.js"></script>
+</body>
+</html>

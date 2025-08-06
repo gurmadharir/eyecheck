@@ -1,0 +1,918 @@
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:17:50"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:18:01"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:18:24"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:18:44"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:18:57"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:19:58"
+}
+
+{
+    "request_uri": "\/eyecheck\/patient\/dashboard.php",
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "timestamp": "2025-08-01 18:20:43"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:22:47"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:23:00"
+}
+
+{
+    "session_name": "eyecheck_default",
+    "session": [],
+    "cookies": [],
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:33:16"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "un4muveuq3tnp1ngqc4npsmkta",
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:33:26"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "un4muveuq3tnp1ngqc4npsmkta",
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:33:42"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "osho7tvdjs7gqn8t3bnh3n1mdr",
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:34:42"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "osho7tvdjs7gqn8t3bnh3n1mdr",
+        "eyecheck_patient": "1"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:36:37"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:39:00"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:41:10"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:42:17"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "veg4g1f8tqeb686rl37ot00l5m",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:44:18"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "7d9vb4i08nndcl895e0l6acrhn",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:44:25"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:46:03"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:46:13"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:46:15"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/past-uploads.php",
+    "timestamp": "2025-08-01 18:46:16"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:46:17"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:46:17"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:47:18"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "fb2rk6qb0332r5tu9e6itdkkl0",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_patient": "fb2rk6qb0332r5tu9e6itdkkl0"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:47:46"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "rniktiqlgihiim9ehmqs0usr9h",
+    "session": [],
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:47:55"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "0vpqga8rc7260ot06scp8sn06u",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_patient": "0vpqga8rc7260ot06scp8sn06u"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:48:59"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "0vpqga8rc7260ot06scp8sn06u",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_patient": "0vpqga8rc7260ot06scp8sn06u"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:49:09"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "0vpqga8rc7260ot06scp8sn06u",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_patient": "0vpqga8rc7260ot06scp8sn06u"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:49:17"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "0vpqga8rc7260ot06scp8sn06u",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_role": "patient",
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_patient": "0vpqga8rc7260ot06scp8sn06u"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:49:19"
+}
+
+{
+    "session_name": "eyecheck_default",
+    "session_id": "15sseuv4778hcpaa64qskl1u2v",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:49:35"
+}
+
+{
+    "session_name": "eyecheck_default",
+    "session_id": "15sseuv4778hcpaa64qskl1u2v",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-01 18:50:13"
+}
+
+{
+    "session_name": "eyecheck_default",
+    "session_id": "15sseuv4778hcpaa64qskl1u2v",
+    "session": [],
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:50:16"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/dashboard.php",
+    "timestamp": "2025-08-01 18:51:23"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/dashboard.php",
+    "timestamp": "2025-08-01 18:51:34"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/manage.php",
+    "timestamp": "2025-08-01 18:51:35"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/patient\/manage.php",
+    "timestamp": "2025-08-01 18:51:36"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/backend\/admin\/get-patients.php?search=&sort=latest&start=&end=&page=1",
+    "timestamp": "2025-08-01 18:51:36"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/manage-user-alerts.php",
+    "timestamp": "2025-08-01 18:51:37"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/backend\/admin\/get-user-alerts.php?search=&sort=latest&filter=pending&page=1",
+    "timestamp": "2025-08-01 18:51:37"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/manage-logs.php",
+    "timestamp": "2025-08-01 18:51:37"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/backend\/admin\/logs\/fetch-logs.php?role=&action=&sort=latest&search=",
+    "timestamp": "2025-08-01 18:51:37"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/manage.php",
+    "timestamp": "2025-08-01 18:51:38"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_default": "15sseuv4778hcpaa64qskl1u2v",
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/dashboard.php",
+    "timestamp": "2025-08-01 18:51:38"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-01 18:51:57"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/dashboard.php",
+    "timestamp": "2025-08-01 18:51:57"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/manage.php",
+    "timestamp": "2025-08-01 18:51:59"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/patient\/manage.php",
+    "timestamp": "2025-08-01 18:52:00"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/backend\/admin\/get-patients.php?search=&sort=latest&start=&end=&page=1",
+    "timestamp": "2025-08-01 18:52:00"
+}
+
+{
+    "session_name": "eyecheck_admin",
+    "session_id": "8f0sfu8oc1rb8hg5v7cp99tb09",
+    "session": {
+        "user_id": 2,
+        "username": "Super Admin",
+        "role": "admin",
+        "full_name": "",
+        "email": "eyecheckhealthcare@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 1
+    },
+    "cookies": {
+        "eyecheck_admin": "8f0sfu8oc1rb8hg5v7cp99tb09",
+        "eyecheck_role": "admin"
+    },
+    "uri": "\/eyecheck\/admin\/dashboard.php",
+    "timestamp": "2025-08-01 18:52:00"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "7tbrqvl1o9svcqha4m02d3hr1b",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_default": "8qr4o4vnf6db1168f0h5hat0fv",
+        "eyecheck_patient": "7tbrqvl1o9svcqha4m02d3hr1b",
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/dashboard.php",
+    "timestamp": "2025-08-05 20:00:58"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "7tbrqvl1o9svcqha4m02d3hr1b",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_default": "8qr4o4vnf6db1168f0h5hat0fv",
+        "eyecheck_patient": "7tbrqvl1o9svcqha4m02d3hr1b",
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-05 20:01:02"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "7tbrqvl1o9svcqha4m02d3hr1b",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_default": "8qr4o4vnf6db1168f0h5hat0fv",
+        "eyecheck_patient": "7tbrqvl1o9svcqha4m02d3hr1b",
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-05 20:01:44"
+}
+
+{
+    "session_name": "eyecheck_patient",
+    "session_id": "7tbrqvl1o9svcqha4m02d3hr1b",
+    "session": {
+        "user_id": 1,
+        "username": "waayeel",
+        "role": "patient",
+        "full_name": "Waayeel",
+        "email": "officialgurmad@gmail.com",
+        "profile_image": null,
+        "is_super_admin": 0
+    },
+    "cookies": {
+        "eyecheck_default": "8qr4o4vnf6db1168f0h5hat0fv",
+        "eyecheck_patient": "7tbrqvl1o9svcqha4m02d3hr1b",
+        "eyecheck_role": "patient"
+    },
+    "uri": "\/eyecheck\/patient\/upload.php",
+    "timestamp": "2025-08-05 20:02:04"
+}
+
