@@ -26,7 +26,6 @@ $page = 'dashboard';
 </div>
 
 <script>const userRole = <?= json_encode($_SESSION['role']) ?>;</script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="../js/theme.js"></script>
 <script src="../js/dashboard/dashboard.js"></script>
