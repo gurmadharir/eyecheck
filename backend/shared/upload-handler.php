@@ -165,13 +165,15 @@ if ($formRole === 'healthcare') {
 
     if (!$patientId) jsonResponse(false, 'Invalid patient ID.');
 
-    $checkHash = $pdo->prepare("
-        SELECT pu.id FROM patient_uploads pu
-        JOIN patients p ON pu.patient_id = p.id
-        WHERE pu.image_hash = :hash AND p.created_by = :uid
+    $check = $pdo->prepare("
+    SELECT 1 FROM patient_uploads
+    WHERE uploaded_by = :uid AND image_hash = :hash
+    LIMIT 1
     ");
-    $checkHash->execute([':hash' => $imageHash, ':uid' => $user_id]);
-    if ($checkHash->rowCount() > 0) jsonResponse(false, 'This image has already been uploaded by you.');
+    $check->execute([':uid' => $user_id, ':hash' => $imageHash]);
+    if ($check->fetch()) {
+        jsonResponse(false, 'You already uploaded this image before.');
+    }
 
     $stmt = $pdo->prepare("INSERT INTO patient_uploads (patient_id, image_path, image_hash, diagnosis_result, uploaded_by)
                            VALUES (?, ?, ?, ?, ?)");
@@ -249,11 +251,38 @@ function validateInputFormat(array $fields): void {
                     jsonResponse(false, 'Gender must be Male or Female.');
                 }
                 break;
+
             case 'date':
-                if (!preg_match('/^\\d{4}-\\d{2}-\\d{2}$/', $value)) {
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
                     jsonResponse(false, "Invalid date format for $field.");
+                }
+                if ($field === 'dob') {
+                    validateDOB($value, $field); 
                 }
                 break;
         }
     }
 }
+
+function validateDOB(string $dob, string $field = 'dob'): void {
+    $dobDate = DateTime::createFromFormat('Y-m-d', $dob);
+    if (!$dobDate) {
+        jsonResponse(false, "Invalid date for $field.");
+    }
+
+    $today   = new DateTime('today');
+    $minAge  = (clone $today)->modify('-30 days'); // exact 30 days
+
+    if ($dobDate > $today) {
+        jsonResponse(false, ucfirst($field) . " cannot be in the future.");
+    }
+    if ($dobDate > $minAge) {
+        jsonResponse(false, ucfirst($field) . " must be at least 1 month (30 days) old.");
+    }
+
+    $lowerBound = new DateTime('1900-01-01');
+    if ($dobDate < $lowerBound) {
+        jsonResponse(false, ucfirst($field) . " is too far in the past.");
+    }
+}
+
