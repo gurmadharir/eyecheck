@@ -268,3 +268,30 @@ Array
 )
 
 
+----- 2025-08-08 13:50:26 -----
+Array
+(
+    [timestamp] => 2025-08-08 13:50:26
+    [user_id] => 2
+    [role] => admin
+    [POST] => Array
+        (
+            [target_user_id] => 4
+            [role] => admin
+        )
+
+)
+
+
+----- 2025-08-08 13:50:26 -----
+Array
+(
+    [response] => Array
+        (
+            [success] => 1
+            [message] => Healthcare user and related data deleted
+        )
+
+)
+
+
