@@ -1,14 +1,21 @@
+eyecheck/patient/uploads/*
+!eyecheck/patient/uploads/.gitkeep
+
+eyecheck/patient/uploads/profile/*
+!eyecheck/patient/uploads/profile/.gitkeep
+
+eyecheck/healthcare/patients/uploads/*
+!eyecheck/healthcare/patients/uploads/.gitkeep
+
+eyecheck/healthcare/uploads/profile/*
+!eyecheck/healthcare/uploads/profile/.gitkeep
+
+eyecheck/admin/uploads/*
+!eyecheck/admin/uploads/.gitkeep
+
+eyecheck/admin/uploads/profile/*
+!eyecheck/admin/uploads/profile/.gitkeep
+
 # Ignore logs
 *.log
 eyecheck/logs/
-
-# Ignore temporary files
-*.tmp
-
-# Ignore images inside uploads folders only
-eyecheck/patient/uploads/
-eyecheck/patient/uploads/profile/
-eyecheck/healthcare/patients/uploads/
-eyecheck/healthcare/uploads/profile/
-eyecheck/admin/uploads/
-eyecheck/admin/uploads/profile/
