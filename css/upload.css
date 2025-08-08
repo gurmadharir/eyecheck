@@ -121,20 +121,20 @@ body.dark select:disabled {
   padding: 30px;
   border-radius: 10px;
   text-align: center;
-  cursor: pointer;
   background: var(--box-bg, #f9f9f9);
   color: var(--text-color, #444);
   transition: background 0.3s;
+  /* layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.upload-box:hover {
-  background-color: var(--hover-bg, #eefdfc);
-}
+.upload-box:hover { background-color: var(--hover-bg, #eefdfc); }
 
-.upload-icon {
-  font-size: 2.5rem;
-  color: var(--primary-color, #00796b);
-}
+
+.upload-icon { font-size: 2.5rem; color: var(--primary-color, #00796b); }
 
 .upload-box span {
   color: var(--primary-color, #00796b);
@@ -166,6 +166,7 @@ body.dark select:disabled {
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  pointer-events: auto;
   transition: background 0.3s;
   align-self: center;
 }
@@ -225,6 +226,53 @@ body.dark select:disabled {
   border-radius: 8px;
   border-left: 5px solid #3498db;
 }
+
+
+.browse-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer; 
+}
+
+#imageInput { display: none !important; }
+
+.take-photo-btn {
+  margin-top: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.take-photo-btn:hover { background-color: #45a049; }
+
+/* Camera modal styling */
+.camera-modal { position: fixed; inset: 0; z-index: 9999; }
+.camera-modal__backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5);
+}
+.camera-modal__content {
+  position: relative; max-width: 520px; margin: 6vh auto; background: #fff;
+  padding: 16px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+}
+#liveVideo {
+  width: 100%; max-height: 60vh; border-radius: 8px; background: #000;
+}
+.camera-actions { display: flex; gap: 10px; margin-top: 8px; }
+.use-photo-btn, .cancel-photo-btn {
+  padding: 8px 12px; border: 0; border-radius: 6px; cursor: pointer;
+}
+.use-photo-btn { background: #007bff; color: #fff; }
+.use-photo-btn:hover { background: #0056b3; }
+.cancel-photo-btn { background: #e0e0e0; color: #333; }
+.cancel-photo-btn:hover { background: #cfcfcf; }
+
+
+/* Dark mode tweaks */
+body.dark .camera-modal__content { background: #2b2b2b; color: #ddd; }
 
 /* ====== Dark Mode ====== */
 body.dark {
