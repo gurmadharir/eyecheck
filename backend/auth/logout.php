@@ -44,6 +44,6 @@ setcookie("eyecheck_role", '', time() - 3600, "/");
 session_destroy();
 
 // ✅ Step 5: Redirect to correct login page
-$redirectPath = "/eyecheck/" . ($role !== 'default' ? "$role/login.php" : "login.php");
+$redirectPath = "/eyecheck/login.php";
 header("Location: $redirectPath");
 exit;
