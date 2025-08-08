@@ -1,0 +1,14 @@
+# Ignore logs
+*.log
+eyecheck/logs/
+
+# Ignore temporary files
+*.tmp
+
+# Ignore images inside uploads folders only
+eyecheck/patient/uploads/
+eyecheck/patient/uploads/profile/
+eyecheck/healthcare/patients/uploads/
+eyecheck/healthcare/uploads/profile/
+eyecheck/admin/uploads/
+eyecheck/admin/uploads/profile/
