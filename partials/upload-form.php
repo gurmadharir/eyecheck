@@ -62,6 +62,8 @@ $disabledAttr = $readonly ? 'disabled' : '';
           <div class="dob-wrapper">
             <input type="date" name="dob" id="dob"
               class="<?= $readonlyClass ?>"
+              min="1900-01-01"
+              max="<?= htmlspecialchars(date('Y-m-d', strtotime('-1 month'))) ?>"
               value="<?= htmlspecialchars($existing_dob) ?>" <?= $readonlyAttr ?> required />
             <i class="fas fa-calendar-alt calendar-icon-right"></i>
           </div>
@@ -90,13 +92,35 @@ $disabledAttr = $readonly ? 'disabled' : '';
 
       <!-- Eye Image Upload -->
       <div class="form-group full-width image-upload-row">
-        <label for="imageInput">Upload Eye Image</label>
-        <label class="upload-box" id="dropArea">
-          <i class="fas fa-cloud-upload-alt upload-icon"></i>
-          <p>Drag & Drop or <span>Browse</span> to Upload</p>
-          <input type="file" name="eye_image" id="imageInput" accept="image/*" style="display: none;" required />
-        </label>
+        <label>Upload Eye Image</label>
+        
+        <div class="upload-box" id="dropArea">
+          <!-- Browse to Upload -->
+          <label class="browse-label">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <p>Drag & Drop or <span>Browse</span> to Upload</p>
+            <input type="file" name="eye_image" id="imageInput" accept="image/*" required />
+          </label>
+
+          <!-- Take Photo Button -->
+          <button id="captureBtn" type="button" class="take-photo-btn">📸 Take Photo</button>
+        </div>
       </div>
+
+      <!-- Camera Modal -->
+      <div id="cameraModal" class="camera-modal" style="display:none;">
+        <div class="camera-modal__backdrop"></div>
+        <div class="camera-modal__content">
+          <h4>Take a Photo</h4>
+          <video id="liveVideo" autoplay playsinline></video>
+          <div class="camera-actions">
+            <button type="button" id="snapBtn" class="use-photo-btn">📸 Capture</button>
+            <button type="button" id="closeCamera" class="cancel-photo-btn">Cancel</button>
+          </div>
+          <canvas id="liveCanvas" style="display:none;"></canvas>
+        </div>
+      </div>
+
 
       <!-- Hidden field for prediction -->
       <input type="hidden" name="diagnosis_result" id="diagnosisResult" />
