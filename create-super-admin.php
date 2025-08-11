@@ -3,7 +3,7 @@ require_once './config/db.php';
 
 // Set super admin details
 $username = 'Super Admin';
-$email = 'eyecheckhealthcare@gmail.com';
+$email = 'visioncare.ai@gmail.com';
 $password = 'EyeCheck@2024'; // You can change this if needed
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 $role = 'admin';
