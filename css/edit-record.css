@@ -80,50 +80,64 @@
   transform: translateY(0);
 }
 
-/* Dark Mode */
-body.dark .edit-report-card {
+/* ===== Dark Mode (theme-init.js) ===== */
+html[data-theme="dark"] .edit-report-card {
   background: #1e1e1e;
 }
 
-body.dark .toast {
+html[data-theme="dark"] .toast {
   background: #26a69a;
   color: #111;
 }
 
 /* Dark Mode for Edit Report Page */
-body.dark .edit-report-card {
+html[data-theme="dark"] .edit-report-card {
   background-color: #1e1e1e;
   color: #eee;
 }
 
-body.dark .edit-report-card h2 {
+html[data-theme="dark"] .edit-report-card h2 {
   color: #ffffff;
 }
 
-body.dark .form-group label {
+html[data-theme="dark"] .form-group label {
   color: #ccc;
 }
 
-body.dark .form-group input,
-body.dark .form-group select {
+html[data-theme="dark"] .form-group input,
+html[data-theme="dark"] .form-group select {
   background-color: #2a2a2a;
   border-color: #444;
   color: #f1f1f1;
 }
 
-body.dark .form-group input::placeholder {
+html[data-theme="dark"] .form-group input::placeholder {
   color: #888;
 }
 
-
-
-body.dark .save-btn {
+html[data-theme="dark"] .save-btn {
   background-color: #26a69a;
   color: #111;
 }
 
-body.dark .toast {
+html[data-theme="dark"] .toast {
   background-color: #26a69a;
   color: #111;
 }
 
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .edit-report-card { width: 75%; }
+}
+
+@media (max-width: 768px) {
+  .edit-report-wrapper { padding: 30px 0; }
+  .edit-report-card { width: 100%; padding: 24px; border-radius: 12px; }
+  .buttons { gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .edit-report-card { padding: 20px; }
+  .buttons { flex-direction: column; }
+  .buttons button { width: 100%; }
+}
