@@ -140,99 +140,100 @@ body {
 }
 
 
-/* DARK THEME */
-body.dark {
+/* DARK THEME (via theme-init.js) */
+html[data-theme="dark"] body {
   background-color: #121212;
   color: #e0e0e0;
 }
 
-body.dark .sidebar {
+html[data-theme="dark"] .sidebar {
   background: linear-gradient(180deg, #1e1e1e, #2c2c2c);
   color: #ffffff;
 }
 
-body.dark .nav-links li a {
+html[data-theme="dark"] .nav-links li a {
   color: #bbb;
 }
 
-body.dark .nav-links li a.active,
-body.dark .nav-links li a:hover {
+html[data-theme="dark"] .nav-links li a.active,
+html[data-theme="dark"] .nav-links li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
-body.dark .main-content {
+html[data-theme="dark"] .main-content {
   background: #181818;
 }
 
-body.dark .top-bar {
+html[data-theme="dark"] .top-bar {
   background: transparent;
   border-bottom: 1px solid #2a2a2a;
 }
 
-body.dark .profile-dropdown {
+html[data-theme="dark"] .profile-dropdown {
   background: #252525;
   border: 1px solid #333;
 }
 
-body.dark .profile-dropdown a {
+html[data-theme="dark"] .profile-dropdown a {
   color: #ddd;
 }
 
-body.dark .profile-dropdown a:hover {
+html[data-theme="dark"] .profile-dropdown a:hover {
   background: #333;
 }
 
-body.dark .chart-card,
-body.dark .stat-card {
+html[data-theme="dark"] .chart-card,
+html[data-theme="dark"] .stat-card {
   background: #1f1f1f;
   color: #eee;
   box-shadow: 0 4px 18px rgba(255, 255, 255, 0.04);
 }
 
-body.dark .stat-card {
+html[data-theme="dark"] .stat-card {
   border-left-color: #00c9a7;
 }
 
-body.dark .stat-card span {
+html[data-theme="dark"] .stat-card span {
   color: #00c9a7;
 }
 
-body.dark .slider {
+html[data-theme="dark"] .slider {
   background-color: #333;
 }
 
-body.dark .switch input:checked + .slider {
+html[data-theme="dark"] .switch input:checked + .slider {
   background-color: #00c9a7;
 }
 
-body.dark .slider::before {
+html[data-theme="dark"] .slider::before {
   background-color: #00c9a7;
 }
 
-body.dark .slider .icon {
+html[data-theme="dark"] .slider .icon {
   color: #fff;
 }
 
-body.dark .profile-pic {
+html[data-theme="dark"] .profile-pic {
   border: 2px solid #26a69a; 
   background-color: #2a2a2a; 
 }
-body.dark .profile-pic:hover {
+html[data-theme="dark"] .profile-pic:hover {
   box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.2);
 }
 
-body.dark .profile-dropdown {
+/* keep both blocks (some files target different shadows) */
+html[data-theme="dark"] .profile-dropdown {
   background: #252525;
   border: 1px solid #333;
   box-shadow: 0 8px 16px rgba(255,255,255,0.05);
 }
 
-body.dark .profile-dropdown a {
+html[data-theme="dark"] .profile-dropdown a {
   color: #eee;
 }
 
-body.dark .profile-dropdown a:hover {
+html[data-theme="dark"] .profile-dropdown a:hover {
   background: #333;
   color: #26a69a;
 }
@@ -257,6 +258,15 @@ body.dark .profile-dropdown a:hover {
 .no-data-placeholder p {
   color: #777;
   font-size: 0.95rem;
+}
+
+/* Dark overrides for empty state */
+html[data-theme="dark"] .no-data-placeholder {
+  border-color: #3a3a3a;
+  background-color: #1f1f1f;
+}
+html[data-theme="dark"] .no-data-placeholder p {
+  color: #cbd5e1;
 }
 
 /* Admin-only custom layout */
@@ -288,4 +298,20 @@ body.dark .profile-dropdown a:hover {
   .stats-grid.admin-layout .stats-row.bottom-row {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
+}
+
+/* Extra responsiveness for charts/cards */
+@media (max-width: 992px) {
+  .charts-top { gap: 20px; }
+  .charts-top .chart-card { flex: 1 1 100%; min-width: 100%; }
+}
+@media (max-width: 768px) {
+  .chart-card canvas { height: 260px !important; max-height: 260px; }
+  .full-width { height: 320px; }
+}
+@media (max-width: 480px) {
+  .chart-card { padding: 16px; }
+  .chart-card h3 { font-size: 1.05em; }
+  .chart-card canvas { height: 220px !important; max-height: 220px; }
+  .full-width { height: 280px; }
 }
