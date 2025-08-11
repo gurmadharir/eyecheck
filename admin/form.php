@@ -21,9 +21,14 @@ $page = 'manage';
 <head>
   <meta charset="UTF-8" />
   <title><?= $isEdit ? 'Edit Staff' : 'Add New Staff' ?> | Admin</title>
-  <link rel="stylesheet" href="../css/global.css" />
-  <link rel="stylesheet" href="../css/theme.css" />
+  
+  <!-- Theme bootstrap CSS -->
+  <script src="../js/theme-init.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/global.css" />
   <style>
     .form-group { margin-bottom: 15px; }
     .hidden { display: none; }
@@ -131,7 +136,8 @@ $page = 'manage';
   <?php unset($_SESSION['message'], $_SESSION['msg_type']); ?>
 <?php endif; ?>
 
-<script src="../js/theme.js"></script>
+<script src="../js/theme-toggle.js" defer></script>
+<script src="../js/sidebar-toggle.js" defer></script>
 <script src="../js/admin/form.js"></script>
 
 </body>
