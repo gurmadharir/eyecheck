@@ -36,12 +36,14 @@ if (!empty($_SESSION['profile_image']) && in_array($role, ['admin', 'healthcare'
   <?php endif; ?>
 
   <div style="display: flex; align-items: center; gap: 20px;">
-    <div class="theme-toggle">
-      <label class="switch">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider"><i class="icon">🌙</i></span>
-      </label>
-    </div>
+      <button id="themeToggle"
+        class="btn btn-ghost rounded-pill px-3 theme-toggle-btn"
+        type="button"
+        aria-label="Toggle theme"
+        data-theme-toggle>
+        <i class="bi bi-moon-stars" aria-hidden="true"></i>
+      </button>
+
 
     <div class="profile">
       <img src="<?= htmlspecialchars($profileImage, ENT_QUOTES, 'UTF-8') ?>" 
