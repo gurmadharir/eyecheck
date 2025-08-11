@@ -1,80 +1,77 @@
 <?php
+// One universal reset handler (no role, no email)
+declare(strict_types=1);
+
 require_once '../../config/db.php';
 require_once __DIR__ . '/../helpers/log-activity.php';
 header('Content-Type: application/json');
 
-// 🟡 Role-based session setup
-$role = $_POST['role'] ?? 'patient';
-if ($role === 'patient') session_name('eyecheck_patient');
-elseif ($role === 'healthcare') session_name('eyecheck_healthcare');
-elseif ($role === 'admin') session_name('eyecheck_admin');
-session_start();
-
-ini_set('display_errors', 1);
-ini_set('log_errors', 1);
+// Log errors to file (hide on screen)
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
 ini_set('error_log', __DIR__ . '/../../logs/reset_errors.log');
-error_reporting(E_ALL);
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        throw new Exception('Invalid request method');
+        throw new Exception('Invalid request method.');
     }
 
-    $token = trim($_POST['token'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $new_password = trim($_POST['new_password'] ?? '');
-    $confirm_password = trim($_POST['confirm_password'] ?? '');
+    // === Inputs ===
+    $token             = trim($_POST['token'] ?? '');
+    $new_password      = trim($_POST['new_password'] ?? '');
+    $confirm_password  = trim($_POST['confirm_password'] ?? '');
 
-    if (!$token || !$email) {
-        throw new Exception('Missing reset token or email.');
+    // === Validate ===
+    if ($token === '' || strlen($token) < 40) {
+        throw new Exception('Invalid or missing reset token.');
     }
-
+    if ($new_password === '' || $confirm_password === '') {
+        throw new Exception('Password fields are required.');
+    }
     if ($new_password !== $confirm_password) {
         throw new Exception('Passwords do not match.');
     }
-
-    if (strlen($new_password) < 6) {
-        throw new Exception('Password must be at least 6 characters.');
+    if (strlen($new_password) < 8) {
+        throw new Exception('Password must be at least 8 characters.');
     }
-
-    $weakPasswords = ['123456', 'password', '123456789', 'qwerty', 'abc123'];
-    if (in_array(strtolower($new_password), $weakPasswords)) {
+    $weak = ['123456', 'password', '123456789', 'qwerty', 'abc123'];
+    if (in_array(strtolower($new_password), $weak, true)) {
         throw new Exception('Weak password! Choose a stronger one.');
     }
 
-    // ✅ Get user by token only
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE reset_token = ?");
+    // === Validate token + expiry using DB UTC clock ===
+    // Make sure your "forgot" script sets: reset_expires = DATE_ADD(UTC_TIMESTAMP(), INTERVAL 1 HOUR)
+    $stmt = $pdo->prepare("
+        SELECT id, username, role
+        FROM users
+        WHERE reset_token = ?
+          AND reset_expires > UTC_TIMESTAMP()
+        LIMIT 1
+    ");
     $stmt->execute([$token]);
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        throw new Exception('Invalid or expired reset link.');
+        throw new Exception('This reset link is invalid or has expired. Please request a new one.');
     }
 
-    // ✅ Validate token expiration
-    $now = new DateTime('now', new DateTimeZone('Africa/Mogadishu'));
-    $expires = new DateTime($user['reset_expires'], new DateTimeZone('Africa/Mogadishu'));
+    // === Update password & clear token ===
+    $hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $upd = $pdo->prepare("
+        UPDATE users
+        SET password = ?, reset_token = NULL, reset_expires = NULL
+        WHERE id = ?
+    ");
+    $upd->execute([$hash, $user['id']]);
 
-    if ($now > $expires) {
-        throw new Exception('This reset link has expired. Please request a new one.');
-    }
-
-    if (strtolower($email) !== strtolower($user['email'])) {
-        throw new Exception('Email does not match the reset request.');
-    }
-
-    $hashed = password_hash($new_password, PASSWORD_DEFAULT);
-    $update = $pdo->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
-    $update->execute([$hashed, $user['id']]);
-
-    logActivity(
-    $user['id'],
-    $user['role'],
-    'RESET_PASSWORD',
-    ucfirst($user['role']) . " '{$user['username']}' reset their password."
-    );
+    // Optional audit log (best-effort)
+    try {
+        logActivity((int)$user['id'], (string)($user['role'] ?? 'unknown'), 'RESET_PASSWORD',
+            "User '{$user['username']}' reset their password.");
+    } catch (Throwable $t) { /* ignore logging errors */ }
 
     echo json_encode(['success' => true, 'message' => 'Password reset successfully. You can now log in.']);
-} catch (Exception $e) {
+} catch (Throwable $e) {
+    error_log('Reset error: ' . $e->getMessage());
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
