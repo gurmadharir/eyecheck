@@ -1,38 +1,55 @@
+// === EyeCheck Upload Flow (safe + null-guarded) ===
 document.addEventListener("DOMContentLoaded", () => {
-  let imageInput  = document.getElementById("imageInput");
-  const previewImage = document.getElementById("previewImage");
-  const removeImageBtn = document.getElementById("removeImage");
-  const loadingSpinner = document.getElementById("loadingSpinner");
-  const resultBox = document.getElementById("result");
-  const form = document.getElementById("uploadForm");
-  const saveBtn = form.querySelector('button[type="submit"]');
+  // Resolve app base ('' or '/eyecheck') from current path
+  const BASE = (() => {
+    const m = location.pathname.match(/^\/[^/]+/);
+    return m ? m[0] : "";
+  })();
+
+  // --- DOM refs ---
+  let imageInput   = document.getElementById("imageInput");
+  const previewImg = document.getElementById("previewImage");
+  const removeBtn  = document.getElementById("removeImage");
+  const spinner    = document.getElementById("loadingSpinner");
+  const resultBox  = document.getElementById("result");
+  const form       = document.getElementById("uploadForm");
   const diagnosisInput = document.getElementById("diagnosisResult");
-  const toast = document.getElementById("toast");
-  const roleInput = document.querySelector('input[name="role"]');
-  const captureBtn  = document.getElementById("captureBtn");
-  let cameraInput = document.getElementById("cameraInput");
-  // === Live camera (getUserMedia) ===
+  const toastEl    = document.getElementById("toast");
+  const roleInput  = document.querySelector('input[name="role"]');
+  const captureBtn = document.getElementById("captureBtn");
+  let cameraInput  = document.getElementById("cameraInput");
+
+  // Live camera elements
   const cameraModal = document.getElementById("cameraModal");
   const liveVideo   = document.getElementById("liveVideo");
   const liveCanvas  = document.getElementById("liveCanvas");
   const snapBtn     = document.getElementById("snapBtn");
   const closeCamera = document.getElementById("closeCamera");
+
+  // Guard critical elements
+  if (!form) { console.error("uploadForm not found"); return; }
+  if (!imageInput) { console.error("imageInput not found"); return; }
+
+  // Use server handler as action to avoid accidental create.php posts
+  if (!form.getAttribute("action")) {
+    form.setAttribute("action", `${BASE}/eyecheck/backend/shared/upload-handler.php`.replace(`${BASE}${BASE}`, BASE));
+  }
+
   let camStream = null;
   let currentToken = 0;
 
-
-  // === Factor your file handling into a function so both inputs use it ===
+  // --- Core: process file selected or captured ---
   function processFile(file) {
     if (!file) return;
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    if (!allowedTypes.includes(file.type)) {
+    const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if (!allowed.includes(file.type)) {
       showToast("Please select a valid image file (JPG, PNG, GIF, WEBP).", "error");
-      hardResetSelection();
+      hardReset();
       return;
     }
 
-    // Bump token to identify this run
+    // Token guards async pipeline
     const token = ++currentToken;
 
     // Put file into the real input so backend submit works
@@ -40,68 +57,65 @@ document.addEventListener("DOMContentLoaded", () => {
     dt.items.add(file);
     imageInput.files = dt.files;
 
-    saveBtn.disabled = true;
-    resultBox.textContent = "";
-    diagnosisInput.value = "";
+    // Reset UI
+    disableSave(true);
+    resultBox && (resultBox.textContent = "");
+    if (diagnosisInput) diagnosisInput.value = "";
 
+    // Preview
     const reader = new FileReader();
     reader.onload = (e) => {
-      if (token !== currentToken) return;          // user removed/replaced meanwhile
-      previewImage.src = e.target.result;
-      previewImage.style.display = "block";
-      removeImageBtn.style.display = "inline-block";
+      if (token !== currentToken) return;
+      if (previewImg) {
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+      }
+      if (removeBtn) removeBtn.style.display = "inline-block";
       showSpinner();
     };
     reader.readAsDataURL(file);
 
-    const formData = new FormData();
-    formData.append("file", file);
+    // Call FastAPI predictor
+    const fd = new FormData();
+    fd.append("file", file);
 
-    fetch("http://127.0.0.1:8000/predict", { method: "POST", body: formData })
-      .then((res) => res.json())
+    fetch("http://127.0.0.1:8000/predict", { method: "POST", body: fd })
+      .then((r) => r.json())
       .then((data) => {
         if (token !== currentToken) return;
 
-        const rawResult = data.result || "";
-        const cleaned = cleanText(rawResult);
-        diagnosisInput.value = cleaned;
+        const raw = data.result || "";
+        const cleaned = cleanText(raw);
+        if (diagnosisInput) diagnosisInput.value = cleaned;
 
-        // Show loader first
         showSpinner();
-        resultBox.textContent = ""; // keep empty for now
+        resultBox && (resultBox.textContent = "");
 
         setTimeout(() => {
           hideSpinner();
-          resultBox.textContent = rawResult;
+          resultBox && (resultBox.textContent = raw);
 
           if (!["Conjunctivitis", "NonConjunctivitis"].includes(cleaned)) {
-            saveBtn.disabled = true;
-            showToast(rawResult || "Invalid prediction. Please try a clear human eye image.", "error");
+            disableSave(true);
+            showToast(raw || "Invalid prediction. Please try a clear human eye image.", "error");
             return;
           }
 
-          saveBtn.disabled = false;
+          disableSave(false);
           showToast("Prediction ready. You can save.", "success");
-        }, 3000); // 3 second delay
+        }, 1000);
       })
       .catch((err) => {
         if (token !== currentToken) return;
         hideSpinner();
-        console.error("🔥 Prediction error:", err);
+        console.error("Prediction error:", err);
         showToast("Prediction failed. Check FastAPI server.", "error");
       });
   }
 
-  removeImageBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    hardResetSelection();
-  });
-
-  function hardResetSelection() {
+  // --- Remove/reset selection ---
+  function hardReset() {
     currentToken++;
-
-    // Replace inputs with fresh nodes (no residual file)
     imageInput = resetFileInput(
       document.getElementById("imageInput"),
       () => processFile(imageInput.files[0])
@@ -113,44 +127,39 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    // Stop camera & close modal
-    stopCamera?.();
+    stopCamera();
 
-    // Clear UI
-    previewImage.src = "";
-    previewImage.style.display = "none";
-    removeImageBtn.style.display = "none";
-    resultBox.textContent = "";
-    diagnosisInput.value = "";
-    saveBtn.disabled = true;
-
-    document.body.classList.remove("has-image");
+    if (previewImg) {
+      previewImg.src = "";
+      previewImg.style.display = "none";
+    }
+    if (removeBtn) removeBtn.style.display = "none";
+    resultBox && (resultBox.textContent = "");
+    if (diagnosisInput) diagnosisInput.value = "";
+    disableSave(true);
     hideSpinner();
   }
 
-  
-  // Helper
-  function resetFileInput(inputEl, onChangeHandler) {
-    if (!inputEl) return null;                 // guard if element missing
-    const newEl = inputEl.cloneNode(true);     // keeps id/name/accept/required
-    inputEl.parentNode.replaceChild(newEl, inputEl);
-    if (onChangeHandler) newEl.addEventListener("change", onChangeHandler);
-    return newEl;
+  // --- Helpers ---
+  function resetFileInput(inputEl, onChange) {
+    if (!inputEl) return null;
+    const fresh = inputEl.cloneNode(true);
+    inputEl.parentNode.replaceChild(fresh, inputEl);
+    if (onChange) fresh.addEventListener("change", onChange);
+    return fresh;
   }
-    
-  async function openCamera() {
-    try {
-      // Prefer back camera on mobile; desktop will pick any camera
-      camStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "environment" } },
-        audio: false
+
+  function openCamera() {
+    navigator.mediaDevices?.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false })
+      .then((stream) => {
+        camStream = stream;
+        if (liveVideo) liveVideo.srcObject = stream;
+        if (cameraModal) cameraModal.style.display = "block";
+      })
+      .catch((err) => {
+        console.error("Camera error:", err);
+        showToast("Unable to access camera. Check permissions.", "error");
       });
-      liveVideo.srcObject = camStream;
-      cameraModal.style.display = "block";
-    } catch (err) {
-      console.error("Camera error:", err);
-      showToast("Unable to access camera. Check permissions.", "error");
-    }
   }
 
   function stopCamera() {
@@ -158,119 +167,23 @@ document.addEventListener("DOMContentLoaded", () => {
       camStream.getTracks().forEach(t => t.stop());
       camStream = null;
     }
-    liveVideo.srcObject = null;
-    cameraModal.style.display = "none";
+    if (liveVideo) liveVideo.srcObject = null;
+    if (cameraModal) cameraModal.style.display = "none";
   }
 
-  // Open modal on Take Photo (live)
-  captureBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // If getUserMedia not supported, fallback to the hidden camera input trick
-    if (!navigator.mediaDevices?.getUserMedia) {
-      const fallback = document.getElementById("cameraInput");
-      if (fallback) fallback.click();
-      else showToast("Camera not supported on this browser.", "error");
-      return;
-    }
-    openCamera();
-  });
-
-// Capture current frame → File → your processFile()
-snapBtn?.addEventListener("click", async () => {
-  if (!liveVideo.videoWidth || !liveVideo.videoHeight) {
-    showToast("Camera not ready yet. Please wait a second.", "error");
-    return;
-  }
-
-  const w = liveVideo.videoWidth;
-  const h = liveVideo.videoHeight;
-  liveCanvas.width = w;
-  liveCanvas.height = h;
-  const ctx = liveCanvas.getContext("2d");
-  ctx.drawImage(liveVideo, 0, 0, w, h);
-
-  liveCanvas.toBlob((blob) => {
-    if (!blob) {
-      showToast("Failed to capture image. Try again.", "error");
-      return;
-    }
-    const file = new File([blob], `capture_${Date.now()}.jpg`, { type: "image/jpeg" });
-    processFile(file);           // 🔁 re-use your existing pipeline
-    stopCamera();                // close modal & stop camera
-  }, "image/jpeg", 0.92);
-});
-
-  // Close modal
-  closeCamera?.addEventListener("click", stopCamera);
-  // Safety: stop camera if user navigates away
-  window.addEventListener("beforeunload", stopCamera);
-
-  // Use processFile for BOTH sources
-  imageInput.addEventListener("change", () => processFile(imageInput.files[0]));
-
-  // 📸 Take Photo: open the hidden camera input
-  cameraInput.addEventListener("change", () => processFile(cameraInput.files[0]));
-
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const raw = diagnosisInput.value.trim();
-    const diagnosis = cleanText(raw);
-    if (!["Conjunctivitis", "NonConjunctivitis"].includes(diagnosis)) {
-      showToast("Invalid diagnosis result. Upload rejected.", "error");
-      return;
-    }
-
-    const formData = new FormData(form);
-    saveBtn.disabled = true;
-
-    fetch("/eyecheck/backend/shared/upload-handler.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("💾 Upload Response:", data);
-        const type = data.success ? "success" : "error";
-        showToast(data.message || "Saved successfully", type);
-        saveBtn.disabled = false;
-
-        if (data.success) {
-          setTimeout(() => {
-            const role = roleInput?.value?.trim() || "";
-            if (role === "patient") {
-              window.location.href = "/eyecheck/patient/past-uploads.php";
-            } else if (role === "healthcare") {
-              window.location.href = "/eyecheck/healthcare/patients.php";
-            }
-          }, 1000); // wait 1s to show toast
-        }
-      })
-      .catch((err) => {
-        console.error("💥 Upload Error:", err);
-        showToast("Upload failed.", "error");
-        saveBtn.disabled = false;
-      });
-  });
-
-  function showSpinner() {
-    loadingSpinner.style.display = "block";
-  }
-
-  function hideSpinner() {
-    loadingSpinner.style.display = "none";
-  }
+  function showSpinner()  { if (spinner) spinner.style.display = "block"; }
+  function hideSpinner()  { if (spinner) spinner.style.display = "none"; }
+  function disableSave(v) { if (saveBtn) saveBtn.disabled = !!v; }
 
   function showToast(message, type = "error") {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.style.backgroundColor = type === "success" ? "#2ecc71" : "#e74c3c";
-    toast.style.opacity = "1";
-    toast.style.pointerEvents = "auto";
+    if (!toastEl) return;
+    toastEl.textContent = message;
+    toastEl.style.backgroundColor = type === "success" ? "#2ecc71" : "#e74c3c";
+    toastEl.style.opacity = "1";
+    toastEl.style.pointerEvents = "auto";
     setTimeout(() => {
-      toast.style.opacity = "0";
-      toast.style.pointerEvents = "none";
+      toastEl.style.opacity = "0";
+      toastEl.style.pointerEvents = "none";
     }, 4000);
   }
 
@@ -282,4 +195,103 @@ snapBtn?.addEventListener("click", async () => {
       .replace(/[^a-zA-Z]/g, "")
       .trim();
   }
+
+  // --- Events ---
+  // Image picker
+  imageInput.addEventListener("change", () => processFile(imageInput.files[0]));
+
+  // Optional camera file input (hidden)
+  cameraInput?.addEventListener("change", () => processFile(cameraInput.files[0]));
+
+  // Live camera open
+  captureBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!navigator.mediaDevices?.getUserMedia) {
+      // Fallback to hidden file input
+      if (cameraInput) cameraInput.click();
+      else showToast("Camera not supported on this browser.", "error");
+      return;
+    }
+    openCamera();
+  });
+
+  // Live camera snapshot
+  snapBtn?.addEventListener("click", () => {
+    if (!liveVideo || !liveCanvas) return;
+    if (!liveVideo.videoWidth || !liveVideo.videoHeight) {
+      showToast("Camera not ready yet. Please wait a second.", "error");
+      return;
+    }
+    const w = liveVideo.videoWidth, h = liveVideo.videoHeight;
+    liveCanvas.width = w; liveCanvas.height = h;
+    const ctx = liveCanvas.getContext("2d");
+    ctx.drawImage(liveVideo, 0, 0, w, h);
+    liveCanvas.toBlob((blob) => {
+      if (!blob) { showToast("Failed to capture image. Try again.", "error"); return; }
+      const file = new File([blob], `capture_${Date.now()}.jpg`, { type: "image/jpeg" });
+      processFile(file);
+      stopCamera();
+    }, "image/jpeg", 0.92);
+  });
+
+  // Close camera
+  closeCamera?.addEventListener("click", stopCamera);
+  window.addEventListener("beforeunload", stopCamera);
+
+  // Remove image
+  removeBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    hardReset();
+  });
+
+  // Submit (AJAX)
+  const saveBtn = form.querySelector('button[type="submit"]');
+  console.log("submit listener attached");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Validate prediction
+    const raw = (diagnosisInput?.value || "").trim();
+    const diagnosis = cleanText(raw);
+    if (!["Conjunctivitis", "NonConjunctivitis"].includes(diagnosis)) {
+      showToast("Invalid diagnosis result. Upload rejected.", "error");
+      return;
+    }
+
+    const formData = new FormData(form);
+    disableSave(true);
+
+    // Always call backend handler (avoid create.php)
+    const handlerUrl = `${BASE}/eyecheck/backend/shared/upload-handler.php`.replace(`${BASE}${BASE}`, BASE);
+
+    fetch(handlerUrl, { method: "POST", body: formData })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Upload Response:", data);
+        const type = data.success ? "success" : "error";
+        showToast(data.message || (data.success ? "Saved successfully" : "Save failed"), type);
+        disableSave(false);
+
+        if (data.success) {
+          setTimeout(() => {
+            // Prefer server-provided redirect; fallback to role-based within BASE
+            const serverUrl = (data.redirect && data.redirect.trim()) ? data.redirect.trim() : "";
+            const role = (roleInput?.value || "").trim();
+            const fallback = role === "patient"
+              ? `${BASE}/patient/past-uploads.php`
+              : `${BASE}/healthcare/patients.php`;
+            const target = serverUrl || fallback;
+            console.log("➡️ Navigating to:", target);
+            window.location.assign(target);
+          }, 800);
+        }
+      })
+      .catch((err) => {
+        console.error("Upload Error:", err);
+        showToast("Upload failed.", "error");
+        disableSave(false);
+      });
+  });
 });
