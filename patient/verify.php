@@ -13,6 +13,10 @@ function showPage($type, $message) {
 <head>
   <meta charset="UTF-8">
   <title>$title</title>
+  
+  <!-- Theme bootstrap CSS -->
+  <script src="../js/theme-init.js"></script>
+
   <link rel="stylesheet" href="../css/auth.css">
 </head>
 <body>
