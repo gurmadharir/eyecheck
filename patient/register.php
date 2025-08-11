@@ -8,6 +8,10 @@ session_start();
 <head>
   <meta charset="UTF-8" />
   <title>Patient Registration</title>
+    
+  <!-- Theme bootstrap CSS -->
+  <script src="../js/theme-init.js"></script>
+
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/auth.css" />
 </head>
@@ -22,8 +26,6 @@ session_start();
       <?php include '../partials/auth/auth-form-register.php'; ?>
     </div>
   </div>
-
-  <!-- <div id="toast" class="toast"></div> -->
 
   <script src="../js/auth/register.js"></script>
 </body>
