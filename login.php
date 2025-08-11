@@ -4,6 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login | EyeCheck</title>
+  
+  <!-- Theme bootstrap CSS -->
+  <script src="js/theme-init.js"></script>
+
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/auth.css" />
 </head>
