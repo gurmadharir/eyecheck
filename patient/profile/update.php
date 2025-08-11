@@ -27,10 +27,15 @@ if (!$user || $user['role'] !== 'patient') {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Update Profile | Patient</title>
-  <link rel="stylesheet" href="../../css/global.css" />
-  <link rel="stylesheet" href="../../css/theme.css" />
+
+  <!-- Theme bootstrap CSS -->
+  <script src="../../js/theme-init.js"></script>
+
   <link rel="stylesheet" href="../../css/profile.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../../css/global.css" />
 </head>
 <body>
 
@@ -46,7 +51,8 @@ if (!$user || $user['role'] !== 'patient') {
   </div>
 </div>
 
+<script src="../../js/theme-toggle.js" defer></script>
+<script src="../../js/sidebar-toggle.js" defer></script>
 <script>const userRole = "<?php echo htmlspecialchars($role); ?>";</script>
-<script src="../../js/theme.js"></script>
 </body>
 </html>
