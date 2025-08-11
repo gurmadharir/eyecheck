@@ -1,4 +1,5 @@
 <?php
+ob_clean(); 
 header('Content-Type: application/json');
 require_once('../../helpers/auth-check.php');
 requireRole('admin');
