@@ -1,4 +1,4 @@
-<form id="register-form" class="auth-form" style="width: 350px;">
+<form id="register-form" class="auth-form" style="max-width: 350px; padding: 35px;">
   <h2 class="animated-text animated-signup">Create Account</h2>
   <input type="text" name="full_name" placeholder="Full Name" required />
   <input type="text" name="username" placeholder="Username" required />
@@ -10,7 +10,7 @@
   </div>
   
   <button type="submit">Sign Up</button>
-  <p>Already have an account? <a href="login.php">Sign in</a></p>
+  <p>Already have an account? <a href="/eyecheck/login.php">Sign in</a></p>
 </form>
 
 <!-- Toast -->
