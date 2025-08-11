@@ -121,19 +121,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const createdTimeStr = createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).toLowerCase();
 
 
-      const mailBtn = `<a href="#" class="action-btn" data-id="${item.id}" data-email="${item.email}" data-action="send-email" title="Send Email">
+      const mailBtn = `<a href="#" class="action-btn" data-id="${item.user_id || item.id}" data-email="${item.email}" data-action="send-email" title="Send Email">
                           <i class="fas fa-envelope" style="opacity: 0.7;"></i>
                       </a>`;
 
-      const viewBtn = `<a href="/eyecheck/admin/patients/view.php?id=${item.id}" class="action-btn" title="View Details">
+      const viewBtn = `<a href="/eyecheck/admin/patient/view.php?id=${item.user_id || item.id}" class="action-btn" title="View Details">
                           <i class="fas fa-eye" style="opacity: 0.7;"></i>
                        </a>`;
 
-      const deleteBtn = filterValue !== "pending"
-        ? `<a class="action-btn" data-id="${item.user_id}" data-role="${item.role || ''}" data-action="delete" title="Delete">
+      // Hide delete for both pending and flagged; show only on the default Patients list
+      const deleteBtn = (filterValue === "pending" || filterValue === "flagged")
+        ? ''
+        : `<a class="action-btn" data-id="${item.user_id}" data-role="${item.role || ''}" data-action="delete" title="Delete">
             <i class="fas fa-trash-alt" style="opacity: 0.7;"></i>
-          </a>` 
-        : '';
+          </a>`;
+
 
       let rowHtml = `
         <tr>
@@ -173,6 +175,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${warnedTimes}</td>
           <td>${lastWarned}</td>
           <td>${viewBtn}${mailBtn}${deleteBtn}</td>
+        `;
+      }else {
+        // ✅ DEFAULT (Patients): Registered + Actions
+        rowHtml += `
+          <td>${createdDateStr} <small style="font-weight:normal; font-size:0.8em; color:#666;">${createdTimeStr}</small></td>
+          <td>${(config.showViewButton !== false ? viewBtn : '')}${deleteBtn}</td>
         `;
       }
 
@@ -240,67 +248,57 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function openSendEmailModal(id, email) {
-    const overlay = document.querySelector(".delete-modal-overlay");
-    const modal = overlay.querySelector(".delete-modal");
-    const title = modal.querySelector("h2");
-    const message = modal.querySelector("p");
-    const confirmBtn = modal.querySelector(".delete-confirm-btn");
-    const cancelBtn = modal.querySelector(".cancel-btn");
-    const iconEl = modal.querySelector('.delete-icon i');
+function openSendEmailModal(id, email) {
+  const overlay   = document.querySelector(".delete-modal-overlay");
+  const modal     = overlay.querySelector(".delete-modal");
+  const title     = modal.querySelector("h2");
+  const message   = modal.querySelector("p");
+  const confirmBtn= modal.querySelector(".delete-confirm-btn");
+  const cancelBtn = modal.querySelector(".cancel-btn");
+  const iconEl    = modal.querySelector('.delete-icon i');
 
-    const currentPage = document.getElementById("pageTitle")?.textContent?.toLowerCase();
-    const isPatientPage = currentPage?.includes("patients");
+  // Envelope icon (green)
+  iconEl.className = 'fas fa-envelope';
+  iconEl.style.color = '#00c776';
+  iconEl.style.fontSize = '40px';
 
-    // Set to envelope icon for mail
-    iconEl.className = 'fas fa-envelope';
-    iconEl.style.color = '#00c776';
-    iconEl.style.fontSize = '40px';
+  title.textContent = "Confirm Send Email";
+  message.innerHTML = `Are you sure you want to send an email to <strong>${email}</strong>?`;
+  confirmBtn.textContent = "Send Email";
 
-    title.textContent = "Confirm Send Email";
-    message.innerHTML = isPatientPage
-      ? `Are you sure to send a healthcare warning email to <strong>${email}</strong>?`
-      : `Are you sure to send a reminder email to <strong>${email}</strong>?`;
+  // Rebind cleanly
+  confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+  const newConfirmBtn = modal.querySelector(".delete-confirm-btn");
+  newConfirmBtn.classList.remove("delete-btn");
+  newConfirmBtn.style.backgroundColor = "#00c776";
+  newConfirmBtn.style.color = "#fff";
 
-    confirmBtn.textContent = "Send Email";
+  // ✅ Detect filter value (pending vs flagged)
+  const filterValue = document.getElementById(config.filterId)?.value || "";
+  const apiEndpoint = filterValue === "flagged"
+    ? "/eyecheck/backend/admin/mail/send-patient-warning-email.php"
+    : "/eyecheck/backend/admin/mail/send-reminder-email.php";
 
-    // Clone and rebind
-    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
-    const newConfirmBtn = modal.querySelector(".delete-confirm-btn");
-
-    // ✅ Set green style after defining it
-    newConfirmBtn.classList.remove("delete-btn");
-    newConfirmBtn.style.backgroundColor = "#00c776"; 
-    newConfirmBtn.style.color = "#fff";
-
-    newConfirmBtn.onclick = () => {
-      newConfirmBtn.disabled = true;
-      showLoading(true);
-
-      const apiEndpoint = isPatientPage
-        ? "/eyecheck/backend/admin/mail/send-patient-warning-email.php"
-        : "/eyecheck/backend/admin/mail/send-reminder-email.php";
+  newConfirmBtn.onclick = () => {
+    newConfirmBtn.disabled = true;
+    showLoading(true);
 
     fetch(apiEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ user_id: id }),
-        credentials: "include"
-      })
-      .then(async (res) => {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ user_id: id }),
+      credentials: "include"
+    })
+    .then(async (res) => {
       showLoading(false);
-
-      const text = await res.text();
-      let data;
       try {
-        data = JSON.parse(text);
-      } catch (err) {
-        console.error("❌ Invalid JSON:", text);
+        const data = await res.json();
+        showToast(data.message || "Email sent successfully!", data.success ? "success" : "error");
+      } catch {
+        const raw = await res.text();
+        console.error("Non-JSON response:", raw);
         showToast("Unexpected server response.", "error");
-        return;
       }
-
-      showToast(data.message || "Email sent successfully!", data.success ? "success" : "error");
       overlay.classList.remove("active");
       newConfirmBtn.disabled = false;
     })
@@ -311,15 +309,12 @@ document.addEventListener("DOMContentLoaded", () => {
       overlay.classList.remove("active");
       newConfirmBtn.disabled = false;
     });
+  };
 
-    };
+  cancelBtn.onclick = () => overlay.classList.remove("active");
+  overlay.classList.add("active");
+}
 
-    cancelBtn.onclick = () => {
-      overlay.classList.remove("active");
-    };
-
-    overlay.classList.add("active");
-  }
 
 
 
