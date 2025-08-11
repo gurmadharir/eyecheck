@@ -225,29 +225,47 @@
   }
 }
 
-/* ========= Dark Mode ========= */
-body.dark .report-preview {
+/* Extra small improvements */
+@media (max-width: 560px) {
+  .report-preview { width: 96%; padding: 28px; }
+  .image-wrapper { max-height: 360px; }
+}
+@media (max-width: 420px) {
+  .report-preview { width: 98%; padding: 22px; }
+  .image-wrapper { max-height: 300px; }
+}
+
+/* ========= Dark Mode (via theme-init.js) ========= */
+html[data-theme="dark"] .report-preview {
   background: #1e1e1e;
   color: #ddd;
 }
 
-body.dark .report-logo h1,
-body.dark .report-title,
-body.dark .consultation strong,
-body.dark .signed {
+html[data-theme="dark"] .report-logo h1,
+html[data-theme="dark"] .report-title,
+html[data-theme="dark"] .consultation strong,
+html[data-theme="dark"] .signed {
   color: #26a69a;
 }
 
-body.dark .report-table th,
-body.dark .report-table td {
+html[data-theme="dark"] .report-table th,
+html[data-theme="dark"] .report-table td {
   background: #2c2c2c;
   color: #eee;
 }
 
-body.dark .footer-note {
+html[data-theme="dark"] .footer-note {
   color: #aaa;
 }
 
-body.dark .report-logo img {
+html[data-theme="dark"] .report-logo img {
   filter: brightness(0) invert(1);
 }
+
+/* Subtle border tone for image in dark */
+html[data-theme="dark"] .image-wrapper img {
+  border-color: #2d3a4b;
+}
+
+html[data-theme="dark"] .main-content { background:#181818; }
+html[data-theme="dark"] .sidebar { background: linear-gradient(180deg,#1e1e1e,#2c2c2c); color:#fff; }
