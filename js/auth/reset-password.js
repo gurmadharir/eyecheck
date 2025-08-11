@@ -1,4 +1,3 @@
-console.log('Reset JS loaded');
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('reset-form');
@@ -54,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="emoji">🔒✅</div>
             <h2>Password Reset</h2>
             <p>${result.message}</p>
-            <a href="login.php" class="btn">Go to Login</a>
+            <br>
+            <a href="login.php" class="logout-btn">Go to Login</a>
           </div>
         `;
       } else {
