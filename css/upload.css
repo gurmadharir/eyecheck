@@ -47,15 +47,15 @@ input,
 select {
   padding: 10px 12px;
   font-size: 0.95rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border, #ccc);
   border-radius: 8px;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--input-bg, #fff);
+  color: var(--input-fg, #333);
   box-sizing: border-box;
   width: 100%;
 }
 
-/* Select Dropdown Custom Arrow */
+/* Select Dropdown Custom Arrow (light default) */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
@@ -69,7 +69,7 @@ select {
 input[type="date"] {
   font-size: 15px;
   border-radius: 6px;
-  border: 1px solid var(--border-color, #ccc);
+  border: 1px solid var(--border-color, var(--input-border, #ccc));
   background-color: var(--input-bg, #fff);
   color: var(--text-color, #333);
   width: 100%;
@@ -83,13 +83,6 @@ select:disabled {
   color: #333 !important;
   border-color: #aaa;
   cursor: not-allowed;
-}
-
-body.dark .readonly-input,
-body.dark input[readonly],
-body.dark select:disabled {
-  background-color: #888 !important;
-  color: #000 !important;
 }
 
 /* Date icon wrapper */
@@ -107,13 +100,8 @@ body.dark select:disabled {
 }
 
 /* ====== Upload Section ====== */
-.full-width {
-  grid-column: span 2;
-}
-
-.image-upload-row {
-  padding-top: 30px;
-}
+.full-width { grid-column: span 2; }
+.image-upload-row { padding-top: 30px; }
 
 .upload-box {
   border: 2px dashed var(--primary-color, #00796b);
@@ -122,16 +110,13 @@ body.dark select:disabled {
   text-align: center;
   background: var(--box-bg, #f9f9f9);
   color: var(--text-color, #444);
-  transition: background 0.3s;
-  /* layout */
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
-
 .upload-box:hover { background-color: var(--hover-bg, #eefdfc); }
-
 
 .upload-icon { font-size: 2.5rem; color: var(--primary-color, #00796b); }
 
@@ -147,6 +132,11 @@ body.dark select:disabled {
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  background: var(--preview-bg, transparent);
+  border: 1px solid var(--preview-border, transparent);
+  border-radius: 10px;
+  padding: var(--preview-pad, 0);
+  transition: background .25s, border-color .25s;
 }
 
 .image-preview img {
@@ -169,10 +159,7 @@ body.dark select:disabled {
   transition: background 0.3s;
   align-self: center;
 }
-
-#removeImage:hover {
-  background: var(--danger-hover, #b71c1c);
-}
+#removeImage:hover { background: var(--danger-hover, #b71c1c); }
 
 /* ====== Buttons ====== */
 .upload-btn {
@@ -188,10 +175,7 @@ body.dark select:disabled {
   transition: background-color 0.3s;
   width: 100%;
 }
-
-.upload-btn:hover {
-  background-color: var(--primary-hover, #005f56);
-}
+.upload-btn:hover { background-color: var(--primary-hover, #005f56); }
 
 /* Spinner Loader */
 .spinner-container {
@@ -209,31 +193,27 @@ body.dark select:disabled {
   animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 .prediction-result {
   margin-top: 15px;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
-  color: #ddd;
-  background-color: #2d2d2d;
+  color: var(--pred-fg, #0f172a);
+  background-color: var(--pred-bg, #eef6ff);
   padding: 10px 16px;
   border-radius: 8px;
-  border-left: 5px solid #3498db;
+  border-left: 5px solid var(--pred-accent, #3498db);
 }
 
-
+/* File input label */
 .browse-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer; 
+  cursor: pointer;
 }
-
 #imageInput { display: none !important; }
 
 .take-photo-btn {
@@ -249,79 +229,120 @@ body.dark select:disabled {
 
 /* Camera modal styling */
 .camera-modal { position: fixed; inset: 0; z-index: 9999; }
-.camera-modal__backdrop {
-  position: absolute; inset: 0; background: rgba(0,0,0,.5);
-}
+.camera-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.5); }
 .camera-modal__content {
   position: relative; max-width: 520px; margin: 6vh auto; background: #fff;
   padding: 16px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
   display: flex; flex-direction: column; gap: 10px; align-items: center;
 }
-#liveVideo {
-  width: 100%; max-height: 60vh; border-radius: 8px; background: #000;
-}
+#liveVideo { width: 100%; max-height: 60vh; border-radius: 8px; background: #000; }
 .camera-actions { display: flex; gap: 10px; margin-top: 8px; }
-.use-photo-btn, .cancel-photo-btn {
-  padding: 8px 12px; border: 0; border-radius: 6px; cursor: pointer;
-}
+.use-photo-btn, .cancel-photo-btn { padding: 8px 12px; border: 0; border-radius: 6px; cursor: pointer; }
 .use-photo-btn { background: #007bff; color: #fff; }
 .use-photo-btn:hover { background: #0056b3; }
 .cancel-photo-btn { background: #e0e0e0; color: #333; }
 .cancel-photo-btn:hover { background: #cfcfcf; }
 
-
-/* Dark mode tweaks */
-body.dark .camera-modal__content { background: #2b2b2b; color: #ddd; }
-
-/* ====== Dark Mode ====== */
-body.dark {
+/* ====== DARK MODE (via theme-init.js) ====== */
+/* Variable overrides for this module when dark */
+html[data-theme="dark"] {
   --card-bg: #2b2b2b;
-  --text-color: #ddd;
+  --text-color: #e5e7eb;
   --primary-color: #26a69a;
-  --hover-bg: #1a1a1a;
-  --danger: #d32f2f;
-  --danger-hover: #b71c1c;
   --primary-hover: #1de9b6;
-  --box-bg: #2a2a2a;
+  --hover-bg: #1a1a1a;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --box-bg: #1f1f1f;
+
+  --input-bg: #1f2937;
+  --input-fg: #ffffff;
+  --input-border: #4b5563;
+
+  --preview-bg: #1f1f1f;
+  --preview-border: #2d3a4b;
+
+  --pred-bg: #2d2d2d;
+  --pred-fg: #e5e7eb;
+  --pred-accent: #60a5fa;
 }
 
-body.dark input,
-body.dark select {
-  background-color: #444;
-  color: #fff;
-  border-color: #555;
+/* Inputs in dark */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select {
+  background-color: var(--input-bg, #1f2937);
+  color: var(--input-fg, #fff);
+  border-color: var(--input-border, #4b5563);
 }
 
-body.dark .upload-box {
-  background-color: var(--box-bg);
-  color: #ccc;
+/* Select arrow (dark) */
+html[data-theme="dark"] select {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23eee' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
 }
 
-body.dark .upload-box span {
-  color: var(--primary-color);
+/* Readonly/Disabled in dark */
+html[data-theme="dark"] .readonly-input,
+html[data-theme="dark"] input[readonly],
+html[data-theme="dark"] select:disabled {
+  background-color: #2b2b2b !important;
+  color: #9ca3af !important;
+  border-color: #475569;
 }
 
-body.dark .form-group label {
-  color: #ccc;
+/* Upload section in dark */
+html[data-theme="dark"] .upload-box {
+  background-color: var(--box-bg, #1f1f1f);
+  color: #cbd5e1;
+  border-color: var(--primary-color, #26a69a);
+}
+html[data-theme="dark"] .upload-box span { color: var(--primary-color, #26a69a); }
+
+/* Preview container in dark (padding visible) */
+html[data-theme="dark"] .image-preview {
+  --preview-pad: 12px;
 }
 
-body.dark .upload-btn {
-  background-color: var(--primary-color);
-  color: #111;
+/* Buttons in dark */
+html[data-theme="dark"] .upload-btn {
+  background-color: var(--primary-color, #26a69a);
+  color: #0b1220;
 }
+
+/* Camera modal in dark */
+html[data-theme="dark"] .camera-modal__content {
+  background: #0f172a;
+  color: #e5e7eb;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  border: 1px solid #2d3a4b;
+}
+
+html[data-theme="dark"] .sidebar { background: linear-gradient(180deg,#1e1e1e,#2c2c2c); color:#fff; }
+html[data-theme="dark"] .main-content { background:#181818; }
+html[data-theme="dark"] .top-bar { background: transparent; border-bottom:1px solid #2a2a2a; }
 
 /* ====== Responsive ====== */
 @media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
+  .form-grid { grid-template-columns: 1fr; }
+  .chart-card { padding: 20px; }
+  .upload-btn { font-size: 0.95rem; padding: 12px 16px; }
+}
 
-  .chart-card {
-    padding: 20px;
-  }
+/* ====== Transparent upload & preview (dark only) ====== */
+html[data-theme="dark"] {
+  --box-bg: transparent;
+  --preview-bg: transparent;
+  --preview-border: transparent;
+  --preview-pad: 0;
+}
 
-  .upload-btn {
-    font-size: 0.95rem;
-    padding: 12px 16px;
-  }
+html[data-theme="dark"] .upload-box {
+  background: transparent !important;
+}
+html[data-theme="dark"] .upload-box:hover {
+  background-color: transparent !important;
+}
+html[data-theme="dark"] .image-preview {
+  background: transparent !important;
+  border-color: transparent !important;
+  padding: 0 !important;
 }
