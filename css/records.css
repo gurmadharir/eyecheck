@@ -1,11 +1,9 @@
-
 .reports-wrapper {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
 
 .table-card {
   background: var(--card-bg, white);
@@ -59,7 +57,6 @@
   display: flex;
 }
 
-
 .filter-btn {
   background-color: #00796b;
   color: white;
@@ -92,7 +89,6 @@
   top: 120%;
   right: 0;
 }
-
 
 .filter-dropdown-tooltip label {
   display: flex;
@@ -199,7 +195,6 @@ tr:hover {
   padding: 6px;
   text-decoration: none;
   line-height: 1;
-
 }
 
 .action-btn i {
@@ -207,46 +202,52 @@ tr:hover {
   pointer-events: none;
 }
 
-
 .action-btn:hover {
   color: var(--primary-color, #00796b);
 }
 
-/* Dark Mode */
-body.dark .table-card {
+/* Dark Mode (via theme-init.js) */
+html[data-theme="dark"] .table-card {
   background: var(--card-bg, #1f1f1f);
 }
 
-body.dark thead th {
+html[data-theme="dark"] thead th {
   background-color: var(--primary-color, #26a69a);
 }
 
-body.dark tr:hover {
+html[data-theme="dark"] tr:hover {
   background-color: var(--hover-bg, #1a1a1a);
 }
 
-body.dark tbody td {
+html[data-theme="dark"] tbody td {
   border-color: #333;
 }
 
-body.dark .filter-dropdown-tooltip {
+/* search box in dark */
+html[data-theme="dark"] .search-box {
+  background: #2a2a2a;
+}
+html[data-theme="dark"] .search-box input { color: #eee; }
+html[data-theme="dark"] .search-box i { color: #aaa; }
+
+/* filter dropdown in dark */
+html[data-theme="dark"] .filter-dropdown-tooltip {
   background: #1e1e1e;
   color: #eee;
   border: 1px solid #444;
 }
-
-body.dark .filter-dropdown-tooltip select {
+html[data-theme="dark"] .filter-dropdown-tooltip select {
   background: #2c2c2c;
   color: #eee;
   border-color: #555;
 }
 
-body.dark .filter-btn {
+/* filter button in dark */
+html[data-theme="dark"] .filter-btn {
   background-color: #26a69a;
   color: #111;
 }
-
-body.dark .filter-btn:hover {
+html[data-theme="dark"] .filter-btn:hover {
   background-color: #1de9b6;
 }
 
@@ -404,20 +405,19 @@ body.modal-open .main-content {
 }
 
 /* Dark mode adjustments */
-body.dark .delete-modal {
+html[data-theme="dark"] .delete-modal {
   background: #1e1e1e;
   color: #eee;
 }
 
-body.dark .delete-modal p {
+html[data-theme="dark"] .delete-modal p {
   color: #ccc;
 }
 
-body.dark .toast {
+html[data-theme="dark"] .toast {
   background-color: #ff6b6b;
   color: #111;
 }
-
 
 /* Pagination */
 .pagination {
@@ -484,7 +484,6 @@ body.dark .toast {
   pointer-events: none !important;
   opacity: 0;
 }
-
 
 /* Logs model */
 /* Dark theme full-screen modal */
@@ -587,3 +586,105 @@ body.modal-open .topbar {
 .role-user-btn:hover {
   background: #444;
 }
+
+/* --- Extra responsive tweaks for modals & pagination --- */
+@media (max-width: 992px) {
+  .delete-modal { width: 50%; }
+}
+@media (max-width: 768px) {
+  .delete-modal { width: 80%; padding: 28px; }
+}
+@media (max-width: 480px) {
+  .delete-modal { width: 92%; padding: 24px; }
+  .delete-modal .buttons { flex-wrap: wrap; }
+  .pagination { flex-wrap: wrap; row-gap: 8px; }
+}
+
+/* Dark pagination overrides */
+html[data-theme="dark"] .pagination a {
+  background: #2a2a2a;
+  color: #e5e7eb;
+}
+html[data-theme="dark"] .pagination a:hover {
+  background: #3a3a3a;
+}
+html[data-theme="dark"] .pagination a.disabled {
+  background: #1f1f1f;
+  color: #777;
+}
+
+/* Make headings like "Past Uploads" bright in dark */
+html[data-theme="dark"] .reports-wrapper h1,
+html[data-theme="dark"] .reports-wrapper h2,
+html[data-theme="dark"] .reports-wrapper h3 {
+  color: #e5e7eb;
+}
+
+/* Make table cell text readable in dark */
+html[data-theme="dark"] .reports-wrapper table tbody td {
+  color: #cbd5e1;
+}
+
+/* Slightly dim meta text (row #, dates) but still readable */
+html[data-theme="dark"] .reports-wrapper td:nth-child(1),      
+html[data-theme="dark"] .reports-wrapper td:nth-child(3),     
+html[data-theme="dark"] .reports-wrapper td[data-label*="Uploaded"],
+html[data-theme="dark"] .reports-wrapper .muted,
+html[data-theme="dark"] .reports-wrapper td small {
+  color: #9ca3af;
+}
+
+/* Action buttons/icons visible in dark */
+html[data-theme="dark"] .reports-wrapper .action-btn,
+html[data-theme="dark"] .reports-wrapper .action-btn i {
+  color: #cbd5e1;
+  opacity: 1;
+}
+html[data-theme="dark"] .reports-wrapper .action-btn:hover {
+  color: #26a69a; /* your brand accent on hover */
+}
+
+/* Optional: brighten table title inside the card if used */
+html[data-theme="dark"] .table-card h3 { color: #e5e7eb; }
+
+/* Optional: search icon/input inside search box */
+html[data-theme="dark"] .search-box { background: #2a2a2a; }
+html[data-theme="dark"] .search-box input { color: #e5e7eb; }
+html[data-theme="dark"] .search-box i { color: #b3b3b3; }
+
+html[data-theme="dark"] .sidebar { background: linear-gradient(180deg,#1e1e1e,#2c2c2c); color:#fff; }
+html[data-theme="dark"] .main-content { background:#181818; }
+html[data-theme="dark"] .top-bar { background: transparent; border-bottom:1px solid #2a2a2a; }
+
+/* Filter tooltip: date inputs (light to match other fields) */
+.filter-dropdown-tooltip input[type="date"] {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+  background: #f9f9f9;
+  color: #333;
+}
+
+/* Dark mode: match select styling + dark popup */
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"] {
+  background: #2c2c2c;
+  color: #eee;
+  border-color: #555;
+  color-scheme: dark;
+}
+
+/* Dark mode: white calendar icon */
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-calendar-picker-indicator {
+  background: url("data:image/svg+xml,%3Csvg fill='white' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 14h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z'/%3E%3Cpath d='M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 16px 16px;
+  opacity: 1;
+  filter: none;
+}
+
+/* Dark mode: readable date text/placeholder */
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit { color: #e5e7eb; }
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-text { color: #9ca3af; }
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-month-field,
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-day-field,
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-year-field { color: #e5e7eb; }
