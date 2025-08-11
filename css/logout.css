@@ -1,100 +1,114 @@
 .logout-wrapper {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--bg-color, #f7f9fc);
-    padding: 20px;
-  }
-  
-  .logout-card {
-    text-align: center;
-    background: var(--card-bg, #fff);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  .logout-icon {
-    font-size: 3rem;
-    color: #4caf50;
-    margin-bottom: 20px;
-  }
-  
-  .logout-card h2 {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    color: var(--text-color, #222);
-  }
-  
-  .logout-card p {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 25px;
-  }
-  
-  .logout-btn {
-    display: block;
-    width: 100%;
-    padding: 12px 0;
-    background: #00796b;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-    text-align: center;
-  }
-  
-  
-  .logout-btn:hover {
-    background: #005f56;
-  }
-  
-  
-  /* Toast */
-  .logout-toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #323232;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s ease;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    z-index: 999;
-  }
-  
-  .logout-toast.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  /* Dark mode */
-  body.dark .logout-card {
-    background-color: #1e1e1e;
-    color: #eee;
-  }
-  
-  body.dark .logout-card p {
-    color: #ccc;
-  }
-  
-  body.dark .logout-btn {
-    background: #26a69a;
-    color: #111;
-  }
-  
-  body.dark .logout-toast {
-    background-color: #444;
-  }
-  
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color, #f7f9fc);
+  padding: 20px;
+}
+
+.logout-card {
+  text-align: center;
+  background: var(--card-bg, #fff);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  max-width: 400px;
+  width: 100%;
+}
+
+.logout-icon {
+  font-size: 3rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.logout-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: var(--text-color, #222);
+}
+
+.logout-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.logout-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background: #00796b;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  text-align: center;
+}
+
+.logout-btn:hover {
+  background: #005f56;
+}
+
+/* Toast */
+.logout-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #323232;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  z-index: 999;
+}
+
+.logout-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------ Dark mode (theme-init.js) ------ */
+html[data-theme="dark"] .logout-wrapper {
+  --bg-color: #0f172a;
+}
+
+html[data-theme="dark"] .logout-card {
+  --card-bg: #1e1e1e;
+  --text-color: #e5e7eb;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+html[data-theme="dark"] .logout-card h2 {
+  color: #e5e7eb;
+}
+
+html[data-theme="dark"] .logout-card p {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .logout-btn {
+  background: #26a69a;
+  color: #0b1220;
+}
+
+html[data-theme="dark"] .logout-toast {
+  background-color: #444;
+  color: #e5e7eb;
+}
+
+/* ------ Responsive tweaks ------ */
+@media (max-width: 480px) {
+  .logout-wrapper { padding: 16px; }
+  .logout-card { padding: 28px 20px; border-radius: 14px; }
+}
