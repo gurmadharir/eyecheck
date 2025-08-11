@@ -1,4 +1,5 @@
-]<?php
+<?php
+ob_clean(); 
 header('Content-Type: application/json');
 require_once('../../helpers/auth-check.php');
 requireRole('admin');
@@ -66,9 +67,19 @@ try {
 
   $mail->send();
 
-  // ✅ Increment warning count
-  $pdo->prepare("UPDATE users SET warnings_sent = warnings_sent + 1 WHERE id = ?")
-      ->execute([$user_id]);
+  // Ensure a patients row exists for this user
+  $pid = $pdo->prepare("SELECT id FROM patients WHERE user_id = ?");
+  $pid->execute([$user_id]);
+  if (!$pid->fetchColumn()) {
+    echo json_encode(['success' => false, 'message' => 'No patient profile linked to this user']);
+    exit;
+  }
+
+  // ✅ Increment warnings_sent in patients table
+  $update = $pdo->prepare("UPDATE patients SET warnings_sent = warnings_sent + 1 WHERE user_id = ?");
+  $update->execute([$user_id]);
+
+
       
   // LOG
   logActivity($_SESSION['user_id'], 'admin', 'SEND_WARNING_EMAIL', "Sent health warning to patient (ID: {$user['id']}, Email: {$user['email']})", $user['id']);
