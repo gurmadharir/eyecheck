@@ -5,29 +5,122 @@
   box-sizing: border-box;
 }
 
+/* =========================
+   Theme Tokens
+   ========================= */
+/* Light mode (default) */
+:root {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: #475569;
+
+  --card: #ffffff;
+  --border: #e5e7eb;
+
+  --main-bg: #f4f6f8;
+  --header-bg: #ffffff;
+  --shadow: 0 2px 10px rgba(0,0,0,0.06);
+
+  --sidebar-bg: #00796b;
+  --sidebar-fg: #ffffff;
+
+  --brand: #00796b;
+  --primary: #00796b;
+  --primary-hover: #005f56;
+  --primary-accent: #02ead2;
+
+  --link: #0ea5e9;
+
+  --input-bg: #ffffff;
+  --input-fg: #333333;
+  --input-border: #cccccc;
+
+  --hover: #f4f4f4;
+
+  --profile-border: #00796b;
+}
+
+/* Dark mode */
+html[data-theme="dark"] {
+  --bg: #0b1220;
+  --fg: #e5e7eb;
+  --muted: #9aa4b2;
+
+  --card: #1a2332;
+  --border: #2d3a4b;
+
+  --main-bg: #0f172a;
+  --header-bg: #0f172a;
+  --shadow: 0 2px 10px rgba(0,0,0,0.35);
+
+  --sidebar-bg: #0f302b;
+  --sidebar-fg: #e5e7eb;
+
+  --brand: #60a5fa;
+  --primary: #13c2a3;
+  --primary-hover: #0fae92;
+  --primary-accent: #19e7ce;
+
+  --link: #7dd3fc;
+
+  --input-bg: #1f2937;
+  --input-fg: #ffffff;
+  --input-border: #4b5563;
+
+  --hover: #1f2937;
+
+  --profile-border: #13c2a3;
+}
+
+/* Keep supporting the old body.dark hook as well */
+body.dark {
+  --bg: #0b1220;
+  --fg: #e5e7eb;
+  --muted: #9aa4b2;
+  --card: #1a2332;
+  --border: #2d3a4b;
+  --main-bg: #0f172a;
+  --header-bg: #0f172a;
+  --shadow: 0 2px 10px rgba(0,0,0,0.35);
+  --sidebar-bg: #0f302b;
+  --sidebar-fg: #e5e7eb;
+  --brand: #60a5fa;
+  --primary: #13c2a3;
+  --primary-hover: #0fae92;
+  --primary-accent: #19e7ce;
+  --link: #7dd3fc;
+  --input-bg: #1f2937;
+  --input-fg: #ffffff;
+  --input-border: #4b5563;
+  --hover: #1f2937;
+  --profile-border: #13c2a3;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(120deg, #e0f7fa, #f0f4c3);
-  color: #333;
+  background-color: var(--bg);
+  color: var(--fg);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   transition: background 0.3s, color 0.3s;
 }
 
+/* =========================
+   Layout
+   ========================= */
 .dashboard-wrapper {
   display: flex;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-
 }
 
 .sidebar {
   width: 230px;
   flex-shrink: 0;
-  background: #00796b;
-  color: white;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-fg);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -41,7 +134,7 @@ body {
   flex: 1;
   overflow-y: auto;
   height: 100vh;
-  background: #f4f6f8;
+  background: var(--main-bg);
   padding: 30px;
 }
 
@@ -58,7 +151,7 @@ body {
 .nav-links li a {
   display: block;
   padding: 10px;
-  color: white;
+  color: var(--sidebar-fg);
   text-decoration: none;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -72,17 +165,19 @@ body {
 
 .version {
   font-size: 0.85em;
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
-/* Header */
+/* =========================
+   Header
+   ========================= */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background: #ffffff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  background: var(--header-bg);
+  box-shadow: var(--shadow);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -91,7 +186,7 @@ header {
 .logo {
   font-size: 1.8em;
   font-weight: bold;
-  color: #00796b;
+  color: var(--brand);
   letter-spacing: 1px;
 }
 
@@ -104,28 +199,30 @@ nav .btn {
   padding: 10px 20px;
   text-decoration: none;
   border-radius: 30px;
-  background: #00796b;
+  background: var(--primary);
   color: white;
   font-weight: 500;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 nav .btn.secondary {
-  background: #16d9bc;
+  background: var(--primary-accent);
   padding: 10px 30px;
 }
 
 nav .btn:hover {
-  background: #02ead2;
+  background: var(--primary-accent);
   transform: translateY(-1px);
 }
 
 nav .btn.secondary:hover {
-  background: #09e5bd;
+  background: var(--primary-accent);
   padding: 10px 30px;
 }
 
-/* Top Bar */
+/* =========================
+   Top Bar
+   ========================= */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -134,16 +231,18 @@ nav .btn.secondary:hover {
 
 .welcome-msg {
   font-size: 1.5em;
-  color: #333;
+  color: var(--fg);
 }
 
-/* Profile */
+/* =========================
+   Profile
+   ========================= */
 .profile {
   position: relative;
 }
 
 .btn-primary {
-  background-color: var(--primary-color, #00796b);
+  background-color: var(--primary);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -159,17 +258,16 @@ nav .btn.secondary:hover {
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover, #005f56);
+  background-color: var(--primary-hover);
   transform: translateY(-1px);
 }
-
 
 .profile-pic {
   width: 45px;
   height: 45px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid #00796b;
+  border: 2px solid var(--profile-border);
   padding: 2px;
   background-color: #fff;
 }
@@ -184,12 +282,13 @@ nav .btn.secondary:hover {
   right: 0;
   top: 60px;
   min-width: 180px;
-  background: white;
+  background: var(--card);
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   overflow: hidden;
   padding: 10px 0;
   z-index: 10;
+  border: 1px solid var(--border);
 }
 
 .profile:hover .profile-dropdown {
@@ -201,25 +300,27 @@ nav .btn.secondary:hover {
   align-items: center;
   gap: 10px;
   padding: 12px 20px;
-  color: #333;
+  color: var(--fg);
   font-size: 0.95rem;
   text-decoration: none;
   transition: background 0.25s, color 0.25s;
 }
 
 .profile-dropdown a:hover {
-  background: #f4f4f4;
-  color: #00796b;
+  background: var(--hover);
+  color: var(--brand);
 }
 
-/* Animations */
+/* =========================
+   Animations
+   ========================= */
 .animated-text {
   font-family: 'Pacifico', cursive;
   font-size: 2.5em;
   white-space: nowrap;
   overflow: hidden;
   display: inline-block;
-  border-right: 3px solid #00796b;
+  border-right: 3px solid var(--primary);
   width: 0;
   animation: typing 5s steps(44, end) forwards, blink 0.75s step-end infinite;
 }
@@ -233,7 +334,7 @@ nav .btn.secondary:hover {
 @keyframes typing-login { from { width: 0; } to { width: 14ch; } }
 @keyframes typing-signup { from { width: 0; } to { width: 14ch; } }
 @keyframes typing-forgot { from { width: 0; } to { width: 20ch; } }
-@keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: #00796b; } }
+@keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: var(--primary); } }
 
 @media (max-width: 480px) {
   .animated-header {
@@ -242,27 +343,31 @@ nav .btn.secondary:hover {
   }
 }
 
-/* Footer */
+/* =========================
+   Footer
+   ========================= */
 footer {
   text-align: center;
   padding: 15px;
-  background: #fff;
+  background: var(--card);
   font-size: 0.9em;
-  color: #777;
+  color: var(--muted);
 }
 
-
-/* Sessions */
-
+/* =========================
+   Sessions / Cards
+   ========================= */
 .auth-card {
-  padding: 30px;
+  padding: 0px;
   border-radius: 20px;
   max-width: 420px;
   margin: 0 auto;
   position: relative;
   box-sizing: border-box;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--fg);
 }
-
 
 @keyframes fadeOut {
   0% { opacity: 1; }
@@ -270,22 +375,25 @@ footer {
   100% { opacity: 0; display: none; }
 }
 
-
-/* Add Form */
+/* =========================
+   Forms
+   ========================= */
 .form-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 30px;
-  background: var(--card-bg, #fff);
+  background: var(--card);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
+  color: var(--fg);
 }
 
 .form-container h2 {
   text-align: center;
   margin-bottom: 25px;
   font-size: 1.6rem;
-  color: var(--text-color, #333);
+  color: var(--fg);
 }
 
 .form-group {
@@ -296,7 +404,7 @@ footer {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: var(--text-color, #333);
+  color: var(--fg);
   font-size: 0.95rem;
 }
 
@@ -307,15 +415,16 @@ select {
   width: 100%;
   padding: 10px 40px 10px 12px; /* left 12px, right 40px for dropdown icon spacing */
   font-size: 0.95rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background-color: #fff;
-  color: #333;
+  background-color: var(--input-bg);
+  color: var(--input-fg);
   box-sizing: border-box;
   appearance: none;
 }
 
 select {
+  /* Light icon (default) */
   background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -324,23 +433,22 @@ select {
 
 .form-group input:focus,
 select:focus {
-  border-color: #00796b;
+  border-color: var(--primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.15);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 25%, transparent);
 }
 
-
-/* Dark Mode */
-
+/* =========================
+   Dark Mode (legacy + new)
+   ========================= */
+/* Legacy support for pages that still toggle body.dark */
 body.dark .form-container {
   background: #222;
   color: #eee;
 }
-
 body.dark .form-group label {
   color: #ddd;
 }
-
 body.dark input[type="text"],
 body.dark input[type="email"],
 body.dark input[type="password"],
@@ -349,18 +457,40 @@ body.dark select {
   color: #fff;
   border-color: #555;
 }
-
 body.dark select {
   background-image: url("data:image/svg+xml;utf8,<svg fill='%23eee' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
 }
-
-
 body.dark .btn-primary:hover {
   background-color: #13b58a;
 }
 
+/* New unified hook */
+html[data-theme="dark"] .form-container {
+  background: var(--card);
+  color: var(--fg);
+}
+html[data-theme="dark"] .form-group label {
+  color: var(--fg);
+}
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="email"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] select {
+  background-color: var(--input-bg);
+  color: var(--input-fg);
+  border-color: var(--input-border);
+}
+html[data-theme="dark"] select {
+  /* Dark icon */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23eee' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+}
+html[data-theme="dark"] .btn-primary:hover {
+  background-color: var(--primary-hover);
+}
 
-/* Colors for Diagnosis */
+/* =========================
+   Diagnosis colors
+   ========================= */
 .positive {
   color: #e53935;
   font-weight: bold;
@@ -368,4 +498,110 @@ body.dark .btn-primary:hover {
 .negative {
   color: #43a047;
   font-weight: bold;
+}
+
+
+/* Make topbar text follow the theme (so the toggle inherits it) */
+.topbar,
+.top-bar {
+  color: var(--text) !important;
+}
+
+/* Ghost button exactly like the welcome page, but with higher specificity */
+.btn.btn-ghost,
+button.btn-ghost {
+  --bs-btn-color: var(--text);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--border);
+  --bs-btn-hover-bg: rgba(0,0,0,.04);
+  --bs-btn-hover-border-color: var(--border);
+
+  color: var(--text) !important;
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .5rem .75rem;
+}
+
+/* Dark-mode hover tint */
+html[data-theme="dark"] .btn.btn-ghost:hover,
+html[data-theme="dark"] button.btn-ghost:hover {
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* Icon size and color inherit */
+.btn-ghost .bi { font-size: 1.1rem; color: currentColor; }
+
+/* ===== Sidebar (mobile/tablet) ===== */
+:root { --sidebar-w: 260px; }
+@media (max-width: 480px){ :root { --sidebar-w: 240px; } }
+
+/* Toggle (hidden on desktop, fixed on mobile) */
+.sidebar-toggle{
+  position: fixed;
+  top: 14px; left: 14px;
+  z-index: 2000;
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  border-radius: 10px;
+  padding: 8px 10px;
+  line-height: 0;
+  cursor: pointer;
+}
+.sidebar-toggle i{ font-size: 1.1rem; }
+html[data-theme="dark"] .sidebar-toggle:hover{ background: rgba(255,255,255,.08); }
+
+/* Backdrop (inactive by default) */
+.sidebar-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.35);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .25s ease, visibility .25s ease;
+  z-index: 1500;
+}
+
+/* Drawer (off-canvas by default) */
+@media (max-width: 992px){
+  .sidebar-toggle{ display: inline-flex; align-items:center; justify-content:center; }
+
+  .sidebar{
+    position: fixed; inset: 0 auto 0 0;
+    width: var(--sidebar-w);
+    height: 100dvh;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 1600; /* below toggle, above content */
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+  }
+
+  .main-content{ min-height: 100dvh; }
+
+  /* Open state */
+  body.is-sidebar-open .sidebar{ transform: translateX(0); }
+  body.is-sidebar-open .sidebar-backdrop{
+    opacity: 1; visibility: visible; pointer-events: auto;
+  }
+
+  /* Shift the toggle so it doesn't overlap the logo */
+  body.is-sidebar-open .sidebar-toggle{
+    left: calc(var(--sidebar-w) - 55px);
+    transition: left .25s ease;
+  }
+}
+
+/* Touch targets larger on touch devices */
+@media (hover: none){ .nav-links li a{ padding: 12px; } }
+
+/* Respect iOS safe areas (notches) */
+@supports (padding: max(0px)){
+  .sidebar-toggle{
+    top: max(14px, env(safe-area-inset-top));
+    left: max(14px, env(safe-area-inset-left));
+  }
 }
