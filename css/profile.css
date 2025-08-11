@@ -113,47 +113,44 @@
 }
 
 /* Dark Mode */
-body.dark .edit-profile-card {
+html[data-theme="dark"] .edit-profile-card {
   background: #1e1e1e;
   color: #eee;
 }
 
-body.dark .profile-input {
+html[data-theme="dark"] .profile-input {
   background-color: transparent;
   color: #fff;
   border-color: #444;
 }
 
-body.dark .profile-input:hover,
-body.dark .profile-input:focus {
+html[data-theme="dark"] .profile-input:hover,
+html[data-theme="dark"] .profile-input:focus {
   background-color: #2a2a2a;
 }
 
-body.dark .profile-image img {
+html[data-theme="dark"] .profile-image img {
   border-color: #26a69a;
 }
 
-body.dark .upload-hint {
+html[data-theme="dark"] .upload-hint {
   background: #2a2a2a;
   color: #ccc;
 }
 
-body.dark .upload-hint b,
-body.dark .member-since b {
+html[data-theme="dark"] .upload-hint b,
+html[data-theme="dark"] .member-since b {
   color: #fff;
 }
 
-body.dark .member-since {
+html[data-theme="dark"] .member-since {
   color: #bbb;
 }
 
-body.dark .upload-photo-btn {
+html[data-theme="dark"] .upload-photo-btn {
   background: #ff6b6b;
   color: #111;
 }
-
-
-
 
 /* CHANGE PASSWORD PAGE CSS */
 .change-password-container {
@@ -192,6 +189,7 @@ body.dark .upload-photo-btn {
   transform: translateY(-50%);
   color: #aaa;
   font-size: 0.95rem;
+  pointer-events: none;
 }
 
 .input-group input {
@@ -264,35 +262,134 @@ body.dark .upload-photo-btn {
   transition: filter 0.3s ease;
 }
 
-
 /* Dark mode: simulate white */
-body.dark .password-icon {
+html[data-theme="dark"] .password-icon {
   filter: brightness(0) invert(1);
 }
 
-
-
 /* Dark Mode */
-body.dark .form-area h2 {
+html[data-theme="dark"] .form-area h2 {
   color: #fff;
 }
 
-body.dark .input-group input {
+html[data-theme="dark"] .input-group input {
   background-color: #2a2a2a;
   border-color: #444;
   color: #eee;
 }
 
-body.dark .input-group input:focus {
+html[data-theme="dark"] .input-group input:focus {
   background-color: #333;
   border-color: #26a69a;
 }
 
-body.dark .btn-outline {
+html[data-theme="dark"] .btn-outline {
   border-color: #555;
   color: #eee;
 }
 
-body.dark .error-msg {
+html[data-theme="dark"] .error-msg {
   color: #ff6b6b;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+  .change-password-container {
+    padding: 40px;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .change-password-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    gap: 20px;
+  }
+  .form-area { max-width: 480px; }
+}
+
+@media (max-width: 480px) {
+  .edit-profile-card { padding: 24px 18px; border-radius: 14px; }
+  .form-area { width: 100%; }
+}
+
+/* ==== Page-wide dark layout (moved from theme.css) ==== */
+html[data-theme="dark"] body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Sidebar + nav */
+html[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, #1e1e1e, #2c2c2c);
+  color: #ffffff;
+}
+html[data-theme="dark"] .nav-links li a { color: #bbb; }
+html[data-theme="dark"] .nav-links li a.active,
+html[data-theme="dark"] .nav-links li a:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* Main canvas + top bar */
+html[data-theme="dark"] .main-content { background: #181818; }
+html[data-theme="dark"] .top-bar {
+  background: transparent;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+/* Profile menu + avatar ring */
+html[data-theme="dark"] .profile-dropdown {
+  background: #252525;
+  border: 1px solid #333;
+  box-shadow: 0 8px 16px rgba(255,255,255,0.05);
+}
+html[data-theme="dark"] .profile-dropdown a { color: #eee; }
+html[data-theme="dark"] .profile-dropdown a:hover {
+  background: #333;
+  color: #26a69a;
+}
+html[data-theme="dark"] .profile-pic {
+  border: 2px solid #26a69a;
+  background-color: #2a2a2a;
+}
+html[data-theme="dark"] .profile-pic:hover {
+  box-shadow: 0 0 0 3px rgba(38,166,154,0.2);
+}
+
+/* Optional: inputs/dates look consistent across the page */
+html[data-theme="dark"] input[type="date"] {
+  background-color: #1f2937;
+  color: #e5e7eb;
+  border: 1px solid #4b5563;
+  color-scheme: dark;
+}
+html[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(.9);
+}
+
+/* CHANGE PASSWORD PAGE */
+
+/* Lock icon + input spacing (guaranteed ≥20px gap) */
+.input-group { position: relative; }
+
+.input-group > i{
+  position: absolute;
+  left: 14px;                
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* text starts after icon + 20px gap */
+.input-group input{
+  padding-left: 40px !important; 
+}
+
+/* optional: nicer placeholder in dark */
+html[data-theme="dark"] .input-group input::placeholder{
+  color:#cbd5e1; opacity:.65;
 }
