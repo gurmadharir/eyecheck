@@ -30,7 +30,7 @@ if (!empty($_SESSION['profile_image']) && in_array($role, ['admin', 'healthcare'
 ">
   <?php if ($page === 'dashboard'): ?>
     <h1 style="color: #333; line-height: 1.2;">
-      <span style="font-size: 0.8em;">Welcome,</span><br>
+      <span style="font-size: 0.8em;">Hello,</span><br>
       <span style="font-size: 1.5em; font-weight: bold;"><?= $fullName ?></span>
     </h1>
   <?php endif; ?>
