@@ -69,15 +69,46 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderHeader(role) {
+    let widths;
+
+    if (role === "healthcare") {
+      widths = {
+        num: "5%",
+        name: "20%",
+        username: "15%",
+        email: "20%",
+        region: "15%",
+        registered: "15%",
+        action: "10%"
+      };
+    } else {
+      widths = {
+        num: "5%",
+        name: "25%",
+        username: "20%",
+        email: "25%",
+        registered: "15%",
+        action: "10%"
+      };
+    }
+
     const common = `
-      <th>#</th>
-      <th>Full Name</th>
-      <th>Username</th>
-      <th>Email</th>`;
-    const extra = role === "healthcare" ? `<th>Region</th>` : "";
-    const action = `<th>Registered</th><th>Action</th>`;
+      <th style="width:${widths.num}">#</th>
+      <th style="width:${widths.name}">Full Name</th>
+      <th style="width:${widths.username}">Username</th>
+      <th style="width:${widths.email}">Email</th>`;
+
+    const extra = role === "healthcare"
+      ? `<th style="width:${widths.region}">Region</th>`
+      : "";
+
+    const action = `
+      <th style="width:${widths.registered}">Registered</th>
+      <th style="width:${widths.action}">Action</th>`;
+
     tableHeader.innerHTML = `<tr>${common}${extra}${action}</tr>`;
   }
+
 
   function formatDate(dateStr) {
     const d = new Date(dateStr);
