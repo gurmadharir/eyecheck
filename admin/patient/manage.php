@@ -49,18 +49,20 @@ $page = 'patients';
           </div>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Registered</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="records-table-body"></tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 30%">Name</th>
+                <th style="width: 30%">Email</th>
+                <th style="width: 20%">Registered</th>
+                <th style="width: 15%">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body"></tbody>
+          </table>
+        </div>
 
         <div id="pagination" class="pagination" style="margin-top: 20px; text-align: center;"></div>
       </div>
