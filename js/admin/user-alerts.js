@@ -82,28 +82,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const filterValue = filterBy ? filterBy.value : null;
     const tableHead = document.getElementById("tableHeadRow");
 
+    // Define column width sets
+    const widths = {
+      pending: {
+        num: "5%",
+        name: "25%",
+        email: "25%",
+        registered: "15%",
+        expires: "15%",
+        action: "15%"
+      },
+      flagged: {
+        num: "5%",
+        name: "20%",
+        email: "20%",
+        usage: "15%",
+        warned: "10%",
+        flaggedAt: "15%",
+        action: "15%"
+      }
+    };
+
     // 🔁 Render <thead> dynamically
     if (filterValue === "pending") {
-      tableHead.innerHTML = `
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Registered</th>
-          <th>Expires At</th>
-          <th>Actions</th>
-        </tr>
-      `;
+    tableHead.innerHTML = `
+      <tr>
+        <th style="width:${widths.pending.num}">#</th>
+        <th style="width:${widths.pending.name}">Name</th>
+        <th style="width:${widths.pending.email}">Email</th>
+        <th style="width:${widths.pending.registered}">Registered</th>
+        <th style="width:${widths.pending.expires}">Expires At</th>
+        <th style="width:${widths.pending.action}">Actions</th>
+      </tr>
+    `;
     } else if (filterValue === "flagged") {
       tableHead.innerHTML = `
         <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Usage Duration</th>
-          <th>Warned Times</th>
-          <th>Flagged At</th>
-          <th>Actions</th>
+          <th style="width:${widths.flagged.num}">#</th>
+          <th style="width:${widths.flagged.name}">Name</th>
+          <th style="width:${widths.flagged.email}">Email</th>
+          <th style="width:${widths.flagged.usage}">Usage Duration</th>
+          <th style="width:${widths.flagged.warned}">Warned Times</th>
+          <th style="width:${widths.flagged.flaggedAt}">Flagged At</th>
+          <th style="width:${widths.flagged.action}">Actions</th>
         </tr>
       `;
     }
