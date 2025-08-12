@@ -1,6 +1,7 @@
 <?php
 require_once '../backend/helpers/auth-check.php';
 requireRole('admin');
+
 $page = 'logs';
 ?>
 <!DOCTYPE html>
@@ -9,7 +10,7 @@ $page = 'logs';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>System Logs | Admin</title>
-  
+
   <!-- Theme bootstrap CSS -->
   <script src="../js/theme-init.js"></script>
 
@@ -18,7 +19,6 @@ $page = 'logs';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../css/global.css" />
-  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
 <div class="dashboard-wrapper">
@@ -67,21 +67,23 @@ $page = 'logs';
           </div>
         </div>
 
-        <table>
-          <thead id="tableHeadRow">
-            <tr>
-              <th>#</th>
-              <th>Timestamp</th>
-              <th>User</th>
-              <th>Role</th>
-              <th>Action</th>
-              <th>Target</th>
-              <th>Description</th>
-              <th>IP</th>
-            </tr>
-          </thead>
-          <tbody id="records-table-body"></tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead id="tableHeadRow">
+              <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 15%">Timestamp</th>
+                <th style="width: 15%">User</th>
+                <th style="width: 10%">Role</th>
+                <th style="width: 20%">Action</th>
+                <th style="width: 10%">Target</th>
+                <th style="width: 15%">Description</th>
+                <th style="width: 15%">IP</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body"></tbody>
+          </table>
+        </div>
 
         <div id="pagination" class="pagination" style="margin-top: 20px; text-align: center;"></div>
       </div>
@@ -95,21 +97,22 @@ $page = 'logs';
     <span class="close" id="closeUserLogs">&times;</span>
     <h3 id="userLogsTitle">User Logs</h3>
     <br>
-    <table>
-      <thead>
-        <tr>
-          <th style="width: 5%;">#</th>
-          <th style="width: 15%;">Timestamp</th>
-          <th style="width: 15%;">Action</th>
-          <th style="width: 35%;">Description</th>
-          <th style="width: 10%;">IP</th>
-        </tr>
-      </thead>
-      <tbody id="userLogsBody"></tbody>
-    </table>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%;">#</th>
+            <th style="width: 15%;">Timestamp</th>
+            <th style="width: 15%;">Action</th>
+            <th style="width: 35%;">Description</th>
+            <th style="width: 10%;">IP</th>
+          </tr>
+        </thead>
+        <tbody id="userLogsBody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
-
 
 <!-- Toast -->
 <div id="toast" class="toast success">
@@ -119,6 +122,30 @@ $page = 'logs';
 
 <script src="../js/theme-toggle.js" defer></script>
 <script src="../js/sidebar-toggle.js" defer></script>
+
+<script>
+  window.adminLogsConfig = {
+    apiUrl: "/eyecheck/backend/admin/get-logs.php",
+    searchId: "logSearch",
+    sortId: "dateSort",
+    filterId: ["roleFilter", "actionFilter"], // multiple filters
+    tableBodyId: "records-table-body",
+    paginationId: "pagination",
+    roleUsersListId: "roleUsersList"
+  };
+</script>
 <script src="../js/admin/logs.js"></script>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 9999; align-items:center; justify-content:center;">
+  <div class="spinner" style="width: 60px; height: 60px; border: 6px solid #ccc; border-top-color: #00c9a7; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+</div>
+
+<style>
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+
 </body>
 </html>
