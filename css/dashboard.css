@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  margin: 30px 0;
+  margin: 17px 0;
 }
 
 /* Charts Layout */
