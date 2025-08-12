@@ -57,22 +57,22 @@
 /* Stat card design */
 .stat-card {
   background: #fff;
-  padding: 25px;
+  padding: 23px; 
   border-radius: 14px;
   text-align: left;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   border-left: 6px solid #00796b;
   transition: background 0.3s, color 0.3s;
   font-weight: bold;
+  line-height: 1;
 }
 
 .stat-card span {
   display: block;
-  margin-top: 6px;
+  margin-top: 4px; /* was 6px */
   color: #00796b;
   font-weight: bold;
 }
-
 
 /* Theme toggle */
 .theme-toggle {
