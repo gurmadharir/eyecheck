@@ -26,7 +26,6 @@ if (!empty($_SESSION['profile_image']) && in_array($role, ['admin', 'healthcare'
   display: flex;
   justify-content: <?= $page === 'dashboard' ? 'space-between' : 'flex-end' ?>;
   align-items: center;
-  padding: 20px 30px;
 ">
   <?php if ($page === 'dashboard'): ?>
     <h1 style="color: #333; line-height: 1.2;">
