@@ -51,11 +51,13 @@ $page = 'user-alerts';
           </div>
         </div>
 
-        <table>
-          <thead id="tableHeadRow">
-          </thead>
-          <tbody id="records-table-body"></tbody>
-        </table>
+        <div class="table-responsive">
+          <table>
+            <thead id="tableHeadRow">
+            </thead>
+            <tbody id="records-table-body"></tbody>
+          </table>
+        </div>
 
         <div id="pagination" class="pagination" style="margin-top: 20px; text-align: center;"></div>
       </div>
