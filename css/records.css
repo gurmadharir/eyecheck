@@ -688,3 +688,349 @@ html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-dat
 html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-month-field,
 html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-day-field,
 html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-datetime-edit-year-field { color: #e5e7eb; }
+
+/* =========================
+   Filter (button + dropdown)
+   ========================= */
+.filter-wrapper { position: relative; }
+.filter-wrapper:hover .filter-dropdown-tooltip { /* disable hover-open on touch */
+  display: none;
+}
+.filter-dropdown-tooltip {
+  position: absolute;
+  top: 120%;
+  right: 0;                 /* anchor to button's right edge */
+  display: none;            /* toggled via .show in JS */
+  flex-direction: column;
+  gap: 8px;
+  width: 190px;
+  padding: 12px;
+  font-size: 0.85rem;
+  background: #d0f8f3;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  z-index: 10;
+}
+.filter-dropdown-tooltip.show { display: flex; }
+.filter-dropdown-tooltip label {
+  display: flex; align-items: center; gap: 6px; font-weight: 500; margin-bottom: 2px;
+}
+.filter-dropdown-tooltip select,
+.filter-dropdown-tooltip input[type="date"] {
+  padding: 5px 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem;
+}
+
+/* ==============
+   Header controls
+   ============== */
+.table-controls {
+  display: flex;
+  align-items: center;              /* vertical center */
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+.table-controls h3 {
+  margin: 0;
+  line-height: 1.2;
+  display: flex; align-items: center;
+}
+.table-controls .controls-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 10px;
+}
+.filter-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 12px;
+}
+
+/* =============
+   Table wrapper
+   ============= */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-responsive table {
+  width: 100%;
+  min-width: 560px;                 /* keep headers readable on narrow phones */
+  border-collapse: collapse;
+}
+
+/* Body cells */
+tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: normal;              /* allow wrapping */
+  line-height: 1.35;
+}
+tbody tr { height: auto; }
+
+/* Image thumbnail (2nd column) */
+td:nth-child(2) img {
+  width: 56px; height: 56px; object-fit: cover; border-radius: 8px; display: block;
+}
+
+/* # column (always visible) */
+thead th:nth-child(1),
+tbody td:nth-child(1) {
+  display: table-cell !important;
+  width: 40px; min-width: 40px;
+  text-align: center; white-space: nowrap;
+}
+
+/* Action column stays tight */
+thead th:last-child,
+tbody td:last-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* =======================
+   Mobile & small screens
+   ======================= */
+@media (max-width: 768px) {
+  /* Keep real table (undo any block-table hacks) */
+  table      { display: table !important; table-layout: auto; width: 100%; }
+  thead      { display: table-header-group !important; }
+  tbody      { display: table-row-group !important; }
+  tr         { display: table-row !important; border: none !important; }
+  th, td     { display: table-cell !important; padding: 10px 8px; }
+  td::before { content: none !important; }
+
+  .table-card { padding: 18px; }
+
+  /* Mobile header alignment: title + filter on one row */
+  .table-controls{
+    display: grid;
+    grid-template-columns: 1fr auto;   /* title grows, filter hugs right */
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+  }
+  .table-controls .controls-right { margin-left: 0; }
+  .filter-btn { height: 40px; padding: 0 12px; }
+}
+
+@media (max-width: 480px) {
+  .table-responsive table { min-width: 520px; }
+}
+
+/* ===========
+   Scrollbars
+   =========== */
+.table-responsive::-webkit-scrollbar { height: 8px; }
+.table-responsive::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 8px; }
+
+/* =========
+   Dark mode
+   ========= */
+html[data-theme="dark"] .filter-dropdown-tooltip {
+  background: #1e1e1e; color: #eee; border: 1px solid #444;
+}
+html[data-theme="dark"] .filter-dropdown-tooltip select,
+html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"] {
+  background: #2c2c2c; color: #eee; border-color: #555; color-scheme: dark;
+}
+html[data-theme="dark"] .table-responsive::-webkit-scrollbar-thumb { background: #3a3a3a; }
+
+/* --- Make columns size naturally (not fixed) --- */
+.table-responsive table {
+  table-layout: auto !important;
+}
+
+/* --- Ensure Action column is always wide enough --- */
+thead th:last-child,
+tbody td:last-child {
+  width: 90px !important;
+  min-width: 90px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* --- Override any earlier cap on the 5th column (Action) --- */
+td:nth-child(5) {
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Table wrapper */
+.table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.uploads-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+.uploads-table thead th{background:var(--primary-color,#00796b);color:#fff;padding:12px;text-align:left;font-weight:600;}
+.uploads-table tbody td{padding:12px 16px;border-bottom:1px solid #e0e0e0;line-height:1.35;white-space:normal;}
+.uploads-table tr:hover{background:var(--hover-bg,#f9f9f9);}
+html[data-theme="dark"] .uploads-table tbody td{border-color:#333;}
+html[data-theme="dark"] .uploads-table tr:hover{background:#1a1a1a;}
+
+/* Column sizing via <colgroup> */
+.col-idx{width:64px;}
+.col-image{width:120px;}
+.col-result{width:auto;}           /* takes remaining space */
+.col-date{width:170px;}
+.col-actions{width:100px;}
+
+/* Ensure previous caps don’t fight these */
+.uploads-table td:nth-child(2),
+.uploads-table td:nth-child(4),
+.uploads-table td:nth-child(5){max-width:none!important;overflow:visible!important;text-overflow:clip!important;white-space:nowrap;}
+.uploads-table thead th:last-child,
+.uploads-table tbody td:last-child{min-width:100px;white-space:nowrap;text-align:center;}
+
+/* Thumbnails */
+.uploads-table td:nth-child(2) img{
+  width:84px;height:60px;display:block;object-fit:cover;border-radius:8px;
+}
+
+/* Result text (truncate nicely) */
+.uploads-table td:nth-child(3){overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.positive{color:#e53935;font-weight:700;}
+.negative{color:#43a047;font-weight:700;}
+
+/* Action icons */
+.action-btn{display:inline-flex;align-items:center;justify-content:center;padding:6px;border:none;background:none;color:inherit;cursor:pointer;}
+.action-btn:hover{color:var(--primary-color,#00796b);}
+
+/* Tablet tweaks */
+@media (max-width:1024px){
+  .col-date{width:150px;}
+  .col-actions{width:92px;}
+}
+
+/* Mobile: keep header + filter aligned; allow horizontal scroll */
+@media (max-width:768px){
+  .table-controls{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:8px 0;}
+  .filter-btn{height:40px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;}
+  .table-responsive{overflow-x:auto;}
+  .uploads-table{min-width:720px;}   /* readable headers on phones */
+}
+
+/* Scrollbar polish (optional) */
+.table-responsive::-webkit-scrollbar{height:8px;}
+.table-responsive::-webkit-scrollbar-thumb{background:#c7c7c7;border-radius:8px;}
+html[data-theme="dark"] .table-responsive::-webkit-scrollbar-thumb{background:#3a3a3a;}
+
+/* --- Row alignment hardening --- */
+.uploads-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.uploads-table th,
+.uploads-table td {
+  vertical-align: middle;         /* center content vertically */
+  padding: 12px 16px;             /* same padding = same row height */
+}
+
+/* Column text alignment */
+.uploads-table td:nth-child(1),    /* # */
+.uploads-table th:nth-child(1),
+.uploads-table td:last-child,      /* Action */
+.uploads-table th:last-child {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.uploads-table td:nth-child(2),    /* Image */
+.uploads-table th:nth-child(2) {
+  text-align: left;
+}
+
+.uploads-table td:nth-child(3),    /* Result */
+.uploads-table th:nth-child(3),
+.uploads-table td:nth-child(4),    /* Uploaded */
+.uploads-table th:nth-child(4) {
+  text-align: left;                /* easier to read */
+  white-space: nowrap;
+}
+
+/* Image sizing/centering (prevents row stretching) */
+.uploads-table td:nth-child(2) img {
+  width: 84px;
+  height: 60px;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0;                       /* no extra offset */
+}
+
+/* Keep columns from collapsing */
+.col-idx{width:64px;}
+.col-image{width:120px;}
+.col-result{width:auto;}
+.col-date{width:170px;}
+.col-actions{width:100px;}
+
+/* Make sure no earlier rules override widths/overflow */
+.uploads-table td:nth-child(2),
+.uploads-table td:nth-child(4),
+.uploads-table td:nth-child(5){
+  max-width:none!important; overflow:visible!important; text-overflow:clip!important;
+}
+
+/* Tablet: slightly tighten fixed columns */
+@media (max-width: 1024px){
+  .col-date{width:150px;}
+  .col-actions{width:92px;}
+}
+
+/* Phone: keep header + filter in one line, allow horizontal scroll */
+@media (max-width: 768px){
+  .table-controls{
+    display:grid; grid-template-columns:1fr auto; align-items:center; gap:12px; padding:8px 0;
+  }
+  .filter-btn{height:40px; padding:0 12px;}
+  .table-responsive{overflow-x:auto;}
+  .uploads-table{min-width:720px;}
+}
+
+/* Left align the first (#) column */
+.uploads-table th:nth-child(1),
+.uploads-table td:nth-child(1) {
+  text-align: left !important;
+  padding-left: 16px; /* adds some breathing room from table edge */
+}
+
+/* Make table take full width and distribute columns */
+.uploads-table {
+  width: 100%;
+  table-layout: fixed; /* Equal column widths */
+}
+
+.uploads-table th,
+.uploads-table td {
+  padding: 12px 16px;
+  white-space: nowrap; /* Prevents text wrap */
+}
+
+.uploads-table th:nth-child(1),
+.uploads-table td:nth-child(1) {
+  width: 8%; /* Number column */
+  text-align: left;
+}
+
+.uploads-table th:nth-child(2),
+.uploads-table td:nth-child(2) {
+  width: 20%; /* Image column */
+}
+
+.uploads-table th:nth-child(3),
+.uploads-table td:nth-child(3) {
+  width: 25%; /* Result column */
+}
+
+.uploads-table th:nth-child(4),
+.uploads-table td:nth-child(4) {
+  width: 25%; /* Uploaded date column */
+}
+
+.uploads-table th:nth-child(5),
+.uploads-table td:nth-child(5) {
+  width: 12%; /* Action buttons column */
+  text-align: center;
+}
+ 
+ 
