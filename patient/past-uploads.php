@@ -1,10 +1,7 @@
 <?php
 require_once '../backend/helpers/auth-check.php';
 requireRole('patient');
-
-
 $role = $_SESSION['role'] ?? 'patient';
-
 $page = 'past-uploads';
 ?>
 <!DOCTYPE html>
@@ -16,28 +13,30 @@ $page = 'past-uploads';
 
   <!-- Theme bootstrap CSS -->
   <script src="../js/theme-init.js"></script>
-
-  <link rel="stylesheet" href="../css/records.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- Your CSS -->
   <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/records.css" />
 </head>
 <body>
-
 <div class="dashboard-wrapper">
   <?php include '../partials/sidebar.php'; ?>
   <div class="main-content">
-
     <?php include '../partials/topbar.php'; ?>
 
     <div class="reports-wrapper">
       <div class="table-card">
+        <!-- Header row -->
         <div class="table-controls">
           <h3>Past Uploads</h3>
-          <div style="display: flex; gap: 10px; align-items: center;">
+          <div class="controls-right">
             <div class="filter-wrapper">
-              <button class="filter-btn"><i class="fas fa-filter"></i></button>
+              <button class="filter-btn" aria-haspopup="true" aria-expanded="false" aria-controls="filterDropdown" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
               <div class="filter-dropdown-tooltip" id="filterDropdown">
                 <label for="resultFilter"><i class="fas fa-stethoscope"></i> Result:</label>
                 <select id="resultFilter">
@@ -62,48 +61,64 @@ $page = 'past-uploads';
           </div>
         </div>
 
-        <table>
-          <thead>
-          <tr>
-            <th style="width: 5%;">#</th>
-            <th style="width: 20%;">Image</th>
-            <th style="width: 20%;">Result</th>
-            <th style="width: 15%;">Uploaded</th>
-            <th style="width: 10%;">Action</th>
-          </tr>
-          </thead>
-          <tbody id="records-table-body">
-            <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="uploads-table">
+            <colgroup>
+              <col class="col-idx">
+              <col class="col-image">
+              <col class="col-result">
+              <col class="col-date">
+              <col class="col-actions">
+            </colgroup>
 
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Image</th>
+                <th>Result</th>
+                <th>Uploaded</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="records-table-body">
+              <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
         <div id="pagination" class="pagination" style="margin-top: 20px;"></div>
       </div>
     </div>
-
   </div>
 </div>
 
 <?php include '../partials/delete-toast.php'; ?>
+
+<!-- JS -->
 <script src="../js/delete-toast.js"></script>
 <script src="../js/theme-toggle.js" defer></script>
 <script src="../js/sidebar-toggle.js" defer></script>
 <script src="../js/patient-uploads.js"></script>
 
 <script>
-// Toggle dropdown
+// Click-to-toggle filter dropdown (mobile-safe)
 document.addEventListener("DOMContentLoaded", () => {
   const filterBtn = document.querySelector(".filter-btn");
   const dropdown = document.getElementById("filterDropdown");
 
-  filterBtn.addEventListener("click", e => {
+  filterBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("show");
+    const expanded = filterBtn.getAttribute("aria-expanded") === "true";
+    filterBtn.setAttribute("aria-expanded", String(!expanded));
   });
 
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!dropdown.contains(e.target) && !filterBtn.contains(e.target)) {
       dropdown.classList.remove("show");
+      filterBtn.setAttribute("aria-expanded", "false");
     }
   });
 });
