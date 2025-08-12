@@ -13,11 +13,12 @@ $page = 'past-uploads';
 
   <!-- Theme bootstrap CSS -->
   <script src="../js/theme-init.js"></script>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-  <!-- Your CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/records.css" />
 </head>
@@ -35,7 +36,7 @@ $page = 'past-uploads';
           <div class="controls-right">
             <div class="filter-wrapper">
               <button class="filter-btn" aria-haspopup="true" aria-expanded="false" aria-controls="filterDropdown" title="Filter">
-                <i class="fas fa-filter"></i>
+                <i class="fa fa-filter"></i>
               </button>
               <div class="filter-dropdown-tooltip" id="filterDropdown">
                 <label for="resultFilter"><i class="fas fa-stethoscope"></i> Result:</label>
