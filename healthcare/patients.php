@@ -3,9 +3,7 @@ require_once '../backend/helpers/auth-check.php';
 requireRole('healthcare');
 $role = 'healthcare';
 $page = 'patients';
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,17 +11,15 @@ $page = 'patients';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Patients | Healthcare</title>
 
-  <!-- Theme bootstrap CSS -->
   <script src="../js/theme-init.js"></script>
 
   <link rel="stylesheet" href="../css/records.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../css/global.css" />
 </head>
 <body>
-
 <div class="dashboard-wrapper">
   <?php include '../partials/sidebar.php'; ?>
   <div class="main-content">
@@ -31,13 +27,19 @@ $page = 'patients';
 
     <div class="reports-wrapper">
       <div class="table-card">
+
+        <!-- controls -->
         <div class="table-controls">
           <h3>Patients</h3>
-          <div style="display: flex; gap: 10px; align-items: center;">
-            <input type="text" id="reportSearch" placeholder="Search..." style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem;" />
+          <div class="controls-right">
+            <input id="reportSearch" type="text" placeholder="Search..."
+                   style="padding:8px 12px;border-radius:6px;border:1px solid #ccc;font-size:.95rem;" />
 
             <div class="filter-wrapper">
-              <button class="filter-btn"><i class="fas fa-filter"></i></button>
+              <button class="filter-btn" aria-haspopup="true" aria-expanded="false" aria-controls="filterDropdown" title="Filter">
+                <i class="fas fa-filter"></i>
+              </button>
+
               <div class="filter-dropdown-tooltip" id="filterDropdown">
                 <label for="dateFilter"><i class="fas fa-calendar-alt"></i> Sort by Date:</label>
                 <select id="dateFilter">
@@ -80,28 +82,42 @@ $page = 'patients';
           </div>
         </div>
 
-        <table>
-          <thead>
-           <tr>
-            <th style="width: 3%;">#</th>
-            <th style="width: 15%;">Name</th>
-            <th style="width: 10%;">Image</th>
-            <th style="width: 12%;">Contact</th>
-            <th style="width: 10%;">Town</th>
-            <th style="width: 10%;">Region</th>
-            <th style="width: 8%;">Gender</th>
-            <th style="width: 10%;">DOB</th>
-            <th style="width: 10%;">Result</th>
-            <th style="width: 12%;">Action</th>
-          </tr>
+        <!-- table -->
+        <div class="table-responsive">
+          <table class="patients-table">
+            <colgroup>
+              <col class="col-idx">
+              <col class="col-name">
+              <col class="col-image">
+              <col class="col-contact">
+              <col class="col-town">
+              <col class="col-region">
+              <col class="col-gender">
+              <col class="col-dob">
+              <col class="col-result">
+              <col class="col-actions">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Contact</th>
+                <th>Town</th>
+                <th>Region</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Result</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body">
+              <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-          </thead>
-          <tbody id="records-table-body">
-            <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
-          </tbody>
-        </table>
-
-        <div id="pagination" class="pagination" style="margin-top: 20px; text-align: center;"></div>
+        <div id="pagination" class="pagination" style="margin-top:20px;text-align:center;"></div>
       </div>
     </div>
   </div>
@@ -109,9 +125,28 @@ $page = 'patients';
 
 <?php include '../partials/delete-toast.php'; ?>
 <script src="../js/delete-toast.js"></script>
-
 <script src="../js/theme-toggle.js" defer></script>
 <script src="../js/sidebar-toggle.js" defer></script>
 <script src="../js/patients.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.filter-btn');
+  const dd  = document.getElementById('filterDropdown');
+
+  btn?.addEventListener('click', e => {
+    e.stopPropagation();
+    dd.classList.toggle('show');
+    btn.setAttribute('aria-expanded', String(dd.classList.contains('show')));
+  });
+
+  document.addEventListener('click', e => {
+    if (!dd.contains(e.target) && !btn.contains(e.target)) {
+      dd.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+</script>
 </body>
 </html>
