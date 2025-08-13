@@ -44,10 +44,13 @@ if (!empty($_SESSION['profile_image']) && in_array($role, ['admin', 'healthcare'
       </button>
 
 
-    <div class="profile">
-      <img src="<?= htmlspecialchars($profileImage, ENT_QUOTES, 'UTF-8') ?>" 
-           alt="Profile" class="profile-pic"
-           onerror="this.onerror=null; this.src='<?= $defaultImage ?>';" />
+    <div class="profile" style="position: relative;">
+      <input type="checkbox" id="profileToggle" class="profile-toggle" hidden />
+      <label for="profileToggle" class="profile-pic-label">
+        <img src="<?= htmlspecialchars($profileImage, ENT_QUOTES, 'UTF-8') ?>"
+            alt="Profile" class="profile-pic"
+            onerror="this.onerror=null; this.src='<?= $defaultImage ?>';" />
+      </label>
 
       <div class="profile-dropdown">
         <a href="/eyecheck/<?= $role ?>/profile/update.php"><i class="fas fa-user-edit"></i> Edit Profile</a>
