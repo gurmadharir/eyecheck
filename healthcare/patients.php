@@ -129,24 +129,7 @@ $page = 'patients';
 <script src="../js/sidebar-toggle.js" defer></script>
 <script src="../js/patients.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector('.filter-btn');
-  const dd  = document.getElementById('filterDropdown');
+<script src="../js/toggle-dropdown.js"></script>
 
-  btn?.addEventListener('click', e => {
-    e.stopPropagation();
-    dd.classList.toggle('show');
-    btn.setAttribute('aria-expanded', String(dd.classList.contains('show')));
-  });
-
-  document.addEventListener('click', e => {
-    if (!dd.contains(e.target) && !btn.contains(e.target)) {
-      dd.classList.remove('show');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-});
-</script>
 </body>
 </html>
