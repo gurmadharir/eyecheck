@@ -48,15 +48,20 @@
   color: #888;
 }
 
+
 .filter-wrapper {
   position: relative;
+  display: inline-block; /* shrink to filter btn size */
+  margin: 0;
+  padding: 0;
+  /* Remove any :hover styles from this element */
 }
 
-.filter-wrapper:hover .filter-dropdown-tooltip {
-   /* show on hover */
-  display: flex;
+.filter-toggle {
+  display: none;
 }
 
+/* Remove any hover triggers here, just toggle on checkbox */
 .filter-btn {
   background-color: #00796b;
   color: white;
@@ -68,14 +73,16 @@
   display: flex;
   align-items: center;
   transition: background 0.3s;
+  user-select: none;
 }
 
 .filter-btn:hover {
   background-color: #006459;
 }
 
+/* Dropdown hidden by default */
 .filter-dropdown-tooltip {
-  display: none;  /* initially hidden */
+  display: none;
   flex-direction: column;
   gap: 8px;
   padding: 12px;
@@ -86,8 +93,17 @@
   width: 190px;
   font-size: 0.85rem;
   position: absolute;
-  top: 120%;
+  top: 110%;
   right: 0;
+  margin-top: 4px;
+
+  /* Avoid accidental hover over big invisible area */
+  pointer-events: auto; /* enable interaction */
+}
+
+/* Show dropdown ONLY when checkbox checked */
+.filter-toggle:checked + .filter-btn + .filter-dropdown-tooltip {
+  display: flex;
 }
 
 .filter-dropdown-tooltip label {
@@ -102,7 +118,8 @@
   color: #00796b;
 }
 
-.filter-dropdown-tooltip select {
+.filter-dropdown-tooltip select,
+.filter-dropdown-tooltip input[type="date"] {
   padding: 5px 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -656,7 +673,10 @@ html[data-theme="dark"] .sidebar { background: linear-gradient(180deg,#1e1e1e,#2
 html[data-theme="dark"] .main-content { background:#181818; }
 html[data-theme="dark"] .top-bar { background: transparent; border-bottom:1px solid #2a2a2a; }
 
-/* Filter tooltip: date inputs (light to match other fields) */
+
+/* =========================
+   Filter tooltip: date inputs
+   ========================= */
 .filter-dropdown-tooltip input[type="date"] {
   padding: 5px 8px;
   border-radius: 6px;
@@ -692,15 +712,16 @@ html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-dat
 /* =========================
    Filter (button + dropdown)
    ========================= */
-.filter-wrapper { position: relative; }
-.filter-wrapper:hover .filter-dropdown-tooltip { /* disable hover-open on touch */
-  display: none;
+.filter-wrapper {
+  position: relative;
 }
+
+/* Base dropdown style (hidden by default) */
 .filter-dropdown-tooltip {
   position: absolute;
   top: 120%;
-  right: 0;                 /* anchor to button's right edge */
-  display: none;            /* toggled via .show in JS */
+  right: 0;
+  display: none;
   flex-direction: column;
   gap: 8px;
   width: 190px;
@@ -709,16 +730,37 @@ html[data-theme="dark"] .filter-dropdown-tooltip input[type="date"]::-webkit-dat
   background: #d0f8f3;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,.08);
-  z-index: 10;
+  z-index: 1000;
 }
-.filter-dropdown-tooltip.show { display: flex; }
+
+/* Removed old hover-hide rule that caused blinking */
+/* .filter-wrapper:hover .filter-dropdown-tooltip { display: none; } */
+
+/* Authoritative show state */
+.filter-dropdown-tooltip.show {
+  display: flex !important;
+}
+
 .filter-dropdown-tooltip label {
-  display: flex; align-items: center; gap: 6px; font-weight: 500; margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin-bottom: 2px;
 }
+
+.filter-dropdown-tooltip label i {
+  color: #00796b;
+}
+
 .filter-dropdown-tooltip select,
 .filter-dropdown-tooltip input[type="date"] {
-  padding: 5px 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.85rem;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.85rem;
 }
+
 
 /* ==============
    Header controls
