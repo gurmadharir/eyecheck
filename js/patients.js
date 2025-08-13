@@ -59,27 +59,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
   function renderTable(data, currentPage, perPage) {
-    if (data.length === 0) {
+    if (!Array.isArray(data) || data.length === 0) {
       tableBody.innerHTML = "<tr><td colspan='10' style='text-align:center; padding:1em;'>🧐 No patients found!</td></tr>";
       return;
     }
 
     tableBody.innerHTML = data.map((record, index) => {
-      const dobDate = new Date(record.dob);
-      const age = new Date().getFullYear() - dobDate.getFullYear();
-      const resultClass = record.diagnosis_result === 'Conjunctivitis' ? 'positive' : 'negative';
+      // --- age (safer) ---
+      const dob = record.dob ? new Date(record.dob) : null;
+      const ageYears = dob ? (new Date(Date.now() - dob.getTime()).getUTCFullYear() - 1970) : '';
+
+      // --- normalize result (supports Conjunctivitis/NonConjunctivitis and Positive/Negative) ---
+      const raw = String(record.diagnosis_result || '').trim();
+      const low = raw.toLowerCase();
+      let displayResult = raw.replace(/([a-z])([A-Z])/g, '$1 $2'); // fallback prettifier
+      let resultClass = 'neutral';
+
+      if (low === 'conjunctivitis' || low === 'positive') {
+        displayResult = 'Conjunctivitis';
+        resultClass = 'positive';
+      } else if (low === 'nonconjunctivitis' || low === 'negative') {
+        displayResult = 'Non Conjunctivitis';
+        resultClass = 'negative';
+      }
+
+      // --- color style (red for Conjunctivitis, green otherwise) ---
+      const resultStyle = (displayResult.toLowerCase() === 'conjunctivitis')
+        ? 'color:#e74c3c;font-weight:bold;'
+        : 'color:#27ae60;font-weight:bold;';
+
+      const rowNum = (currentPage - 1) * perPage + index + 1;
+      const imgSrc = record.image_path ? `/eyecheck/${record.image_path}` : '';
 
       return `
         <tr>
-          <td>#${(currentPage - 1) * perPage + index + 1}</td>
-          <td>${record.name}</td>
-          <td><img src="/eyecheck/${record.image_path}" style="width:80px;height:50px;object-fit:cover;border-radius:6px;" /></td>
-          <td>${record.contact}</td>
-          <td>${record.town}</td>
-          <td>${record.region}</td>
-          <td>${record.gender}</td>
-          <td>${dobDate.getFullYear()} <small>(${age} yrs)</small></td>
-          <td class="${resultClass}">${record.diagnosis_result}</td>
+          <td>#${rowNum}</td>
+          <td>${record.name || ''}</td>
+          <td><img src="${imgSrc}" style="width:80px;height:50px;object-fit:cover;border-radius:6px;" /></td>
+          <td>${record.contact || ''}</td>
+          <td>${record.town || ''}</td>
+          <td>${record.region || ''}</td>
+          <td>${record.gender || ''}</td>
+          <td>${dob ? dob.getFullYear() : ''} ${ageYears !== '' ? `<small>(${ageYears} yrs)</small>` : ''}</td>
+          <td class="${resultClass}" style="${resultStyle}">${displayResult}</td>
           <td style="white-space:nowrap;">
             <button class="action-btn edit-btn" title="Edit" data-id="${record.id}"><i class="fas fa-pen-to-square"></i></button>
             <button class="action-btn view-btn" data-id="${record.upload_id}" title="View"><i class="fas fa-eye"></i></button>
