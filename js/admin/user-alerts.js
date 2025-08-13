@@ -150,6 +150,13 @@ document.addEventListener("DOMContentLoaded", () => {
                           <i class="fas fa-eye" style="opacity: 0.7;"></i>
                        </a>`;
 
+      const printBtn = `<a href="#" class="action-btn print-patient"
+                          data-id="${item.user_id || item.id}"
+                          title="Print Patient Report">
+                          <i class="fas fa-print" style="opacity:.8;"></i>
+                        </a>`;
+
+
       // Hide delete for both pending and flagged; show only on the default Patients list
       const deleteBtn = (filterValue === "pending" || filterValue === "flagged")
         ? ''
@@ -201,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // ✅ DEFAULT (Patients): Registered + Actions
         rowHtml += `
           <td>${createdDateStr} <small style="font-weight:normal; font-size:0.8em; color:#666;">${createdTimeStr}</small></td>
-          <td>${(config.showViewButton !== false ? viewBtn : '')}${deleteBtn}</td>
+          <td>${(config.showViewButton !== false ? viewBtn : '')}${printBtn}${deleteBtn}</td>
         `;
       }
 
@@ -211,6 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupDeleteButtons();
     setupMailButtons();
+    setupPrintButtons();
   }
 
 
@@ -256,6 +264,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  function setupPrintButtons() {
+    document.querySelectorAll('.print-patient').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = btn.dataset.id;
+        if (!id) return;
+        // open the printable report for PATIENT
+        const url = `/eyecheck/admin/print-report.php?type=patient&id=${encodeURIComponent(id)}&months=3`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    });
+  }
+
 
   function setupMailButtons() {
     document.querySelectorAll('[data-action="send-email"]').forEach(btn => {
