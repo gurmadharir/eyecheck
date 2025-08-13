@@ -36,7 +36,7 @@ $page = 'past-uploads';
           <div class="controls-right">
             <div class="filter-wrapper">
               <button class="filter-btn" aria-haspopup="true" aria-expanded="false" aria-controls="filterDropdown" title="Filter">
-                <i class="fa fa-filter"></i>
+                <i class="fas fa-filter"></i>
               </button>
               <div class="filter-dropdown-tooltip" id="filterDropdown">
                 <label for="resultFilter"><i class="fas fa-stethoscope"></i> Result:</label>
