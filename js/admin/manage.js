@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const action = `
       <th style="width:${widths.registered}">Registered</th>
-      <th style="width:${widths.action}">Action</th>`;
+      <th style="width:${widths.action}; text-align: left;">Actions</th>`;
 
     tableHeader.innerHTML = `<tr>${common}${extra}${action}</tr>`;
   }
@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     tableBody.innerHTML = data.map((user, index) => {
       const createdAt = formatDate(user.created_at);
       let row = `
@@ -171,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <a href="change-password.php?id=${user.id}&role=${role}" class="action-btn password-btn" title="Change Password" aria-label="Change password">
             <i class="fas fa-key"></i>
           </a>`;
-
+          
       const isSelf = user.id === currentAdminId;
 
       if (isSpecialAdmin && !isSelf) {
@@ -184,11 +185,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 </button>`;
       }
 
-      row += `</td>`;
+      if (role === "healthcare") {
+        row += `
+          <button style="margin-left: 10px" class="action-btn print-btn"
+              data-id="${user.id}"
+              title="Print Full Report"
+              aria-label="Print healthcare report">
+              <i class="fas fa-print"></i>
+          </button>`;
+      }
+
+      row += `</td>`;      
       return `<tr>${row}</tr>`;
     }).join("");
 
     bindDeleteButtons();
+    bindPrintButtons();
   }
 
   function renderPagination(total, perPage, currentPage) {
@@ -272,6 +284,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  function bindPrintButtons() {
+    document.querySelectorAll(".print-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = parseInt(btn.dataset.id);
+        // Open printable report and auto-print when it loads
+        const url = `/eyecheck/admin/print-report.php?type=healthcare&id=${id}`;
+        const w = window.open(url, "_blank", "noopener,noreferrer");
+        // No-op if popup blocked; the server page also calls window.print() on load.
+      });
+    });
+  }
+
 
   loadPage(1);
 
