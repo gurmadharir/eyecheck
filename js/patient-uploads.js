@@ -14,33 +14,39 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("change", () => loadPage(1));
   });
 
-  function loadPage(page = 1) {
-    const selectedResult = result.value === 'Conjunctivitis' ? 'Positive' : result.value;
+function loadPage(page = 1) {
+  const uiResult = result.value; // 'all' | 'Conjunctivitis' | 'Negative'
+  let apiResult = '';
+  if (uiResult === 'Conjunctivitis') apiResult = 'Positive';           // ← legacy backend expects this
+  else if (uiResult === 'Negative') apiResult = 'NonConjunctivitis';   // this already works
 
-    const params = new URLSearchParams({
-      result: selectedResult,
-      sort: sort.value,
-      start: startDate.value,
-      end: endDate.value,
-      page: page
+  const params = new URLSearchParams({
+    sort: sort.value,
+    start: startDate.value,
+    end: endDate.value,
+    page: String(page)
+  });
+  if (apiResult) params.set('result', apiResult);
+
+  updateURL(params);
+
+  fetch("/eyecheck/backend/patient/get-patient-uploads.php?" + params.toString())
+    .then(res => res.json())
+    .then(response => {
+      if (!response.success) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Error loading data.</td></tr>`;
+        return;
+      }
+      // No client-side re-filtering needed if backend filters correctly
+      renderTable(response.data || [], response.currentPage, response.perPage);
+      renderPagination(response.total, response.perPage, response.currentPage);
+    })
+    .catch(() => {
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Failed to fetch data.</td></tr>`;
     });
+}
 
-    updateURL(params);
 
-    fetch("/eyecheck/backend/patient/get-patient-uploads.php?" + params)
-      .then(res => res.json())
-      .then(response => {
-        if (!response.success) {
-          tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Error loading data.</td></tr>`;
-          return;
-        }
-        renderTable(response.data, response.currentPage, response.perPage);
-        renderPagination(response.total, response.perPage, response.currentPage);
-      })
-      .catch(() => {
-        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Failed to fetch data.</td></tr>`;
-      });
-  }
 
 function renderTable(data, currentPage, perPage) {
     if (data.length === 0) {
@@ -161,10 +167,21 @@ function renderTable(data, currentPage, perPage) {
   }
 
   function initFiltersFromURL() {
-    const url = new URLSearchParams(window.location.search);
-    result.value = url.get("result") || "all";
-    sort.value = url.get("sort") || "latest";
-    startDate.value = url.get("start") || "";
-    endDate.value = url.get("end") || "";
+  const url = new URLSearchParams(window.location.search);
+  const res = (url.get("result") || "").toLowerCase();
+
+  if (res === 'positive' || res === 'conjunctivitis') {
+    result.value = 'Conjunctivitis';
+  } else if (res === 'nonconjunctivitis' || res === 'negative') {
+    result.value = 'Negative';
+  } else {
+    result.value = 'all';
   }
+
+  sort.value = url.get("sort") || "latest";
+  startDate.value = url.get("start") || "";
+  endDate.value = url.get("end") || "";
+}
+
+
 });
