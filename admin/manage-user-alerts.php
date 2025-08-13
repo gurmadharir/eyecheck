@@ -84,6 +84,7 @@ $page = 'user-alerts';
   <span id="toastMessage">Deleted successfully!</span>
 </div>
 
+<script src="../js/toggle-dropdown.js"></script>
 <script src="../js/theme-toggle.js" defer></script>
 <script src="../js/sidebar-toggle.js" defer></script>
 
