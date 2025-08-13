@@ -239,6 +239,7 @@ nav .btn.secondary:hover {
    ========================= */
 .profile {
   position: relative;
+  display: inline-block;
 }
 
 .btn-primary {
@@ -276,6 +277,12 @@ nav .btn.secondary:hover {
   box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
 }
 
+/* Hide the native checkbox */
+.profile-toggle {
+  display: none;
+}
+
+/* Dropdown hidden by default */
 .profile-dropdown {
   display: none;
   position: absolute;
@@ -291,8 +298,15 @@ nav .btn.secondary:hover {
   border: 1px solid var(--border);
 }
 
-.profile:hover .profile-dropdown {
+/* Show dropdown when checkbox is checked */
+.profile-toggle:checked + .profile-pic-label + .profile-dropdown {
   display: block;
+}
+
+/* Style the label that wraps the profile picture */
+.profile-pic-label {
+  cursor: pointer;
+  display: inline-block;
 }
 
 .profile-dropdown a {
