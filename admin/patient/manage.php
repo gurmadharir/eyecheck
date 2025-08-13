@@ -93,6 +93,9 @@ $page = 'patients';
 
 <script src="../../js/sidebar-toggle.js" defer></script>
 <script src="../../js/theme-toggle.js"></script>
+ 
+
+<script src="../../js/toggle-dropdown.js"></script>
 
 <script>
   window.adminRecordsConfig = {
