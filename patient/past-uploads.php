@@ -68,6 +68,7 @@ $page = 'past-uploads';
               <col class="col-idx">
               <col class="col-image">
               <col class="col-result">
+              <col class="col-confidence">
               <col class="col-date">
               <col class="col-actions">
             </colgroup>
@@ -77,6 +78,7 @@ $page = 'past-uploads';
                 <th>#</th>
                 <th>Image</th>
                 <th>Result</th>
+                <th>Confidence</th> 
                 <th>Uploaded</th>
                 <th>Action</th>
               </tr>
