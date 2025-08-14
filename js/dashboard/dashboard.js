@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
           labels: ["Conjunctivitis", "Non Conjunctivitis"],
           datasets: [{
             data: [positive, negative],
+            label: "Conjunctivitis",
             backgroundColor: ["#e53935", "#43a047"]
           }]
         },
