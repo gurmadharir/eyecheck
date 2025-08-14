@@ -28,13 +28,25 @@ document.addEventListener("DOMContentLoaded", function () {
         if (el) el.textContent = val ?? "-";
       };
 
+      // Render % with traffic-light inline style; falls back gracefully
+      function renderConfidenceTo(idCandidates, value, style) {
+        const id = idCandidates.find(i => document.getElementById(i));
+        if (!id) return;
+        const el = document.getElementById(id);
+        const v = (value === null || value === undefined || isNaN(value)) 
+                    ? "—" 
+                    : `${Number(value).toFixed(1)}%`;
+        el.innerHTML = `<span style="${style || ""}">${v}</span>`;
+      }
+
     const s = data.summary || {};
     const a = data.adminCards || {};
     const trendData = role === "patient" ? data.uploadTrend : data.trend;
 
     if (role === "patient") {
       set("statTotal", s.total_uploads);
-      set("statAverageAge", s.warnings_sent);
+      // Show avg confidence in card (works if your span has id="statAvgConfidence" OR the legacy id)
+      renderConfidenceTo(["statAvgConfidence", "statAverageAge"], s.avg_confidence, s.avg_confidence_style);
 
       const latestEl = document.getElementById("statLatest");
       if (latestEl && s.upload_freq) {
@@ -108,6 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
         set("statTotalPatients", a.total_patients);
         set("statHealthcareUsers", a.total_healthcare);
         set("statRegions", a.regions_count);
+        // Optional: show overall avg confidence returned from adminCards
+        renderConfidenceTo(["statAvgConfidence"], a.avg_confidence, a.avg_confidence_style);
+
 
         const acc = a.model_accuracy ?? 0;
         const accEl = document.getElementById("statModelAccuracy");
@@ -267,6 +282,9 @@ document.addEventListener("DOMContentLoaded", function () {
         set("statTotal", s.total);
         set("statRegions", s.regions);
         set("statAverageAge", s.average_age);
+        // Show avg confidence for healthcare scope
+        renderConfidenceTo(["statAvgConfidence"], s.avg_confidence, s.avg_confidence_style);
+
 
         const el = document.getElementById("statLatest");
         if (el && s.latest?.includes(" ")) {
