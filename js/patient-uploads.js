@@ -42,29 +42,46 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-function renderTable(data, currentPage, perPage) {
+  function renderTable(data, currentPage, perPage) {
     if (data.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">🧐 No uploads found.</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">🧐 No uploads found.</td></tr>`;
       return;
     }
 
     tableBody.innerHTML = data.map((record, index) => {
       const uploaded = new Date(record.created_at).toLocaleDateString();
 
-      // ➕ Add space between camelCase or compound words
+      // Result formatting
       const rawResult = record.diagnosis_result || '';
       const spacedResult = rawResult.replace(/([a-z])([A-Z])/g, '$1 $2');
 
-      // 🎨 Conditional styling based on result
-      const resultStyle = spacedResult.toLowerCase() === 'conjunctivitis'
-        ? 'color:#e74c3c;font-weight:bold;'   // 🔴 red bold for Conjunctivitis
-        : 'color:#27ae60;font-weight:bold;';  // ✅ green bold for others
+      const isConj = spacedResult.toLowerCase() === 'conjunctivitis';
+      const resultStyle = isConj
+        ? 'color:#e74c3c;font-weight:bold;'   // red
+        : 'color:#27ae60;font-weight:bold;';  // green
+
+      // Confidence value & color
+      let confDisplay = '—';
+      let confStyle = 'color:#6c757d;'; // muted gray for missing
+
+      const confNum = parseFloat(record.confidence);
+      if (Number.isFinite(confNum)) {
+        confDisplay = `${confNum.toFixed(2)}%`;
+        if (confNum >= 80) {
+          confStyle = 'color:#27ae60;font-weight:bold;'; // green
+        } else if (confNum >= 50) {
+          confStyle = 'color:#f1c40f;font-weight:bold;'; // yellow
+        } else {
+          confStyle = 'color:#e74c3c;font-weight:bold;'; // red
+        }
+      }
 
       return `
         <tr>
           <td>#${(currentPage - 1) * perPage + index + 1}</td>
           <td><img src="../${record.image_path}" style="width:80px;height:50px;object-fit:cover;border-radius:6px;" /></td>
           <td style="${resultStyle}">${spacedResult}</td>
+          <td style="${confStyle}">${confDisplay}</td>
           <td>${uploaded}</td>
           <td style="white-space:nowrap;">
             <a class="action-btn" style="margin-right: 18px;" href="view-upload.php?id=${record.id}" title="View"><i class="fas fa-eye"></i></a>
@@ -77,6 +94,7 @@ function renderTable(data, currentPage, perPage) {
 
     attachDeleteListeners();
   }
+
 
 
 
