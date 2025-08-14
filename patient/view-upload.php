@@ -62,11 +62,35 @@ $page = "past-uploads";
              style="display: block; max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); border: none;" />
         </div>
 
+        <?php
+          // Build confidence display + style
+          $confText  = '—';
+          $confStyle = 'color:#6c757d;'; // muted gray
+
+          if (isset($data['confidence']) && $data['confidence'] !== '' && $data['confidence'] !== null) {
+              $confNum = (float)$data['confidence']; // stored as 0-100 in DB
+              $confText = number_format($confNum, 2) . '%';
+
+              if ($confNum >= 80) {
+                  $confStyle = 'color:#27ae60;font-weight:bold;';   // green
+              } elseif ($confNum >= 50) {
+                  $confStyle = 'color:#f1c40f;font-weight:bold;';   // yellow
+              } else {
+                  $confStyle = 'color:#e74c3c;font-weight:bold;';   // red
+              }
+          }
+          ?>
         <div class="details">
           <p><strong>🔬 Diagnosis:</strong>
             <span style="<?= htmlspecialchars($diagData['style']) ?>"><?= htmlspecialchars($diagData['label']) ?></span>
           </p>
 
+          <p><strong>🎯 Confidence:</strong>
+            <span style="<?= htmlspecialchars($confStyle) ?>">
+              <?= htmlspecialchars($confText) ?>
+            </span>
+          </p>
+          
           <p><strong>📅 Uploaded:</strong> <?= date('F j, Y', strtotime($data['created_at'])) ?></p>
         </div>
 
