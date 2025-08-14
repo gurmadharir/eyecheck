@@ -32,14 +32,14 @@ $userId = $_SESSION['user_id'];
 try {
     if ($role === 'patient') {
         $sql = "
-            SELECT p.*, pu.image_path, pu.diagnosis_result, pu.created_at
+            SELECT p.*, pu.image_path, pu.diagnosis_result, confidence, pu.created_at
             FROM patients p
             JOIN patient_uploads pu ON pu.patient_id = p.id
             WHERE pu.id = :uploadId AND pu.uploaded_by = :userId
         ";
     } elseif ($role === 'healthcare') {
         $sql = "
-            SELECT p.*, pu.image_path, pu.diagnosis_result, pu.created_at
+            SELECT p.*, pu.image_path, pu.diagnosis_result, confidence, pu.created_at
             FROM patients p
             JOIN patient_uploads pu ON pu.patient_id = p.id
             WHERE pu.id = :uploadId
