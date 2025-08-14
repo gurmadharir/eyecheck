@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewImg = document.getElementById("previewImage");
   const removeBtn  = document.getElementById("removeImage");
   const spinner    = document.getElementById("loadingSpinner");
-  const resultBox  = document.getElementById("result");
+  const resultText  = document.getElementById("result");
   const form       = document.getElementById("uploadForm");
   const diagnosisInput = document.getElementById("diagnosisResult");
   const toastEl    = document.getElementById("toast");
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Reset UI
     disableSave(true);
-    resultBox && (resultBox.textContent = "");
+    resultText && (resultText.textContent = "");
     if (diagnosisInput) diagnosisInput.value = "";
 
     // Preview
@@ -80,41 +80,68 @@ document.addEventListener("DOMContentLoaded", () => {
     fd.append("file", file);
 
     fetch("http://127.0.0.1:8000/predict", { method: "POST", body: fd })
-      .then((r) => r.json())
-      .then((data) => {
-        if (token !== currentToken) return;
+    .then((r) => r.json())
+    .then((data) => {
+      if (token !== currentToken) return;
 
-        const raw = data.result || "";
-        const acc = data.accuracy ? ` - Accuracy: ${data.accuracy}` : "";
-        const displayText = raw + acc;
+      // --- prepare everything but DO NOT touch the UI yet ---
+      const raw = data.result || "";
+      const cleaned = cleanText(raw);
 
-        const cleaned = cleanText(raw);
-        if (diagnosisInput) diagnosisInput.value = cleaned;
+      // confidence number (no %)
+      const confPct = (data.confidence || "").toString().replace("%", "").trim();
+      const confVal = (["Conjunctivitis","NonConjunctivitis"].includes(cleaned) && confPct && !isNaN(confPct))
+        ? Number(confPct).toFixed(2)
+        : "";
 
-        showSpinner();
-        resultBox && (resultBox.textContent = "");
+      // push hidden fields for PHP
+      document.getElementById("confidenceValue")?.setAttribute("value", confVal);
+      document.getElementById("modelVersion")?.setAttribute("value", data.model_version || "advanced-cnn-v1");
 
-        setTimeout(() => {
-          hideSpinner();
-          resultBox && (resultBox.textContent = displayText);
+      // build display text (two lines) + color
+      const accLine = confVal ? `\nAccuracy: ${confVal}%` : "";
+      let displayText = raw;
+      let color = "";
 
-          if (!["Conjunctivitis", "NonConjunctivitis"].includes(cleaned)) {
-            disableSave(true);
-            showToast(raw || "Invalid prediction. Please try a clear human eye image.", "error");
-            return;
-          }
+      if (cleaned === "Conjunctivitis") {
+        displayText = `⚠ Conjunctivitis${accLine}`;
+        color = "red";
+      } else if (cleaned === "NonConjunctivitis") {
+        displayText = `✅ Non-Conjunctivitis${accLine}`;
+        color = "green";
+      } else {
+        // rejection/invalid → no confidence stored
+        document.getElementById("confidenceValue")?.setAttribute("value", "");
+      }
 
-          disableSave(false);
-          showToast("Prediction ready. You can save.", "success");
-        }, 1000);
-      })
-
-      .catch((err) => {
+      // --- SHOW after 3 seconds ---
+      setTimeout(() => {
         if (token !== currentToken) return;
         hideSpinner();
-        console.error("Prediction error:", err);
-        showToast("Prediction failed. Check FastAPI server.", "error");
-      });
+
+        if (resultText) {
+          resultText.textContent = displayText;
+          resultText.style.color = color;
+        }
+
+        if (!["Conjunctivitis","NonConjunctivitis"].includes(cleaned)) {
+          disableSave(true);
+          showToast(raw || "❌ Rejected (not a human eye)", "error");
+          return;
+        }
+
+        // valid prediction
+        if (diagnosisInput) diagnosisInput.value = cleaned;
+        disableSave(false);
+        showToast("Prediction ready. You can save.", "success");
+      }, 3000); // ⏳ delay 3s AFTER response
+    })
+    .catch((err) => {
+      if (token !== currentToken) return;
+      hideSpinner();
+      console.error("Prediction error:", err);
+      showToast("Prediction failed. Check FastAPI server.", "error");
+    });
   }
 
   // --- Remove/reset selection ---
@@ -138,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
       previewImg.style.display = "none";
     }
     if (removeBtn) removeBtn.style.display = "none";
-    resultBox && (resultBox.textContent = "");
+    resultText && (resultText.textContent = "");
     if (diagnosisInput) diagnosisInput.value = "";
     disableSave(true);
     hideSpinner();
