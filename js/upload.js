@@ -85,6 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (token !== currentToken) return;
 
         const raw = data.result || "";
+        const acc = data.accuracy ? ` - Accuracy: ${data.accuracy}` : "";
+        const displayText = raw + acc;
+
         const cleaned = cleanText(raw);
         if (diagnosisInput) diagnosisInput.value = cleaned;
 
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
           hideSpinner();
-          resultBox && (resultBox.textContent = raw);
+          resultBox && (resultBox.textContent = displayText);
 
           if (!["Conjunctivitis", "NonConjunctivitis"].includes(cleaned)) {
             disableSave(true);
@@ -105,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast("Prediction ready. You can save.", "success");
         }, 1000);
       })
+
       .catch((err) => {
         if (token !== currentToken) return;
         hideSpinner();
