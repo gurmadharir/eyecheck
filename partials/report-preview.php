@@ -4,6 +4,23 @@ if (!isset($patient)) return;
 require_once __DIR__ . '/../backend/shared/diagnosis-utils.php';
 $diagData = formatDiagnosis($patient['diagnosis_result']);
 $cleanDiag = strtolower(str_replace([' ', '_', '-'], '', $patient['diagnosis_result'] ?? ''));
+
+// ✅ Confidence style logic
+$confText  = '—';
+$confStyle = 'color:#6c757d;'; // muted gray
+
+if (isset($patient['confidence']) && $patient['confidence'] !== '' && $patient['confidence'] !== null) {
+    $confNum = (float)$patient['confidence']; // stored as 0-100 in DB
+    $confText = number_format($confNum, 2) . '%';
+
+    if ($confNum >= 80) {
+        $confStyle = 'color:#27ae60;font-weight:bold;';   // green
+    } elseif ($confNum >= 50) {
+        $confStyle = 'color:#f1c40f;font-weight:bold;';   // yellow
+    } else {
+        $confStyle = 'color:#e74c3c;font-weight:bold;';   // red
+    }
+}
 ?>
 <div class="report-modal" id="reportModal">
   <div class="report-wrapper">
@@ -49,6 +66,11 @@ $cleanDiag = strtolower(str_replace([' ', '_', '-'], '', $patient['diagnosis_res
         <tr>
           <th>🔬 Diagnosis</th>
           <td><span style="<?= $diagData['style'] ?>"><?= htmlspecialchars($diagData['label']) ?></span></td>
+        </tr>
+        <!-- ✅ Confidence row -->
+        <tr>
+          <th>🎯 Confidence</th>
+          <td><span style="<?= htmlspecialchars($confStyle) ?>"><?= htmlspecialchars($confText) ?></span></td>
         </tr>
       </table>
 
