@@ -61,6 +61,20 @@ if (!in_array($cleanedResult, ['Conjunctivitis', 'NonConjunctivitis'])) {
 
 $diagnosis = $cleanedResult;
 
+// Read posted values from the form (hidden inputs set by JS)
+$confidence = isset($_POST['confidence']) && $_POST['confidence'] !== ''
+    ? number_format((float)$_POST['confidence'], 2, '.', '')   // 0–100 with 2 decimals
+    : null;
+
+$modelVersion = isset($_POST['model_version']) && $_POST['model_version'] !== ''
+    ? clean($_POST['model_version'])
+    : null;
+
+// (optional) sanity check
+if ($confidence !== null && ($confidence < 0 || $confidence > 100)) {
+    jsonResponse(false, 'Confidence must be between 0 and 100.');
+}
+
 
 // Upload path
 $uploadDir = ($formRole === 'patient') ? '../../patient/uploads/' : '../../healthcare/patients/uploads/';
@@ -111,12 +125,29 @@ if ($formRole === 'patient') {
     $checkHash->execute([$imageHash, $patientId]);
     if ($checkHash->rowCount() > 0) jsonResponse(false, 'This image was already uploaded.');
 
-    $stmt = $pdo->prepare("INSERT INTO patient_uploads (patient_id, image_path, image_hash, diagnosis_result, uploaded_by)
-                           VALUES (?, ?, ?, ?, ?)");
-    $success = $stmt->execute([$patientId, $relativePath, $imageHash, $diagnosis, $user_id]);
+    $stmt = $pdo->prepare("INSERT INTO patient_uploads
+    (patient_id, image_path, image_hash, diagnosis_result, model_version, confidence, uploaded_by)
+    VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    $success = $stmt->execute([
+        $patientId,
+        $relativePath,
+        $imageHash,
+        $diagnosis,
+        $modelVersion,   // may be null
+        $confidence,     // may be null (rejections/unknown)
+        $user_id
+    ]);
+
 
     if ($success && move_uploaded_file($file['tmp_name'], $fullPath)) {
-        // Log
+         // Log model prediction
+        $logPred = $pdo->prepare("INSERT INTO model_predictions
+            (patient_id, image_path, result, model_version, confidence)
+            VALUES (?, ?, ?, ?, ?)");
+        $logPred->execute([$patientId, $relativePath, $diagnosis, $modelVersion, $confidence]);
+
+        // Log Activity
         logActivity(
             $user_id,
             'patient',
@@ -175,11 +206,29 @@ if ($formRole === 'healthcare') {
         jsonResponse(false, 'You already uploaded this image before.');
     }
 
-    $stmt = $pdo->prepare("INSERT INTO patient_uploads (patient_id, image_path, image_hash, diagnosis_result, uploaded_by)
-                           VALUES (?, ?, ?, ?, ?)");
-    $success = $stmt->execute([$patientId, $relativePath, $imageHash, $diagnosis, $user_id]);
+    $stmt = $pdo->prepare("INSERT INTO patient_uploads
+        (patient_id, image_path, image_hash, diagnosis_result, model_version, confidence, uploaded_by)
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    $success = $stmt->execute([
+        $patientId,
+        $relativePath,
+        $imageHash,
+        $diagnosis,
+        $modelVersion,
+        $confidence,
+        $user_id
+    ]);
+
 
     if ($success && move_uploaded_file($file['tmp_name'], $fullPath)) {
+        // Log model prediction
+        $logPred = $pdo->prepare("INSERT INTO model_predictions
+            (patient_id, image_path, result, model_version, confidence)
+            VALUES (?, ?, ?, ?, ?)");
+        $logPred->execute([$patientId, $relativePath, $diagnosis, $modelVersion, $confidence]);
+
+        // Log activity
         logActivity(
             $user_id,
             'healthcare',
