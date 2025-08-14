@@ -134,8 +134,10 @@ $disabledAttr = $readonly ? 'disabled' : '';
         <div id="result" style="margin-top: 15px; font-size: 1rem; font-weight: 500;"></div>
       </div>
 
-      <!-- hidden role  -->
+      <!-- hidden inputs  -->
       <input type="hidden" name="role" value="<?= $role ?>" />
+      <input type="hidden" name="confidence" id="confidenceValue">
+      <input type="hidden" name="model_version" id="modelVersion">
 
 
       <button class="upload-btn" type="submit" disabled>Save</button>
