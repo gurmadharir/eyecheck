@@ -30,7 +30,7 @@ if (!$patient) {
 $patient_id = $patient['id'];
 
 // Read filters
-$result    = $_GET['result'] ?? 'all';     // e.g. Conjunctivitis | NonConjunctivitis | Positive | Negative | all
+$result    = $_GET['result'] ?? 'all';     // Conjunctivitis | NonConjunctivitis | Positive | Negative | all
 $sort      = $_GET['sort'] ?? 'latest';    // latest | oldest
 $startDate = $_GET['start'] ?? '';
 $endDate   = $_GET['end'] ?? '';
@@ -42,11 +42,7 @@ $offset    = ($page - 1) * $limit;
 $where  = "WHERE patient_id = :patient_id";
 $params = [':patient_id' => $patient_id];
 
-/*
-  Support both canonical and legacy values:
-  - Conjunctivitis     => ['Conjunctivitis','Positive']
-  - NonConjunctivitis  => ['NonConjunctivitis','Negative']
-*/
+/* Support canonical + legacy values */
 $val = strtolower(trim($result));
 if ($val && $val !== 'all') {
     if ($val === 'conjunctivitis' || $val === 'positive') {
@@ -79,9 +75,9 @@ $countStmt = $pdo->prepare($countSql);
 $countStmt->execute($params);
 $total = (int)$countStmt->fetchColumn();
 
-// Fetch page (same WHERE)
+// Fetch page (same WHERE) — now selecting confidence
 $dataSql = "
-  SELECT id, image_path, diagnosis_result, created_at
+  SELECT id, image_path, diagnosis_result, confidence, created_at
   FROM patient_uploads
   $where
   ORDER BY $orderBy
@@ -99,7 +95,7 @@ $uploads = $dataStmt->fetchAll(PDO::FETCH_ASSOC);
 // Response
 echo json_encode([
     'success'     => true,
-    'data'        => $uploads,
+    'data'        => $uploads,   
     'total'       => $total,
     'perPage'     => $limit,
     'currentPage' => $page,
