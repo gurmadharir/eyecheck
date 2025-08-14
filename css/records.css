@@ -1045,8 +1045,11 @@ html[data-theme="dark"] .table-responsive::-webkit-scrollbar-thumb{background:#3
 .uploads-table th,
 .uploads-table td {
   padding: 12px 16px;
-  white-space: nowrap; /* Prevents text wrap */
+  white-space: nowrap; 
+  text-align: left;
+  vertical-align: middle;
 }
+
 
 .uploads-table th:nth-child(1),
 .uploads-table td:nth-child(1) {
