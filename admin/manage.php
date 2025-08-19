@@ -62,6 +62,13 @@ $isSpecialAdmin = isset($_SESSION['is_super_admin']) && $_SESSION['is_super_admi
                   <option value="oldest">Oldest First</option>
                 </select>
 
+                <label for="statusFilter"><i class="fas fa-user-check"></i> Status:</label>
+                <select id="statusFilter">
+                  <option value="all" selected>All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+
                 <div id="regionFilterWrapper" style="display:none;">
                   <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> Region:</label>
                   <select id="regionFilter">
@@ -87,6 +94,7 @@ $isSpecialAdmin = isset($_SESSION['is_super_admin']) && $_SESSION['is_super_admi
   </div>
 </div>
 
+<input type="hidden" id="currentAdminId" value="<?= (int)($_SESSION['user_id'] ?? 0) ?>">
 <input type="hidden" id="isSpecialAdmin" value="<?= $isSpecialAdmin ? '1' : '0' ?>">
 
 <?php include '../partials/delete-toast.php'; ?>
