@@ -24,6 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // NEW ▶ Block deactivated accounts BEFORE creating any session
+    if (isset($user['is_active']) && (int)$user['is_active'] !== 1) {
+        // (Optional) logActivity($user['id'], $user['role'], 'LOGIN_BLOCKED', "Deactivated user '{$user['username']}' attempted login");
+        echo json_encode(['success' => false, 'message' => 'Your account is deactivated. Please contact support.']);
+        exit;
+    }
+    // NEW ▲
+
     $role = $user['role'];
     $allowedRoles = ['admin', 'healthcare', 'patient'];
     if (!in_array($role, $allowedRoles)) {
