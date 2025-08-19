@@ -39,13 +39,17 @@ try {
         throw new Exception('Weak password! Choose a stronger one.');
     }
 
-    // === Validate token + expiry using DB UTC clock ===
-    // Make sure your "forgot" script sets: reset_expires = DATE_ADD(UTC_TIMESTAMP(), INTERVAL 1 HOUR)
+    /**
+     * === Validate token + expiry ===
+     * Use NOW() to compare against whatever timezone your DB stores reset_expires in.
+     * (Your forgot-password handler currently writes reset_expires in Africa/Mogadishu local time.)
+     * If you switch to UTC in the future, keep both writers/readers consistent.
+     */
     $stmt = $pdo->prepare("
-        SELECT id, username, role
+        SELECT id, username, role, is_active
         FROM users
         WHERE reset_token = ?
-          AND reset_expires > UTC_TIMESTAMP()
+          AND reset_expires > NOW()
         LIMIT 1
     ");
     $stmt->execute([$token]);
@@ -53,6 +57,11 @@ try {
 
     if (!$user) {
         throw new Exception('This reset link is invalid or has expired. Please request a new one.');
+    }
+
+    // Block deactivated accounts from resetting passwords
+    if (isset($user['is_active']) && (int)$user['is_active'] !== 1) {
+        throw new Exception('This account is deactivated. Please contact support.');
     }
 
     // === Update password & clear token ===
@@ -64,7 +73,7 @@ try {
     ");
     $upd->execute([$hash, $user['id']]);
 
-    // Optional audit log (best-effort)
+    // Optional: log audit
     try {
         logActivity((int)$user['id'], (string)($user['role'] ?? 'unknown'), 'RESET_PASSWORD',
             "User '{$user['username']}' reset their password.");
