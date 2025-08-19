@@ -21,10 +21,13 @@ if (strlen($search) > 100) {
 
 $currentUserId = $_SESSION['user_id'];
 $allowedRoles = ['admin', 'healthcare'];
-$role = in_array($_GET['role'] ?? '', $allowedRoles) ? $_GET['role'] : 'admin';
+$role = in_array($_GET['role'] ?? '', $allowedRoles, true) ? $_GET['role'] : 'admin';
 
 $region = trim($_GET['region'] ?? 'all');
 $sort = ($_GET['sort'] ?? '') === 'oldest' ? 'oldest' : 'latest';
+$status = $_GET['status'] ?? 'all'; // 'all' | 'active' | 'inactive'
+if (!in_array($status, ['all','active','inactive'], true)) $status = 'all';
+
 $page = max(1, intval($_GET['page'] ?? 1));
 $limit = 10;
 $offset = ($page - 1) * $limit;
@@ -37,7 +40,7 @@ $params = [
 ];
 
 // Optional search filter
-if (!empty($search)) {
+if ($search !== '') {
     $where[] = "(full_name LIKE :search OR username LIKE :search OR email LIKE :search)";
     $params[':search'] = "%$search%";
 }
@@ -46,6 +49,13 @@ if (!empty($search)) {
 if ($role === 'healthcare' && $region !== 'all') {
     $where[] = "healthcare_region = :region";
     $params[':region'] = $region;
+}
+
+// Optional status filter
+if ($status === 'active') {
+    $where[] = "is_active = 1";
+} elseif ($status === 'inactive') {
+    $where[] = "is_active = 0";
 }
 
 $whereSQL = "WHERE " . implode(" AND ", $where);
@@ -59,7 +69,7 @@ try {
 
     // 📥 Fetch paginated data
     $stmt = $pdo->prepare("
-        SELECT id, full_name, username, email, healthcare_region, created_at
+        SELECT id, full_name, username, email, healthcare_region, created_at, is_active
         FROM users
         $whereSQL
         ORDER BY $orderBy
