@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   toggleRegion();
+  wireAutoUsername();
 });
 
 const roleSelect = document.getElementById('role');
@@ -97,3 +98,54 @@ form?.addEventListener('submit', async (e) => {
     submitBtn.disabled = false;
   }
 });
+
+// ---------- Auto-username UX ----------
+function wireAutoUsername() {
+  const fullNameEl = document.getElementById('full_name');
+  const usernameEl = document.getElementById('username');
+  const autoChk = document.getElementById('auto-username');
+  const modeEl = document.getElementById('username_mode');
+
+  if (!fullNameEl || !usernameEl || !modeEl) return;
+
+  // Detect edit screen by presence of hidden id input
+  const isEdit = !!document.querySelector('input[name="id"]');
+
+  function firstNameSlug(name) {
+    if (!name) return '';
+    const first = name.trim().split(/\s+/)[0] || '';
+    const ascii = first.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return ascii.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function tryAutofill() {
+    if (isEdit) return; // don't auto-change on edit
+    if (autoChk && !autoChk.checked) return;
+    const slug = firstNameSlug(fullNameEl.value);
+    usernameEl.value = slug;
+  }
+
+  // initialize
+  if (!isEdit && autoChk && autoChk.checked && !usernameEl.value) {
+    tryAutofill();
+  }
+
+  fullNameEl.addEventListener('input', tryAutofill);
+
+  // manual override when typing username
+  usernameEl.addEventListener('input', () => {
+    if (autoChk && autoChk.checked) {
+      autoChk.checked = false;
+      modeEl.value = 'manual';
+    }
+  });
+
+  autoChk?.addEventListener('change', () => {
+    if (autoChk.checked) {
+      modeEl.value = 'auto';
+      tryAutofill();
+    } else {
+      modeEl.value = 'manual';
+    }
+  });
+}
