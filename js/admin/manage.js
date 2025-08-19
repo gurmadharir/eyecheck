@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const regionWrapper = document.getElementById("regionFilterWrapper");
   const dateFilter = document.getElementById("dateFilter");
   const title = document.getElementById("pageTitle");
+  const statusFilter = document.getElementById("statusFilter");
 
   let savedFilters = {};
   try {
@@ -23,6 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (savedFilters.search) search.value = savedFilters.search;
   if (savedFilters.region) region.value = savedFilters.region;
   if (savedFilters.sort) dateFilter.value = savedFilters.sort;
+  if (savedFilters.status) {
+    statusFilter.value = savedFilters.status;
+  } else {
+    statusFilter.value = "active"; // 👈 default
+  }
 
   function toggleRegionFilter(forceRole = roleFilter.value) {
     const isHealthcare = forceRole === "healthcare";
@@ -43,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPage(1);
   });
 
-  [search, region, dateFilter].forEach(input => {
+  [search, region, dateFilter, statusFilter].forEach(input => {
     input.addEventListener("change", () => {
       saveFilters();
       loadPage(1);
@@ -64,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
       role: roleFilter.value,
       region: region.value,
       search: search.value,
-      sort: dateFilter.value
+      sort: dateFilter.value,
+      status: statusFilter.value
     }));
   }
 
@@ -109,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tableHeader.innerHTML = `<tr>${common}${extra}${action}</tr>`;
   }
 
-
   function formatDate(dateStr) {
     const d = new Date(dateStr);
     return isNaN(d.getTime()) ? "-" : d.toLocaleDateString();
@@ -121,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       role: roleFilter.value,
       region: region.value,
       sort: dateFilter.value,
+      status: statusFilter.value,
       page
     });
 
@@ -151,9 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     tableBody.innerHTML = data.map((user, index) => {
       const createdAt = formatDate(user.created_at);
+      const isActive = Number(user.is_active) === 1;
       let row = `
         <td>#${(currentPage - 1) * perPage + index + 1}</td>
         <td>${user.full_name}</td>
@@ -172,15 +179,44 @@ document.addEventListener("DOMContentLoaded", () => {
           <a href="change-password.php?id=${user.id}&role=${role}" class="action-btn password-btn" title="Change Password" aria-label="Change password">
             <i class="fas fa-key"></i>
           </a>`;
-          
+
       const isSelf = user.id === currentAdminId;
 
+      // --- TOGGLE ACTIVE/INACTIVE ---
       if (isSpecialAdmin && !isSelf) {
-        row += `<button class="action-btn open-delete-modal" data-id="${user.id}" data-role="${user.role}" data-type="user" title="Delete" aria-label="Delete user">
+        const targetStatus = isActive ? 0 : 1;
+        const label = isActive ? "Deactivate" : "Activate";
+        const icon = isActive ? "fa-ban" : "fa-rotate-left";
+        row += `
+          <button class="action-btn toggle-status-btn"
+                  data-id="${user.id}"
+                  data-target="${targetStatus}"
+                  title="${label}" aria-label="${label}">
+            <i class="fas ${icon}"></i>
+          </button>`;
+      } else {
+        row += `
+          <button class="action-btn" disabled title="No permission">
+            <i class="fas fa-ban"></i>
+          </button>`;
+      }
+      // --- END TOGGLE ---
+
+     // Show delete ONLY if Special Admin AND not self AND user is already deactivated
+      if (isSpecialAdmin && !isSelf && !isActive) {
+        row += `<button class="action-btn open-delete-modal"
+                        data-id="${user.id}"
+                        data-role="${user.role}"
+                        data-type="user"
+                        title="Delete"
+                        aria-label="Delete user">
                   <i class="fas fa-trash-alt"></i>
                 </button>`;
       } else {
-        row += `<button class="action-btn disabled-delete-btn" title="You don’t have permission to delete this user." aria-label="No permission">
+        row += `<button class="action-btn disabled-delete-btn"
+                        style="opacity: 0.4; cursor: not-allowed;"
+                        title="${isActive ? 'You must deactivate first' : 'No permission'}"
+                        aria-label="No permission">
                   <i class="fas fa-trash-alt"></i>
                 </button>`;
       }
@@ -195,12 +231,13 @@ document.addEventListener("DOMContentLoaded", () => {
           </button>`;
       }
 
-      row += `</td>`;      
+      row += `</td>`;
       return `<tr>${row}</tr>`;
     }).join("");
 
     bindDeleteButtons();
     bindPrintButtons();
+    bindToggleButtons();
   }
 
   function renderPagination(total, perPage, currentPage) {
@@ -265,6 +302,84 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  function openStatusModal(id, target) {
+    const overlay = document.querySelector(".delete-modal-overlay");
+    const modal = overlay.querySelector(".delete-modal");
+    const iconEl = modal.querySelector(".delete-icon i");
+    const titleEl = modal.querySelector("h2");
+    const textEl = modal.querySelector("p");
+    const confirmBtn = modal.querySelector(".delete-confirm-btn");
+    const cancelBtn = modal.querySelector(".cancel-btn");
+
+    // Save defaults once so we can restore after use (keeps Delete modal intact)
+    if (!overlay.dataset.defaultTitle) {
+      overlay.dataset.defaultTitle = titleEl.textContent;
+      overlay.dataset.defaultText = textEl.textContent;
+      overlay.dataset.defaultIcon = iconEl.className;
+      overlay.dataset.defaultConfirm = confirmBtn.textContent;
+    }
+
+    const isDeactivation = target === 0;
+
+    // Customize modal for Activate/Deactivate
+    titleEl.textContent = isDeactivation ? "Confirm Deactivation" : "Confirm Activation";
+    textEl.textContent = isDeactivation
+      ? "This user will be prevented from signing in and performing any actions."
+      : "This user will regain access and can sign in again.";
+    iconEl.className = isDeactivation ? "fas fa-ban" : "fas fa-rotate-left";
+    confirmBtn.textContent = isDeactivation ? "Deactivate" : "Activate";
+
+    // Reset previous listeners on the confirm button
+    confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+    const newConfirmBtn = modal.querySelector(".delete-confirm-btn");
+
+    newConfirmBtn.addEventListener("click", () => {
+      const bodyData = new URLSearchParams({ target_user_id: id, status: String(target) });
+      fetch("/eyecheck/backend/admin/toggle-status.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: bodyData,
+        credentials: "include"
+      })
+        .then(r => r.json())
+        .then(data => {
+          overlay.classList.remove("active");
+          restoreDeleteModal(overlay); // restore original delete modal copy/icon
+          showToast(data.message || "Updated.", data.success ? "success" : "error");
+          if (data.success) loadPage(1);
+        })
+        .catch(() => {
+          overlay.classList.remove("active");
+          restoreDeleteModal(overlay);
+          showToast("Server error. Try again.", "error");
+        });
+    });
+
+    // Cancel restores modal to its original delete state
+    cancelBtn.onclick = () => {
+      overlay.classList.remove("active");
+      restoreDeleteModal(overlay);
+    };
+
+    // Show modal
+    overlay.classList.add("active");
+  }
+
+  function restoreDeleteModal(overlay) {
+    const modal = overlay.querySelector(".delete-modal");
+    const iconEl = modal.querySelector(".delete-icon i");
+    const titleEl = modal.querySelector("h2");
+    const textEl = modal.querySelector("p");
+    const confirmBtn = modal.querySelector(".delete-confirm-btn");
+
+    if (overlay.dataset.defaultTitle) {
+      titleEl.textContent = overlay.dataset.defaultTitle;
+      textEl.textContent = overlay.dataset.defaultText;
+      iconEl.className = overlay.dataset.defaultIcon;
+      confirmBtn.textContent = overlay.dataset.defaultConfirm;
+    }
+  }
+
   function bindDeleteButtons() {
     document.querySelectorAll(".open-delete-modal").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -280,7 +395,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".disabled-delete-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        showToast("You don’t have permission to delete this user.", 'error');
+        const msg = btn.getAttribute("title") || "You don’t have permission to delete this user.";
+        showToast(msg, 'error');
       });
     });
   }
@@ -289,15 +405,29 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".print-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = parseInt(btn.dataset.id);
-        // Open printable report and auto-print when it loads
         const url = `/eyecheck/admin/print-report.php?type=healthcare&id=${id}`;
-        const w = window.open(url, "_blank", "noopener,noreferrer");
-        // No-op if popup blocked; the server page also calls window.print() on load.
+        window.open(url, "_blank", "noopener,noreferrer");
       });
     });
   }
 
+  // NEW: Toggle activate/deactivate
+  function bindToggleButtons() {
+    document.querySelectorAll(".toggle-status-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = parseInt(btn.dataset.id, 10);
+        const target = parseInt(btn.dataset.target, 10); // 0=deactivate, 1=activate
+
+        if (!isSpecialAdmin || id === currentAdminId) {
+          showToast("You can’t change your own status.", 'error');
+          return;
+        }
+
+        // Open the same modal used for deletion, but with dynamic copy/icons
+        openStatusModal(id, target);
+      });
+    });
+  }
 
   loadPage(1);
-
 });
