@@ -3,7 +3,8 @@ require_once '../../backend/helpers/auth-check.php';
 requireRole('admin');
 
 $page = 'patients';
-
+$isSpecialAdmin = isset($_SESSION['is_super_admin']) && $_SESSION['is_super_admin'] == 1; // 🔹 for toggle perms
+$currentUserId  = (int)($_SESSION['user_id'] ?? 0);                                      // 🔹 used by JS
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +14,7 @@ $page = 'patients';
   <title>Patients | Admin</title>
 
   <!-- Theme bootstrap CSS -->
-  <script src="../js/theme-init.js"></script>
+  <script src="../../js/theme-init.js"></script>
 
   <link rel="stylesheet" href="../../css/records.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -41,6 +42,14 @@ $page = 'patients';
                   <option value="latest">Latest First</option>
                   <option value="oldest">Oldest First</option>
                 </select>
+
+                <label for="statusFilter"><i class="fas fa-user-check"></i> Status:</label>
+                <select id="statusFilter">
+                  <option value="all" selected>All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+
                 <label><i class="fas fa-calendar"></i> Date Range:</label>
                 <input type="date" id="startDate" />
                 <input type="date" id="endDate" />
@@ -70,7 +79,7 @@ $page = 'patients';
   </div>
 </div>
 
-<!-- Delete Modal -->
+<!-- Delete/Status Modal (shared) -->
 <div class="delete-modal-overlay">
   <div class="delete-modal">
     <div class="delete-icon"><i class="fas fa-trash-alt"></i></div>
@@ -83,7 +92,9 @@ $page = 'patients';
   </div>
 </div>
 
-
+<!-- 🔹 Hidden flags for JS (needed for activate/deactivate button visibility & “self” rule) -->
+<input type="hidden" id="currentAdminId" value="<?= $currentUserId ?>">
+<input type="hidden" id="isSpecialAdmin" value="<?= $isSpecialAdmin ? '1' : '0' ?>">
 
 <!-- Toast -->
 <div id="toast" class="toast">
@@ -93,8 +104,6 @@ $page = 'patients';
 
 <script src="../../js/sidebar-toggle.js" defer></script>
 <script src="../../js/theme-toggle.js"></script>
- 
-
 <script src="../../js/toggle-dropdown.js"></script>
 
 <script>
@@ -102,18 +111,19 @@ $page = 'patients';
     apiUrl: "/eyecheck/backend/admin/get-patients.php",
     searchId: "reportSearch",
     sortId: "dateFilter",
+    statusId: "statusFilter",        // 🔹 explicitly pass status control id
     startDateId: "startDate",
     endDateId: "endDate",
     tableBodyId: "records-table-body",
     paginationId: "pagination",
     showViewButton: true,
-    viewBasePath: "view.php" 
-
+    viewBasePath: "view.php"
   };
 </script>
 
+<!-- Your unified patients manage script (with activate/deactivate logic) -->
+<script src="../../js/admin/manage.js"></script>
 <script src="../../js/admin/user-alerts.js"></script>
-
 
 <!-- Loading Overlay -->
 <div id="loadingOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 9999; align-items:center; justify-content:center;">
