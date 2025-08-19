@@ -35,11 +35,12 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 try {
   // Look up by email ONLY (no role)
-  $stmt = $pdo->prepare("SELECT id, full_name, email FROM users WHERE email = ? LIMIT 1");
+  $stmt = $pdo->prepare("SELECT id, full_name, email, is_active FROM users WHERE email = ? LIMIT 1");
   $stmt->execute([$email]);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  if ($user) {
+  // Only proceed if user exists AND is active
+  if ($user && (int)$user['is_active'] === 1) {
     // Clear any previous tokens
     $pdo->prepare("UPDATE users SET reset_token = NULL, reset_expires = NULL WHERE id = ?")
         ->execute([$user['id']]);
@@ -52,10 +53,12 @@ try {
     $pdo->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE id = ?")
         ->execute([$token, $expires, $user['id']]);
 
-    // 🔗 Single shared reset page for ALL users
-    // Adjust BASE_URL for your environment (prod/staging)
-    $BASE_URL = 'http://localhost/eyecheck';
-    $resetLink = $BASE_URL . "/reset-password.php?token={$token}";
+    // Build BASE_URL dynamically (use HTTPS if available)
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $base   = rtrim("$scheme://$host/eyecheck", '/');
+
+    $resetLink = $base . "/reset-password.php?token={$token}";
 
     // Send email (PHPMailer)
     $mail = new PHPMailer(true);
@@ -66,7 +69,7 @@ try {
       $mail->Host = 'smtp.gmail.com';
       $mail->SMTPAuth = true;
 
-      // ⚠️ Use an App Password and move these to env/secure config in production
+      // ⚠️ Move to env/secure config in production
       $mail->Username = 'visioncare.ai@gmail.com';
       $mail->Password = 'snqv vvso tyiq sqsl';
 
@@ -78,10 +81,12 @@ try {
       $mail->isHTML(true);
       $mail->Subject = 'EyeCheck Password Reset';
 
+      $safeName = htmlspecialchars($user['full_name'], ENT_QUOTES, 'UTF-8');
+
       $mail->Body = "
         <div style='font-family: Arial, sans-serif; color:#333; padding:20px'>
           <h2 style='color:#0066cc'>🔐 Reset Your Password</h2>
-          <p>Hello <strong>".htmlspecialchars($user['full_name'])."</strong>,</p>
+          <p>Hello <strong>{$safeName}</strong>,</p>
           <p>You requested to reset your EyeCheck account password.</p>
           <p>Click the button below to reset it. This link will expire in <strong>1 hour</strong>:</p>
           <p style='margin:30px 0'>
@@ -103,5 +108,6 @@ try {
   echo json_encode(['success' => true, 'message' => 'We’ve sent you a reset link. Please check your email.']);
 } catch (Throwable $t) {
   error_log('Forgot handler error: ' . $t->getMessage());
+  // Keep anti-enumeration response
   echo json_encode(['success' => true, 'message' => 'We’ve sent you a reset link. Please check your email.']);
 }
