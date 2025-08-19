@@ -48,7 +48,7 @@ $page = 'manage';
         <form class="staff-form" action="../backend/admin/form-handler.php" method="POST" style="max-width: 600px; margin-top: 20px;">
           
           <?php if ($isEdit): ?>
-            <input type="hidden" name="id" value="<?= $staff['id'] ?>">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($staff['id']) ?>">
           <?php endif; ?>
 
           <div class="form-group">
@@ -62,28 +62,39 @@ $page = 'manage';
 
           <div class="form-group">
             <label for="full_name">Full Name:</label>
-            <input type="text" name="full_name" required value="<?= $staff['full_name'] ?? '' ?>">
+            <input id="full_name" type="text" name="full_name" required value="<?= htmlspecialchars($staff['full_name'] ?? '') ?>">
           </div>
 
           <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" name="username" required value="<?= $staff['username'] ?? '' ?>">
+            <label for="username" class="d-flex align-items-center justify-content-between">
+              <span>Username:</span>
+              <?php if (!$isEdit): ?>
+              <label class="form-check-label" style="font-weight: normal;">
+                <input class="form-check-input" type="checkbox" id="auto-username" checked>
+                Auto
+              </label>
+              <?php endif; ?>
+            </label>
+
+            <input id="username" type="text" name="username" required value="<?= htmlspecialchars($staff['username'] ?? '') ?>">
+            <input type="hidden" name="username_mode" id="username_mode" value="<?= $isEdit ? 'manual' : 'auto' ?>">
+            <small class="text-muted">Auto uses the first name (e.g., “Qudus” → qudus, qudus2, …). Uniqueness enforced on the server.</small>
           </div>
 
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" name="email" required value="<?= $staff['email'] ?? '' ?>">
+            <input id="email" type="email" name="email" required value="<?= htmlspecialchars($staff['email'] ?? '') ?>">
           </div>
 
           <div class="form-group <?= ($staff && $staff['role'] === 'healthcare') ? '' : 'hidden' ?>" id="region-group">
-            <label for="region">Region:</label>
+            <label for="region-select">Region:</label>
             <select name="region" id="region-select" <?= ($staff && $staff['role'] === 'healthcare') ? 'required' : '' ?>>
               <option value="">Select region</option>
               <?php
               $regions = ["Banadir", "Bay", "Bakool", "Gedo", "Hiiraan", "Middle Shabelle", "Lower Shabelle", "Middle Juba", "Lower Juba", "Galgaduud", "Mudug", "Nugal", "Bari"];
               foreach ($regions as $region) {
-                $selected = ($staff && $staff['healthcare_region'] === $region) ? 'selected' : '';
-                echo "<option value=\"$region\" $selected>$region</option>";
+                $selected = ($staff && ($staff['healthcare_region'] ?? '') === $region) ? 'selected' : '';
+                echo '<option value="'.htmlspecialchars($region).'" '.$selected.'>'.htmlspecialchars($region).'</option>';
               }
               ?>
             </select>
@@ -92,12 +103,12 @@ $page = 'manage';
           <?php if (!$isEdit): ?>
           <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" name="password" required>
+            <input id="password" type="password" name="password" required>
           </div>
 
           <div class="form-group">
             <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" required>
+            <input id="confirm_password" type="password" name="confirm_password" required>
           </div>
           <?php endif; ?>
           
@@ -113,7 +124,7 @@ $page = 'manage';
               justify-content: center; 
               align-items: center; 
               text-align: center;"
-              aria-label="Create new staff account"
+              aria-label="<?= $isEdit ? 'Update staff account' : 'Create new staff account' ?>"
           >
             <?= $isEdit ? 'UPDATE' : 'CREATE' ?>
           </button>
@@ -124,8 +135,6 @@ $page = 'manage';
   </div>
 </div>
 
-
-<!-- ✅ Secure dynamic toast -->
 <?php include '../partials/custom-toaster.php'; ?>
 
 <?php if (isset($_SESSION['message'])): ?>
