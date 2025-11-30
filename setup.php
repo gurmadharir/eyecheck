@@ -7,12 +7,11 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    
     // Drop and create fresh database
     $pdo->exec("DROP DATABASE IF EXISTS `$dbname`");
     $pdo->exec("CREATE DATABASE `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
     echo "✅ Database '$dbname' created.<br>";
-
     $pdo->exec("USE `$dbname`");
 
     // USERS table (✅ updated with status column)
@@ -127,4 +126,5 @@ try {
 } catch (PDOException $e) {
     die('❌ Setup failed: ' . $e->getMessage());
 }
+
 ?>
