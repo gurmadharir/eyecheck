@@ -91,8 +91,7 @@ if (isset($patient['confidence']) && $patient['confidence'] !== '' && $patient['
       </div>
 
       <div class="signature-block">
-        <p class="signed">🖊️ Dr. Jonathan Smith</p>
-        <p><strong>Dr. Jonathan Smith</strong><br />Ophthalmologist</p>
+        <p>Ophthalmologist</p>
       </div>
 
       <hr />
